@@ -1,5 +1,6 @@
 **Calico Networking**  
-This project is to set up overlay network using different calico networking modes like:-
+This project is to set up overlay network using different calico networking modes like:- 
+
 0. IPinIP
 1. Direct 
 2. IPinIP and Direct(only with different subnet) 
