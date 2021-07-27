@@ -3,14 +3,14 @@
     name: docker
     executable: pip
 
-- name: Pull dashboard images kubernetesui/metrics-scraper:v1.0.4 (1/2)
+- name: Pull dashboard images kubernetesui/metrics-scraper:v{{dashboard_metrics_scrapper_version}} (1/2)
   docker_image:
     name: kubernetesui/metrics-scraper
     source: pull
-    tag: v1.0.5
+    tag: v{{dashboard_metrics_scrapper_version}}
 
-- name: Pull dashboard images kubernetesui/dashboard:v2.0.3 (2/2)
+- name: Pull dashboard images kubernetesui/dashboard:v{{dahboard_version}} (2/2)
   docker_image:
     name: kubernetesui/dashboard
     source: pull
-    tag: v2.0.3
+    tag: v{{dahboard_version}}

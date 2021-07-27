@@ -2,10 +2,13 @@ cluster_name: micro_cluster  # A folder of cluster name will be created in root 
 network_cidr: 192.168.0.0/16
 k8s_version: 1.21.1
 docker_version: 19.03.8
-
-
+calico_version: 3.19.1
+dahboard_version: 2.3.1
+dashboard_metrics_scrapper_version: 1.0.6
+dashboard_port: 30000
+metrics_server_version: 0.5.0
+#master_ip:  192.10.10.5
 master_ip:  10.136.58.131
-
 
 external_ip: 10.136.58.131
 etcd_heartbeat: 300   # etcd heartbeat in milli seconds (Default: 100)

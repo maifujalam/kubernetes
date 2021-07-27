@@ -4,8 +4,8 @@
     state: directory
 
 - name: Copy metric-server.yaml to /iac/{{cluster_name}}
-  copy:
-    src: metrics-server.yaml
+  template:
+    src: metrics-server.yaml.j2
     dest: /iac/{{cluster_name}}/metrics-server.yaml
 
 - name: Install Kubernetes Metrics-server

@@ -40,7 +40,7 @@ spec:
   ports:
     - port: 443
       targetPort: 8443
-      nodePort: 30000
+      nodePort: {{dashboard_port}}
   type: NodePort
   selector:
     k8s-app: kubernetes-dashboard
@@ -169,7 +169,7 @@ subjects:
 
 ---
 
-kind: DaemonSet
+kind: Deployment
 apiVersion: apps/v1
 metadata:
   labels:
@@ -177,6 +177,7 @@ metadata:
   name: kubernetes-dashboard
   namespace: kubernetes-dashboard
 spec:
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -188,25 +189,14 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: kubernetesui/dashboard:v2.0.0-rc7
-          imagePullPolicy: IfNotPresent
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 300m
-              memory: 256Mi
+          image: kubernetesui/dashboard:v{{dahboard_version}}
+          imagePullPolicy: Always
           ports:
             - containerPort: 8443
               protocol: TCP
           args:
             - --auto-generate-certificates
             - --namespace=kubernetes-dashboard
-            - --token-ttl=43200
-            #            - --enable-skip-login
-            #            - --disable-settings-authorizer
-            #             - --token-ttl=43200
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
             # to it. Uncomment only if the default does not work.
@@ -237,7 +227,7 @@ spec:
           emptyDir: {}
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
-        "beta.kubernetes.io/os": linux
+        "kubernetes.io/os": linux
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -261,13 +251,15 @@ spec:
 
 ---
 
-kind: DaemonSet
+kind: Deployment
+apiVersion: apps/v1
 metadata:
   labels:
     k8s-app: dashboard-metrics-scraper
   name: dashboard-metrics-scraper
   namespace: kubernetes-dashboard
 spec:
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -281,8 +273,7 @@ spec:
     spec:
       containers:
         - name: dashboard-metrics-scraper
-          image: kubernetesui/metrics-scraper:v1.0.4
-          imagePullPolicy: IfNotPresent
+          image: kubernetesui/metrics-scraper:v{{dashboard_metrics_scrapper_version}}
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -303,7 +294,7 @@ spec:
             runAsGroup: 2001
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
-        "beta.kubernetes.io/os": linux
+        "kubernetes.io/os": linux
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -311,4 +302,3 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
-apiVersion: apps/v1

@@ -1,7 +1,7 @@
 - name: Copy dashboard.yaml to /iac/{{cluster_name}}
-  copy:
-    src: dashboard.yml
-    dest: /iac/{{cluster_name}}
+  template:
+    src: dashboard.yml.j2
+    dest: /iac/{{cluster_name}}/dashboard.yml
 
 - name: Install Kubernetes Dashboard
   command: kubectl apply -f /iac/{{cluster_name}}/dashboard.yml

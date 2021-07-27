@@ -2,16 +2,16 @@
   become: false
   local_action:
     module: copy
-    src: calico.yml
+    src: 0.calico-direct-always.yaml
     dest: /tmp/{{cluster_name}}
 
 - name: Copy role files to /iac/{{cluster_name}}/calico.yml in leader
   copy:
-    src: calico.yml
+    src: 0.calico-direct-always.yaml
     dest: /iac/{{cluster_name}}
 
 - name: Installing calico pod network
-  command: kubectl apply -f /iac/{{cluster_name}}/calico.yml
+  command: kubectl apply -f /iac/{{cluster_name}}/0.calico-direct-always.yaml
   retries: 10
   delay: 2
   register: r1
