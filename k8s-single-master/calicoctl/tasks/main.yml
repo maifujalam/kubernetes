@@ -1,0 +1,39 @@
+#- name: Change to binary
+#  shell: cd /bin
+
+#- name: Install calicoctl
+#  shell: curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.16.5/calicoctl
+#
+#- name: Give permission to calicoctl
+#  shell: chmod +x calicoctl
+#- name: Check calicoctl
+#  shell: calicoct
+- name: Check calicoctl
+  shell: calicoctl node status
+  register: r1
+  ignore_errors: yes
+- debug:
+    msg: "{{r1}}"
+- name: downloading calicoctl binary
+  get_url:
+    url: https://github.com/projectcalico/calicoctl/releases/download/v3.16.5/calicoctl
+    dest: /bin
+    mode: 777
+  when: r1.rc != 0
+
+
+- name: Node status
+  shell: calicoctl node status
+  register: nodestatus
+
+- debug:
+    msg: "{{ nodestatus.stdout.split('\n') }}"
+
+#- name: pwding
+#  shell: pwd
+#  output: pwdres
+
+#- name: Move binary
+#  copy:
+#    src: pwdres.stdout/calicoctl
+#    dest: /etc/ntp.conf

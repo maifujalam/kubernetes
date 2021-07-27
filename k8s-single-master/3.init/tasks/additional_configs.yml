@@ -1,0 +1,18 @@
+---
+  - name: Making directory .kube
+    file:
+      path: $HOME/.kube
+      state: directory
+
+
+  - name: Copy the required config file.
+    copy:
+      remote_src: yes  
+      src: /etc/kubernetes/admin.conf 
+      dest: $HOME/.kube/config
+
+  - name: Copy kubeconfig file to /iac/{{cluster_name}}/config in controller
+    copy:
+      src: $HOME/.kube/config
+      dest: /iac/{{cluster_name}}/config
+      remote_src: true

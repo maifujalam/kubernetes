@@ -1,0 +1,31 @@
+- name: to stop and disable firewall
+  service:
+          state: stopped
+          enabled: no
+          name: firewalld 
+- name: get service facts
+  service_facts:
+
+- name: try to work out how to access the service
+  debug:
+       var: ansible_facts.services["firewalld.service"]
+
+- name: 
+  fail:
+          msg: "Error"
+  when: 'ansible_facts.services["firewalld.service"].status != "disabled"'
+
+- stat:
+        path: "{{ selinux_configfile }}"
+  register: result
+
+- name: to change in selinux file
+  lineinfile:
+          path: "{{ selinux_configfile }}"
+          regexp: '^SELINUX='
+          line: SELINUX=disabled
+  when: result.stat.exists
+
+#- name: to reboot
+#  reboot:
+

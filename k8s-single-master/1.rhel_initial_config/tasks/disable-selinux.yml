@@ -1,0 +1,8 @@
+- easy_install:
+    name: pip
+    state: latest
+- name: Disable SELinux
+  selinux:
+    state: disabled
+- name: Chane SELinux Config file.
+  shell: sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config

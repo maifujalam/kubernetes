@@ -1,0 +1,8 @@
+---
+# tasks file for InstallPrerequisites
+
+- name: Installing yedit module on ansible controller
+  command: chdir=/etc/ansible/roles ansible-galaxy install kwoodson.yedit
+#  shell:
+#    cmd: ansible-galaxy install kwoodson.yedit
+#    chdir: /etc/ansible/roles

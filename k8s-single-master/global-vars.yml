@@ -1,0 +1,17 @@
+cluster_name: micro_cluster  # A folder of cluster name will be created in root directory for storing cluster file .
+network_cidr: 192.168.0.0/16
+k8s_version: 1.21.1
+docker_version: 19.03.8
+
+
+master_ip:  10.136.58.131
+
+
+external_ip: 10.136.58.131
+etcd_heartbeat: 300   # etcd heartbeat in milli seconds (Default: 100)
+etcd_timeout: 3000 # etcd leader elect timeout (Default: 1000)
+snapshot_count: 5000 # etcd snapshot count (Default: 10000)
+
+nfs_ip : 34.122.108.43
+nfs_dir : /nfs
+src: /home/skmaifuj/Desktop/NFS/mini_cluster1/

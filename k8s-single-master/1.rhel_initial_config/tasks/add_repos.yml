@@ -1,0 +1,57 @@
+---
+    # - name: Add Centos-7 repos
+    #   yum_repository:
+    #     name: Centos-7_base
+    #     description: Enable Centos-7_base repos
+    #     baseurl: http://ftp.heanet.ie/pub/centos/7/os/x86_64/
+    #     enabled: yes
+    #     gpgcheck: yes
+    #     gpgkey: http://ftp.heanet.ie/pub/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7
+    - name: Add centos7 base repo
+      yum_repository: 
+        name: base
+        description: Enable Centos-7_base repos
+        file: Centos-7
+        baseurl: http://mirror.centos.org/centos/7/os/$basearch/
+        gpgcheck: no
+        enabled: yes
+    
+    - name: Add centos7 repo for updates
+      yum_repository: 
+        name: updates
+        description: CentOS-$releasever - Updates
+        file: Centos-7
+        baseurl: http://mirror.centos.org/centos/7/updates/$basearch/
+        gpgcheck: no
+        enabled: yes
+
+    - name: centos7 additional packages that may be useful
+      yum_repository: 
+        name: extras
+        description: CentOS-$releasever - Extras
+        file: Centos-7
+        baseurl: http://mirror.centos.org/centos/7/extras/$basearch/
+        gpgcheck: no
+        enabled: yes
+
+    - name: Add docker repos
+      yum_repository:
+        name: Docker-repo
+        description: Add docker yum_repository
+        file: docker
+        baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
+        gpgkey: https://download.docker.com/linux/centos/gpg
+        gpgcheck: yes
+        enabled: yes
+
+    - name: Add K8s repo
+      yum_repository:
+        name: Kubernetes
+        description: Kubernetes YUM repository
+        baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+        gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+        gpgcheck: yes
+        enabled: yes
+
+
+

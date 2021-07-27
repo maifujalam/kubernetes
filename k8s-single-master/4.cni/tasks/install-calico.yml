@@ -1,0 +1,25 @@
+- name: Copy role files to /tmp/{{cluster_name}}/calico.yml in controller
+  become: false
+  local_action:
+    module: copy
+    src: calico.yml
+    dest: /tmp/{{cluster_name}}
+
+- name: Copy role files to /iac/{{cluster_name}}/calico.yml in leader
+  copy:
+    src: calico.yml
+    dest: /iac/{{cluster_name}}
+
+- name: Installing calico pod network
+  command: kubectl apply -f /iac/{{cluster_name}}/calico.yml
+  retries: 10
+  delay: 2
+  register: r1
+  until: r1.rc == 0
+
+- name: Waiting for calilico pods to up and ready.
+  shell: kubectl get pods -A -o json
+  register: kubectl_get_pods
+  until: kubectl_get_pods.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
+  retries: 20
+  delay: 6

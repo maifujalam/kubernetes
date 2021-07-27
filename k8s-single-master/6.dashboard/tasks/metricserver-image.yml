@@ -1,0 +1,15 @@
+- name: Install Docker Module for Python.
+  pip:
+    name: docker
+    executable: pip
+
+- name: Check docker daemon is running.
+  service:
+    name: docker
+    state: started
+
+- name: Pull metric server images k8s.gcr.io/metrics-server-amd64:v0.3.6
+  docker_image:
+    name: k8s.gcr.io/metrics-server-amd64
+    source: pull
+    tag: v0.3.6

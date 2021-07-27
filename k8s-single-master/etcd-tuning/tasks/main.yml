@@ -1,0 +1,68 @@
+#---
+## tasks file for etcd-tuning
+- name: Take Old etcd backup
+  copy:
+    src: /etc/kubernetes/manifests/etcd.yaml
+    dest: /iac/{{cluster_name}}/etcd_backup.yaml
+    remote_src: true
+
+- name: extracting etcd pod name
+  shell: kubectl get pods -A -o name| grep etcd
+  register: etcd_pod
+
+- name: Removing existing etcd heatbeat count
+  lineinfile:
+    path: /etc/kubernetes/manifests/etcd.yaml
+    state: absent
+    regexp: "    - --heartbeat-interval*"
+
+- name: Removing existing leader elect timeout
+  lineinfile:
+    path: /etc/kubernetes/manifests/etcd.yaml
+    state: absent
+    regexp: "    - --election-timeout*"
+
+- name: Removing existing snapshot count
+  lineinfile:
+    path: /etc/kubernetes/manifests/etcd.yaml
+    state: absent
+    regexp: "    - --snapshot-count*"
+
+- name: Updating etcd heatbeat to {{etcd_heartbeat}}ms
+  lineinfile:
+    path: /etc/kubernetes/manifests/etcd.yaml
+    insertafter: "- --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt"
+    line: "    - --heartbeat-interval={{etcd_heartbeat}}"
+
+- name: Updating etcd leader elect timeout to {{etcd_timeout}}ms
+  lineinfile:
+    path: /etc/kubernetes/manifests/etcd.yaml
+    insertafter: "- --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt"
+    line: "    - --election-timeout={{etcd_timeout}}"
+
+- name: Updating etcd existing snapshot count  to {{snapshot_count}}ms
+  lineinfile:
+    path: /etc/kubernetes/manifests/etcd.yaml
+    insertafter: "- --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt"
+    line: "    - --snapshot-count={{snapshot_count}}"
+
+- name: hostname
+  shell: hostname
+  register: hostname
+
+- name: Checking cluster health
+  shell: curl https://{{hostname.stdout}}:6443/healthz --insecure
+  register: health
+  retries: 30
+  delay: 3
+  until: health.stdout == "ok"
+
+#- name: Removeing etcd pod
+#  shell: kubectl delete -n kube-system {{etcd_pod.stdout}}
+#
+- name: waiting for etcd to be online
+  shell: kubectl -n kube-system get {{etcd_pod.stdout}} -o json
+  register: kubectl_get_pods
+  until: kubectl_get_pods.stdout|from_json|json_query('status.phase') == "Running"
+  retries: 20
+  delay: 3

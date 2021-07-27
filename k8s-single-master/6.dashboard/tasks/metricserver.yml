@@ -1,0 +1,12 @@
+- name: Configuring project folder
+  file:
+    path: /iac/{{cluster_name}}
+    state: directory
+
+- name: Copy metric-server.yaml to /iac/{{cluster_name}}
+  copy:
+    src: metrics-server.yaml
+    dest: /iac/{{cluster_name}}/metrics-server.yaml
+
+- name: Install Kubernetes Metrics-server
+  command: kubectl apply -f /iac/{{cluster_name}}/metrics-server.yaml

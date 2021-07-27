@@ -1,0 +1,60 @@
+- name: print kubelet version 
+  shell:  yum list installed | grep kubelet | awk '{print $2}'
+  register: check_kubelet_version
+
+- name: set var 
+  set_fact:
+             kubelet_version: "{{ check_kubelet_version.stdout }}"
+
+- name: print version
+  debug:
+          msg: "{{ kubelet_version }}"
+
+- name: print kubeadm version
+  shell:  yum list installed | grep kubeadm | awk '{print $2}'
+  register: check_kubeadm_version
+
+- name: set var
+  set_fact:
+             kubeadm_version: "{{ check_kubeadm_version.stdout }}"
+
+- name: print version
+  debug:
+          msg: "{{ kubeadm_version }}"
+
+- name: print kubectl version
+  shell:  yum list installed | grep kubectl | awk '{print $2}'
+  register: check_kubectl_version
+
+- name: set var
+  set_fact:
+             kubectl_version: "{{ check_kubectl_version.stdout }}"
+
+- name: print version
+  debug:
+          msg: "{{ kubectl_version }}"
+
+- name: print kubernetes version
+  shell:  yum list installed | grep kubernetes | awk '{print $2}'
+  register: check_kubernetes_version
+
+- name: set var
+  set_fact:
+             kubernetes_version: "{{ check_kubernetes_version.stdout }}"
+
+- name: print version
+  debug:
+          msg: "{{ kubernetes_version }}"
+
+- name: write all the values in global file
+  blockinfile:
+          path: /home/gslab/global_var.yml
+          create: yes
+          block: |
+                  kubelet_version: "{{ kubelet_version }}"
+                  kubeadm_version: "{{ kubeadm_version }}"
+                  kubectl_version: "{{  kubectl_version }}"
+                  kubernetes_version: "{{ kubernetes_version }}"
+
+  delegate_to: localhost
+  

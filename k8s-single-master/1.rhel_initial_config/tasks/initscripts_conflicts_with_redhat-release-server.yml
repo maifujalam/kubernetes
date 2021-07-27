@@ -1,0 +1,6 @@
+---
+    - name: Add redhat-release-server and initscripts to the exclude list of yum
+      blockinfile:
+        path: /etc/yum.conf
+        insertafter: EOF
+        block: "exclude=redhat-release*,initscripts*"

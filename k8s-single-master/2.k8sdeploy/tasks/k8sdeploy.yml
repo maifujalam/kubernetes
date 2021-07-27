@@ -1,0 +1,120 @@
+---
+- name: check swap
+  shell: free -h | awk '{print $2}' | tail -1
+  register: check_swap
+
+- name: disable swap
+  block:
+          - name: 
+            command: swapoff -a
+
+          - name: Remove swapfile from /etc/fstab
+            mount:
+              name: swap
+              fstype: swap
+              state: absent
+
+          - name: recheck swap
+            shell: free -h | awk '{print $2}' | tail -1
+            register: recheck_swap
+          - name: fail 
+            fail: 
+               msg: "Swap not yet disable"
+            when: '"{{ recheck_swap.stdout }}" != "0B"'
+
+
+  when: '"{{ check_swap.stdout }}" != "0B"'
+- name: 
+  copy:
+      src: k8s.conf
+      dest: "{{ k8s_conf_des }}"
+      mode: '0777'
+- name: command
+  command: sysctl --system
+ 
+- name: install k8s
+  block:
+         - name: check package is already installed
+           shell: yum list installed | grep kubelet  
+           register: check_kubelet
+           ignore_errors: true
+         - name: 
+           block:
+                  - name: 
+                    shell:  yum list installed | grep kubelet | awk '{print $2}'
+                    register: check_kubelet_version 
+                  
+                  - name:
+                    debug:
+                            msg: "{{ check_kubelet_version.stdout }}"
+                  - name : print version 
+                    debug:
+                            msg: kubelet version-{{ check_kubelet_version.stdout }} already installed
+
+           when: '"{{ check_kubelet.stdout }}" != "" '
+         - name: intall packages
+           yum:
+               name: kubelet-{{ k8s_version }}
+               disable_excludes: kubernetes
+               state: present
+           when: '"{{ check_kubelet.stdout }}" == "" '
+
+           #  - kubeadm-{{ version }} 
+           #    - kubectl-{{ version }}
+
+         - name: enable kublet
+           systemd:
+               name: kubelet
+               enabled: yes
+               state: restarted
+           
+
+         - name: check package is already installed
+           shell: yum list installed | grep kubectl
+           register: check_kubectl
+           ignore_errors: true
+         - name:
+           block:
+                  - name:
+                    shell:  yum list installed | grep kubectl | awk '{print $2}'
+                    register: check_kubectl_version
+
+                  - name:
+                    debug:
+                            msg: "{{ check_kubectl_version.stdout }}"
+                  - name : print version
+                    debug:
+                            msg: kubectl version-{{ check_kubectl_version.stdout }} already installed
+
+           when: '"{{ check_kubectl.stdout }}" != "" '
+         - name: intall packages
+           yum:
+               name: kubectl-{{ k8s_version }}
+               disable_excludes: kubernetes
+               state: present
+           when: '"{{ check_kubectl.stdout }}" == "" '
+         - name: check package is already installed
+           shell: yum list installed | grep kubeadm
+           register: check_kubeadm
+           ignore_errors: true
+         - name:
+           block:
+                  - name:
+                    shell:  yum list installed | grep kubeadm | awk '{print $2}'
+                    register: check_kubeadm_version
+
+                  - name:
+                    debug:
+                            msg: "{{ check_kubeadm_version.stdout }}"
+                  - name : print version
+                    debug:
+                            msg: kubeadm version-{{ check_kubeadm_version.stdout }} already installed
+
+           when: '"{{ check_kubeadm.stdout }}" != "" '
+         - name: intall packages
+           yum:
+               name: kubeadm-{{ k8s_version }}
+               disable_excludes: kubernetes
+               state: present
+           when: '"{{ check_kubeadm.stdout }}" == "" '
+

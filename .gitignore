@@ -1,2 +1,3 @@
 kubernetes.iml
 .idea
+/project-calico/.vagrant/

@@ -1,0 +1,5 @@
+docker save -o /vagrant/image-single/${id}.tar $image:$tag
+docker load -i /vagrant/image-single/"$ids".tar
+
+docker run --name slave1 --privileged -p 10050:10050 -e ZBX_HOSTNAME="slave1" -e ZBX_SERVER_HOST="192.200.200.13" -d zabbix/zabbix-agent:centos-5.2-latest
+docker run --name slave2 --privileged -p 10050:10050 -e ZBX_HOSTNAME="slave2" -e ZBX_SERVER_HOST="192.200.200.13" -d zabbix/zabbix-agent:centos-5.2-latest

@@ -1,0 +1,103 @@
+- name: Configure RHEL
+  hosts: master,worker
+  become: yes
+  tasks:
+    - include_role:
+        name: 1.rhel_initial_config
+
+- name: Install k8s
+  hosts: master,worker
+  become: yes
+  tasks:
+    - name: Include vars
+      include_vars: /var/iac/global-vars.yml
+    - include_role:
+        name: 2.k8sdeploy
+#
+- name: Install k8s
+  hosts: master
+  become: true
+  tasks:
+    - name: Include vars
+      include_vars: /var/iac/global-vars.yml
+    - include_role:
+        name: 3.init
+
+#- name: Install CNI
+#  hosts: master
+#  become: yes
+#  tasks:
+#    - name: Include vars
+#      include_vars: /var/iac/global-vars.yml
+#    - include_role:
+#        name: 4.cni
+#
+#- name: Join Worker
+#  hosts: worker
+#  become: yes
+#  tasks:
+#    - name: Include vars
+#      include_vars: /var/iac/global-vars.yml
+#    - include_role:
+#        name: 5.join-worker
+#
+#- name: Install Dashboard
+#  hosts: master
+#  become: yes
+#  tasks:
+#    - name: Include vars
+#      include_vars: /var/iac/global-vars.yml
+#    - include_role:
+#        name: 6.dashboard
+
+#- name: etcd tuning
+#  hosts: master
+#  become: yes
+#  tasks:
+#    - name: Include vars
+#      include_vars: /var/iac/global-vars.yml
+#    - include_role:
+#        name: etcd-tuning
+
+#- name: Install nfs all
+#  hosts: master,worker
+#  become: yes
+#  tasks:
+#    - name: Include vars
+#      include_vars: /var/iac/global-vars.yml
+#    - include_role:
+#        name: nfs-client-role
+#
+#- name: Install nfs
+#  hosts: master
+#  become: yes
+#  tasks:
+#    - name: Include vars
+#      include_vars: /var/iac/global-vars.yml
+#    - include_role:
+#        name: NFS_Dynamic_Storage_Provsion_Role
+
+#- name: Install prometheous
+#  hosts: master1
+#  become: yes
+#  tasks:
+#    - name: Include vars
+#      include_vars: /var/iac/global-vars.yml
+#    - include_role:
+#        name: 9.InstallPrometheusPrerequisite
+#    - include_role:
+#        name: 10.InstallPrometheusOperator
+
+
+
+
+
+
+  #- name: Install k8s
+  #  hosts: all
+  #  become: yes
+  #  tasks:
+  #    - name: Include vars
+  #      include_vars: /var/iac/global-vars.yml
+  #    - include_role:
+  #        name: 2.install_k8s

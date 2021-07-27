@@ -29,15 +29,16 @@ Vagrant.configure("2") do |config|
                 vmm.memory = MEMORY_MASTER
                 vmm.cpus = CPU_MASTER
                 vmm.gui = false
+                vmm.linked_clone = true
             end
             master.vm.box = IMAGE_NAME
             master.vm.box_version = BOX_VERSION
-            master.vm.network "private_network", ip: "192.100.100.#{i + 9}"
+            master.vm.network "private_network", ip: "192.10.10.5"
             master.vm.hostname = MASTER + "#{i}"
             master.vm.provision "shell", inline: <<-SHELL
                 sudo cp -R /vagrant/repos/centos.repo /etc/yum.repos.d
                 sudo yum repolist
-                sudo yum upgrade -y
+                sudo yum update -y
                 sudo yum install python-pip -y
                 cd /vagrant
                 ./ShellScripts/update_ssh_config.sh
@@ -45,27 +46,67 @@ Vagrant.configure("2") do |config|
         end
     end
 
-    (1..NS).each do |j|
-        config.vm.define SLAVES + "#{j}" do |slave|
+    config.vm.define SLAVES + "1" do |slave|
+        slave.vm.provider "virtualbox" do |vms|
+            vms.memory = MEMORY_SLAVE
+            vms.cpus = CPU_SLAVE
+            vms.gui = false
+            vms.linked_clone = true
+        end
+        slave.vm.box = IMAGE_NAME
+        slave.vm.box_version = BOX_VERSION
+        slave.vm.network "private_network", ip: "192.10.10.10"
+        slave.vm.hostname = SLAVES + "1"
+        slave.vm.provision "shell", inline: <<-SHELL
+             sudo cp -R /vagrant/repos/centos.repo /etc/yum.repos.d
+             sudo yum repolist
+             sudo yum update -y
+             sudo yum install python-pip -y
+             cd /vagrant
+             ./ShellScripts/update_ssh_config.sh
+             # sudo yum install python3 -y
+        SHELL
+    end
+    config.vm.define SLAVES + "2" do |slave|
             slave.vm.provider "virtualbox" do |vms|
                 vms.memory = MEMORY_SLAVE
                 vms.cpus = CPU_SLAVE
                 vms.gui = false
+                vms.linked_clone = true
             end
             slave.vm.box = IMAGE_NAME
             slave.vm.box_version = BOX_VERSION
-            slave.vm.network "private_network", ip: "192.100.100.#{j + 99}"
-            slave.vm.hostname = SLAVES + "#{j}"
+            slave.vm.network "private_network", ip: "192.20.20.20"
+            slave.vm.hostname = SLAVES + "2"
             slave.vm.provision "shell", inline: <<-SHELL
                  sudo cp -R /vagrant/repos/centos.repo /etc/yum.repos.d
                  sudo yum repolist
-                 sudo yum upgrade -y
+                 sudo yum update -y
                  sudo yum install python-pip -y
                  cd /vagrant
                  ./ShellScripts/update_ssh_config.sh
                  # sudo yum install python3 -y
             SHELL
-        end
     end
-
+    config.vm.define SLAVES + "3" do |slave|
+            slave.vm.provider "virtualbox" do |vms|
+                vms.memory = MEMORY_SLAVE
+                vms.cpus = CPU_SLAVE
+                vms.gui = false
+                vms.linked_clone = true
+            end
+            slave.vm.box = IMAGE_NAME
+            slave.vm.box_version = BOX_VERSION
+            slave.vm.network "private_network", ip: "192.30.30.30"
+            slave.vm.hostname = SLAVES + "3"
+            slave.vm.provision "shell", inline: <<-SHELL
+                 sudo cp -R /vagrant/repos/centos.repo /etc/yum.repos.d
+                 sudo yum repolist
+                 sudo yum update -y
+                 sudo yum install python-pip -y
+                 cd /vagrant
+                 ./ShellScripts/update_ssh_config.sh
+                 # sudo yum install python3 -y
+            SHELL
+    end
 end

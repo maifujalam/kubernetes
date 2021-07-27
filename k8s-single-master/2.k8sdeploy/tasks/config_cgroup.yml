@@ -1,0 +1,23 @@
+--- 
+- name: copy the docker daemon file 
+  copy:
+      src: daemon.json
+      dest: "{{ daemon_des }}"
+      mode: '0777'
+
+  notify:
+          - Restart docker
+          
+- name: get cgroup
+  shell: docker info | grep cgroup | awk '{print $3}'
+  register: cgroup_value
+
+- name: replace 
+  lineinfile:
+          path: /etc/sysconfig/kubelet
+          regexp: '^KUBELET_EXTRA_ARGS='
+          line: KUBELET_EXTRA_ARGS=--cgroup-driver={{ cgroup_value.stdout }}
+  notify:
+         - Start kubectl
+
+

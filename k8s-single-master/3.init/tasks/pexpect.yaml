@@ -1,0 +1,16 @@
+---
+ - name: Installation of epel-release and pip
+   yum:
+     name: epel-release
+     state: present
+     
+ - name: Installation of epel-release and pip
+   yum:
+     name: python-pip
+     state: present
+   
+ - name: install pexpect
+   pip: 
+     name: pexpect
+     executable: pip
+    

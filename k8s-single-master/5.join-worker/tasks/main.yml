@@ -1,0 +1,53 @@
+- import_tasks: cleanup.yml
+- name: Checking if kubelet is up and running
+  service:
+    name: kubelet
+    state: started
+    enabled: true
+
+- name: Checking if docker service started
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Copy worker_join_cmd to {{ansible_facts.hostname}}
+  copy:
+    src: /iac/{{cluster_name}}/worker_join_cmd.sh
+    dest: /iac/{{cluster_name}}/
+
+- name: restart kubelet befor init
+  become: yes
+  become_user: root
+  service:
+    name: kubelet
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
+
+- name: docker restarted befor init
+  service:
+    name: docker
+    state: restarted
+    enabled: yes
+  become: yes
+
+- name: Executing Join Command
+  command: sh /iac/{{cluster_name}}/worker_join_cmd.sh
+  register: output
+  notify:
+    - check if kubelet is up and running
+    - check if slave added
+
+- name: Storing the init log at controller
+  become: true
+  copy:
+    content: "{{ output.stdout }}"
+    dest: /iac/{{cluster_name}}/init_log_file.log
+
+- name: Storing the init log to {{ansible_facts.hostname}}
+  become: false
+  local_action:
+    module: copy
+    content: "{{ output.stdout }}"
+    dest: /iac/{{cluster_name}}/init_log_{{ansible_facts.hostname}}.log

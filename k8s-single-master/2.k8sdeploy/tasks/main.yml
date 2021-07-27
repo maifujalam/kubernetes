@@ -1,0 +1,14 @@
+---
+# tasks file for k8sdeploy
+- name: include file
+  include_tasks: pre-configuration.yml
+- name: configure k8s repos
+  include_tasks: k8sdeploy.yml
+- name: install docker
+  include_tasks: install_docker.yml
+- name: configure cgroup
+  include_tasks: config_cgroup.yml
+# - name: add the versions 
+#   include_tasks: add_to_global.yml
+
+

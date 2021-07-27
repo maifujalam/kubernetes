@@ -1,0 +1,10 @@
+- name: Letting iptables see bridged traffic
+  copy:
+    src: k8s.conf
+    dest: /etc/sysctl.d/k8s.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: yes
+- name: Reload sysctl config for iptables
+  command: sysctl --system

@@ -1,0 +1,8 @@
+---
+# tasks file for rhel_initial_config
+- name: Include Task
+  include_tasks: add_repos.yml
+- name: Include Task
+  include_tasks: initscripts_conflicts_with_redhat-release-server.yml
+#- name: Include Task
+#  include_tasks: hosts.yml

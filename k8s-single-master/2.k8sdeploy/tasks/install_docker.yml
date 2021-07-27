@@ -1,0 +1,48 @@
+- name: get service facts
+  service_facts:
+
+- name: install docker 
+  block:
+
+          - name: Install yum utils
+            yum:
+                name: "{{ item }}"
+                state: present
+            with_items:
+                 - yum-utils
+                 - device-mapper-persistent-data
+                 - lvm2 
+ 
+          
+          - name: Install Docker
+            package:
+               name: "{{ item }}"
+               state: present
+            with_items:
+                 - docker-ce-{{ docker_version }}
+                 - docker-ce-cli-{{ docker_version }}
+                 - containerd.io
+
+ 
+          - name: Start Docker service
+            service:
+                  name: docker
+                  state: started
+                  enabled: yes
+
+          - name: get service facts
+            service_facts:
+
+          - name: try to work out how to access the service
+            debug:
+                  var: ansible_facts.services["docker.service"]
+
+          - name:
+            fail:
+                 msg: "Service is not yet running"
+            when: 'ansible_facts.services["docker.service"].state != "running"'
+
+
+  when: "'docker.service' not  in  ansible_facts.services"
+
+
