@@ -21,3 +21,4 @@ WireShark Setup:-
 3. Pass  ssh server address and port 22 
 4. For auth pass username:vagrant key:~/.vagrant.d/insecure_private_key
 5. capture: eth1,click sudo mode,clear all filters and click save parameters on start
+6. Apply filter after capturing starts:- ip.addr == 192.10.10.5 (or pod ip)
