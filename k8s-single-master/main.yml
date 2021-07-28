@@ -23,23 +23,23 @@
 #    - include_role:
 #        name: 3.init
 
-#- name: Install CNI
-#  hosts: master
-#  become: yes
-#  tasks:
-#    - name: Include vars
-#      include_vars: /var/iac/global-vars.yml
-#    - include_role:
-#        name: 4.cni
-#
-#- name: Join Worker
-#  hosts: worker
-#  become: yes
-#  tasks:
-#    - name: Include vars
-#      include_vars: /var/iac/global-vars.yml
-#    - include_role:
-#        name: 5.join-worker
+- name: Install CNI
+  hosts: master
+  become: yes
+  tasks:
+    - name: Include vars
+      include_vars: /var/iac/global-vars.yml
+    - include_role:
+        name: 4.cni
+
+- name: Join Worker
+  hosts: worker
+  become: yes
+  tasks:
+    - name: Include vars
+      include_vars: /var/iac/global-vars.yml
+    - include_role:
+        name: 5.join-worker
 
 - name: Install Dashboard
   hosts: master
