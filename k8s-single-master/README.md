@@ -5,6 +5,7 @@
 5. 
 
 sysctl -a | grep 'net.ipv4.conf.flannel/1.forwarding'
+sysctl -a | grep 'net.ipv4.ip_forward'
 iptables -P FORWARD ACCEPT
 
 Edit /etc/sysctl.conf

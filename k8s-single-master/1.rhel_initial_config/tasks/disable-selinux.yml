@@ -1,6 +1,6 @@
-- easy_install:
-    name: pip
-    state: latest
+#- easy_install:
+#    name: pip
+#    state: latest
 - name: Disable SELinux
   selinux:
     state: disabled

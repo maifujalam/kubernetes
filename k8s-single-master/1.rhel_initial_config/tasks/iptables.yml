@@ -6,5 +6,19 @@
     group: root
     mode: '0644'
     force: yes
+
 - name: Reload sysctl config for iptables
   command: sysctl --system
+
+- name: Check ip forwarding
+  shell: cat /proc/sys/net/ipv4/ip_forward
+  register: r1
+
+- debug:
+    msg: "IP Forwarding is Enabled"
+  when: r1.stdout=='1'
+
+- name: check ip forward
+  fail:
+    msg: "Error! IP Forwarding is disabled"
+  when: r1.stdout=='0'

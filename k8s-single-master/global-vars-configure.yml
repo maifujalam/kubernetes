@@ -1,12 +1,12 @@
 - hosts: localhost
-  become: true
+  become: false
   name: Configure Global vars
   tasks:
     - name: Remove Old Global Vars
       file:
-        path: /var/iac/global-vars.yml
+        path: $HOME/iac/global-vars.yml
         state: absent
     - name: Copy global vars
       copy:
         src: global-vars.yml
-        dest: /var/iac/
+        dest: $HOME/iac/

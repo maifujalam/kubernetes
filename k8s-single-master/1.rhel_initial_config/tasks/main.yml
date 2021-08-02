@@ -1,10 +1,14 @@
 ---
 # tasks file for rhel_initial_config
 - name: Include Task
-  include_tasks: add_repos.yml
-- name: Include Task
   include_tasks: add_repo_centos8.yaml
 - name: Include Task
   include_tasks: initscripts_conflicts_with_redhat-release-server.yml
-#- name: Include Task
-#  include_tasks: hosts.yml
+- name: Disable firewall
+  include_tasks: disable-firewall.yml
+- name: Disable selinux
+  include_tasks: disable-selinux.yml
+- name: Disable swap
+  include_tasks: disable-swap.yml
+- name: Enable ipv4 forward
+  include_tasks: iptables.yml
