@@ -1,14 +1,15 @@
-IMAGE_NAME = "generic/rhel8"    # Base image of VM which is vagrant box of Ubuntu Bionic 18.04 TLS
-NS = 3                          # Specify the the numbers of Slave VMs to create (Example:- 2,3,4)
+IMAGE_NAME = "generic/rhel8"    # Base image of VM which is vagrant box of Centos8 18.04 TLS
+BOX_VERSION = "3.3.2"           # Bse image version
+NW = 3                          # Specify the the numbers of Slave VMs to create (Example:- 2,3,4)
 NM = 1                          # Specify number of master vms to create(Example:-3,4,5 but minimum 3)
 MASTER = "master"               # Name of Master VM
-SLAVES = "slave"                # Names of Slave VMs(Slave vms will be named as slave1,slave2,slave3 ... )
+WORKER = "slave"                # Names of Slave VMs(Slave vms will be named as slave1,slave2,slave3 ... )
 CPU_MASTER = 2                  # Specify the CPU of master VM(Example :-1,2)
-CPU_SLAVE = 1                   # Specify CPU of each slave VMs(Example :-1,2)
+CPU_WORKER = 1                   # Specify CPU of each slave VMs(Example :-1,2)
 MEMORY_MASTER = 4096            # Specify the RAM of master VMs in MB(Example :- 2048,4096)
-MEMORY_SLAVE = 2048             # Specify the RAM of each slave VMs in MB(Example :- 2048,4096)
+MEMORY_WORKER = 2048             # Specify the RAM of each slave VMs in MB(Example :- 2048,4096)
 HDD = '15GB'                    # HDD of Each VM (Examples :- "15GB","20GB","30GB")
-BOX_VERSION = "3.3.2"
+
 IP_MASTER = '10.30.0.5'
 IP_WORKER = ['10.30.0.10','10.30.1.20','10.30.1.30']
 
@@ -45,18 +46,18 @@ Vagrant.configure("2") do |config|
         end
     end
 
-    (1..NS).each do |j|
-    config.vm.define SLAVES + "#{j}" do |slave|
-            slave.vm.provider "virtualbox" do |vms|
-                vms.memory = MEMORY_SLAVE
-                vms.cpus = CPU_SLAVE
-                vms.gui = false
+    (1..NW).each do |j|
+    config.vm.define WORKER + "#{j}" do |worker|
+            worker.vm.provider "virtualbox" do |vmw|
+                vmw.memory = MEMORY_WORKER
+                vmw.cpus = CPU_WORKER
+                vmw.gui = false
             end
-            slave.vm.box = IMAGE_NAME
-            slave.vm.box_version = BOX_VERSION
-            slave.vm.network "private_network", ip: IP_WORKER[j]
-            slave.vm.hostname = SLAVES + "#{j}"
-            slave.vm.provision "shell", inline: <<-SHELL
+            worker.vm.box = IMAGE_NAME
+            worker.vm.box_version = BOX_VERSION
+            worker.vm.network "private_network", ip: IP_WORKER[j-1]
+            worker.vm.hostname = WORKER + "#{j}"
+            worker.vm.provision "shell", inline: <<-SHELL
                  sudo yum install epel-release -y
                  sudo yum repolist
                  sudo yum update -y
