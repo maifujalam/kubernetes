@@ -10,7 +10,8 @@ This project is to set up overlay network using different calico networking mode
 
 caloctl apply -f 0.deafult-ippool.yaml
 
-Open port: nc -l -p 80
+Open port: nc -l -p 80 |  nc -vl 80
+Connect to port: telnet localhost 80
 
 VM Setup:-
 1. make sure u have tcpdump present

@@ -1,28 +1,28 @@
-#- name: Configure RHEL
-#  hosts: master,worker
-#  become: yes
-#  tasks:
-#    - include_role:
-#        name: 1.rhel_initial_config
-#
-#- name: Install k8s
-#  hosts: master,worker
-#  become: yes
-#  tasks:
-#    - name: Include vars
-#      include_vars: /var/iac/global-vars.yml
-#    - include_role:
-#        name: 2.k8sdeploy
-#
-#- name: Install k8s
-#  hosts: master
-#  become: true
-#  tasks:
-#    - name: Include vars
-#      include_vars: /var/iac/global-vars.yml
-#    - include_role:
-#        name: 3.init
+- name: Configure RHEL
+  hosts: master,worker
+  become: yes
+  tasks:
+    - include_role:
+        name: 1.rhel_initial_config
 
+- name: Install k8s
+  hosts: master,worker
+  become: yes
+  tasks:
+    - name: Include vars
+      include_vars: /var/iac/global-vars.yml
+    - include_role:
+        name: 2.k8sdeploy
+
+- name: Install k8s
+  hosts: master
+  become: true
+  tasks:
+    - name: Include vars
+      include_vars: /var/iac/global-vars.yml
+    - include_role:
+        name: 3.init
+#
 #- name: Install CNI
 #  hosts: master
 #  become: yes
@@ -31,7 +31,7 @@
 #      include_vars: /var/iac/global-vars.yml
 #    - include_role:
 #        name: 4.cni
-
+#
 #- name: Join Worker
 #  hosts: worker
 #  become: yes
@@ -40,7 +40,7 @@
 #      include_vars: /var/iac/global-vars.yml
 #    - include_role:
 #        name: 5.join-worker
-
+#
 #- name: Install Dashboard
 #  hosts: master
 #  become: yes
@@ -93,11 +93,11 @@
 
 
 
-- name: Install calicoctl
-  hosts: master
-  become: yes
-  tasks:
-#    - name: Include vars
-#      include_vars: /var/iac/global-vars.yml
-    - include_role:
-        name: calicoctl
+#- name: Install calicoctl
+#  hosts: master
+#  become: yes
+#  tasks:
+##    - name: Include vars
+##      include_vars: /var/iac/global-vars.yml
+#    - include_role:
+#        name: calicoctl

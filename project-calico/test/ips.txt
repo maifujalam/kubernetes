@@ -1,0 +1,5 @@
+NAME             IP                NODE
+net-tool-pd87p   192.168.137.80    master1 192.10.10.5
+net-tool-stqc2   192.168.140.194   slave1  192.10.10.10
+net-tool-9jbwn   192.168.140.68    slave2  192.20.20.20
+net-tool-qw8gg   192.168.77.1      slave3  192.30.30.30

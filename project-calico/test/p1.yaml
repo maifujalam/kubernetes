@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: p1
+  name: p1
+spec:
+  containers:
+    - image: praqma/network-multitool:minimal
+      imagePullPolicy: IfNotPresent
+      name: p1
+  dnsPolicy: ClusterFirst
+  nodeName: master1
+  restartPolicy: Always
