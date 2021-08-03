@@ -1,32 +1,30 @@
-- name: Installation of epel-release
-  yum:
-    name: epel-release
-    state: present
+---
 
-- name: Installation of  pip
-  yum:
-    name: python-pip
-    state: present
-
-- name: install pexpect
-  pip:
-    name: pexpect
-    executable: pip
-
-- name: Cleanup previous k8 settings
+- name: "Cleanup previous k8 settings"
   expect:
     command: sudo kubeadm reset
     responses:
       (.*)Are you sure you want to proceed?(.*) : 'y'
     timeout: 120
 
-- name: Cleanup config files
+- name: "Cleanup config files"
   file:
     path: $HOME/.kube/config
     state: absent
 
-- name: Cleanup config files of calico old config
+- name: "Cleanup config files of calico old config"
   file:
     path: /etc/cni/net.d/
     state: absent
 
+- name: Clean ip tabales full
+  shell: iptables -F
+  ignore_errors: true
+
+- name: Clean ip table chains
+  shell: iptables -X
+  ignore_errors: true
+
+- name: Clean all iptables
+  shell: iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+  ignore_errors: true

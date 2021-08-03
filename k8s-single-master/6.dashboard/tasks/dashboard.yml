@@ -1,10 +1,10 @@
-- name: Copy dashboard.yaml to /iac/{{cluster_name}}
+- name: Copy dashboard.yaml to /var/iac/{{cluster_name}}
   template:
     src: dashboard.yml.j2
-    dest: /iac/{{cluster_name}}/dashboard.yml
+    dest: /var/iac/{{cluster_name}}/dashboard.yml
 
 - name: Install Kubernetes Dashboard
-  command: kubectl apply -f /iac/{{cluster_name}}/dashboard.yml
+  command: kubectl apply -f /var/iac/{{cluster_name}}/dashboard.yml
 
 - name: Extracting Token for Dashboard
   shell: 'kubectl -n kube-system describe $(kubectl get secret -n kube-system -o name | grep namespace) | grep token:'
@@ -17,25 +17,25 @@
 - debug:
     msg: "{{ myoutput.stdout.split('\n') }}"
 
-- name: Save Dashboard Access Token to /tmp/{{cluster_name}}/token.txt in controller node.
+- name: Save Dashboard Access Token to /var/iac/{{cluster_name}}/token.txt in controller node.
   become: false
-  local_action: copy content="{{ myoutput.stdout_lines[0].replace("token:"," ").strip() }}" dest="/iac/{{ cluster_name }}/token.txt"
+  local_action: copy content="{{ myoutput.stdout_lines[0].replace("token:"," ").strip() }}" dest="/var/iac/{{ cluster_name }}/token.txt"
 
-- name: Save Dashboard Access Token to /iac/{{ cluster_name }} } in leader node.
+- name: Save Dashboard Access Token to /var/iac/{{ cluster_name }} } in leader node.
   copy:
     content: "{{ myoutput.stdout_lines[0].replace('token:',' ').strip() }}"
-    dest: "/iac/{{cluster_name}}/token.txt"
+    dest: "/var/iac/{{cluster_name}}/token.txt"
 
-- name: Append token to /iac/{{cluster_name}}/config file in leader node.
+- name: Append token to /var/iac/{{cluster_name}}/config file in leader node.
   lineinfile:
-    path: /iac/{{cluster_name}}/config
+    path: /var/iac/{{cluster_name}}/config
     insertafter: 'client-key-data:'
     line: "    token: {{ myoutput.stdout_lines[0].replace('token:',' ').strip() }}"
 
 - name: Copy config file from leader to controller.
   become: false
   fetch:
-    src: /iac/{{cluster_name}}/config
-    dest: /iac/{{cluster_name}}/config
+    src: /var/iac/{{cluster_name}}/config
+    dest: /var/iac/{{cluster_name}}/config
     flat: yes
   ignore_errors: yes

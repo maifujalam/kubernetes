@@ -1,20 +1,11 @@
-- name: Install Docker Module for Python.
-  pip:
-    name: docker
-    executable: pip
-
 - name: Pull dashboard images kubernetesui/metrics-scraper:v{{dashboard_metrics_scrapper_version}} (1/2)
   docker_image:
     name: kubernetesui/metrics-scraper
     source: pull
     tag: v{{dashboard_metrics_scrapper_version}}
-  vars:
-    - ansible_python_interpreter: /usr/bin/python3
 
 - name: Pull dashboard images kubernetesui/dashboard:v{{dahboard_version}} (2/2)
   docker_image:
     name: kubernetesui/dashboard
     source: pull
     tag: v{{dahboard_version}}
-  vars:
-    - ansible_python_interpreter: /usr/bin/python3

@@ -1,3 +1,4 @@
+- import_tasks: pexpect.yaml
 - import_tasks: cleanup.yml
 - import_tasks: load_image.yaml
   when:
@@ -16,8 +17,8 @@
 
 - name: Copy worker_join_cmd to {{ansible_facts.hostname}}
   copy:
-    src: /iac/{{cluster_name}}/worker_join_cmd.sh
-    dest: /iac/{{cluster_name}}/
+    src: /var/iac/{{cluster_name}}/worker_join_cmd.sh
+    dest: /var/iac/{{cluster_name}}/
 
 - name: restart kubelet befor init
   become: yes
@@ -36,7 +37,7 @@
   become: yes
 
 - name: Executing Join Command
-  command: sh /iac/{{cluster_name}}/worker_join_cmd.sh
+  command: sh /var/iac/{{cluster_name}}/worker_join_cmd.sh
   register: output
   notify:
     - check if kubelet is up and running
@@ -46,11 +47,11 @@
   become: true
   copy:
     content: "{{ output.stdout }}"
-    dest: /iac/{{cluster_name}}/init_log_file.log
+    dest: /var/iac/{{cluster_name}}/init_log_file.log
 
 - name: Storing the init log to {{ansible_facts.hostname}}
   become: false
   local_action:
     module: copy
     content: "{{ output.stdout }}"
-    dest: /iac/{{cluster_name}}/init_log_{{ansible_facts.hostname}}.log
+    dest: /var/iac/{{cluster_name}}/init_log_{{ansible_facts.hostname}}.log

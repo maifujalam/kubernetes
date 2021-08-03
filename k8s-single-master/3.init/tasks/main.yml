@@ -1,5 +1,4 @@
 ---
- tasks file for 3.init
 - import_tasks: load_image.yaml
   when:
     - "{{enable_image_cache}} == true"
