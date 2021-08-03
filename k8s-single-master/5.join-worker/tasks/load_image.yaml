@@ -1,0 +1,11 @@
+- name: loading image for worker
+  shell: "echo loading {{enable_image_cache}}"
+
+- name: Loading dockers of worker for Kubernetes Version {{k8s_version}}
+  script:
+    cmd: files/ImportDockerImagesWorker.sh v{{k8s_version}}
+  register: r1
+
+- name: Loaded images
+  debug:
+    msg: "{{r1.stdout_lines}}"

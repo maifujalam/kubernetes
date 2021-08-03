@@ -16,3 +16,13 @@
       src: $HOME/.kube/config
       dest: /iac/{{cluster_name}}/config
       remote_src: true
+
+  - name: Do auto completion
+    blockinfile:
+      path: ~/.bashrc
+      insertafter: EOF
+      block: |
+        alias k='kubectl'
+        source <(kubectl completion bash)
+        complete -F __start_kubectl k
+

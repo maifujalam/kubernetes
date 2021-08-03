@@ -1,4 +1,7 @@
 - import_tasks: cleanup.yml
+- import_tasks: load_image.yaml
+  when:
+    - "{{enable_image_cache}} == true"
 - name: Checking if kubelet is up and running
   service:
     name: kubelet

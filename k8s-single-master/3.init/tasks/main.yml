@@ -1,7 +1,11 @@
 ---
 # tasks file for 3.init
+- import_tasks: load_image.yaml
+  when:
+    - "{{enable_image_cache}} == true"
 - import_tasks: pexpect.yaml
 - import_tasks: previous_cleanup.yaml
 - import_tasks: pull_images.yaml
 - import_tasks: init.yml
 - import_tasks: additional_configs.yml
+
