@@ -1,8 +1,0 @@
-- hosts: master,worker
-  become: true
-  name: Install calico ctl
-  tasks:
-    - name: Include vars
-      include_vars: /var/iac/global-vars.yml
-    - include_role:
-        name: calicoctl

@@ -16,3 +16,15 @@
   file:
     path: /etc/cni/net.d/
     state: absent
+
+- name: Clean ip tabales full
+  shell: iptables -F
+  ignore_errors: true
+
+- name: Clean ip table chains
+  shell: iptables -X
+  ignore_errors: true
+
+- name: Clean all iptables
+  shell: iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+  ignore_errors: true

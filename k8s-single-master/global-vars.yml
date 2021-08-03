@@ -3,6 +3,7 @@ cluster_name: cluster1       # A folder will be created in root directory (/iac/
 # Setup Cluster Networking Config
 network_cidr: 192.168.0.0/16 # Pod Network CIDR
 calico_version: 3.19.1
+install_calicoctl: true
 
 # Cluster version and its component versions.
 master_ip:  10.30.0.5       #----WARNING--- => Please update it with master(leader) ip before cluster initializing
@@ -28,6 +29,5 @@ src: /home/skmaifuj/Desktop/NFS/mini_cluster1/
 
 #Additional Tools
 enable_grafana_prometheous: false
-install_calicoctl: false
 install_etcdctl: false
 enable_image_cache: true

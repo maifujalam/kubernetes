@@ -2,6 +2,11 @@
   include: image-pull.yml
 
 - name: Setup calico.yml.
-  include: install calico.yml
+  include: install-calico.yml
   become: yes
   become_user: root
+
+- name: Install calicoctl
+  include: install_calicoctl.yml
+  when:
+    - "{{install_calicoctl}} == true"

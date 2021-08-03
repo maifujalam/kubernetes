@@ -14,7 +14,7 @@
   - name: Copy kubeconfig file to /iac/{{cluster_name}}/config in controller
     copy:
       src: $HOME/.kube/config
-      dest: /iac/{{cluster_name}}/config
+      dest: /var/iac/{{cluster_name}}/config
       remote_src: true
 
   - name: Do auto completion

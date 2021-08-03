@@ -32,7 +32,7 @@ FULL RESET KUBERENETS
 5. rm -rfv /var/lib/cni/
 6. rm -rfv /var/lib/kubelet/*
 7. rm -rfv /etc/cni/
-8. iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+8. iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X  (iptables -F,iptables -X)
 9. ifconfig cni0 down
 10. ip link delete cni0
 11. ifconfig flannel.1 down

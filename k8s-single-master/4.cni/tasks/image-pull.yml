@@ -1,7 +1,7 @@
-#- name: install docker
-#  pip:
-#    name: docker-py
-#    executable: pip
+- name: install docker
+  pip:
+    name: docker-py
+    executable: pip3
 
 - name: Check docker daemon is running.
   service:
@@ -9,34 +9,25 @@
     state: started
 
 - name: Pulling Calico images calico/node:v{{calico_version}}.(1/4)
-#  become: true
   docker_image:
       name: calico/node
       source: pull
       tag: v{{calico_version}}
-  vars:
-    -  ansible_python_interpreter: /usr/bin/python3
 
 - name: Pulling Calico images calico/cni:v{{calico_version}}.(2/4)
   docker_image:
     name: calico/cni
     source: pull
     tag: v{{calico_version}}
-  vars:
-    - ansible_python_interpreter: /usr/bin/python3
 
 - name: Pull Calico images calico/pod2daemon-flexvol:v{{calico_version}}.(3/4)
   docker_image:
     name: calico/pod2daemon-flexvol
     source: pull
     tag: v{{calico_version}}
-  vars:
-    - ansible_python_interpreter: /usr/bin/python3
 
 - name: Pulling Calico image calico/kube-controllers:v{{calico_version}}.(4/4)
   docker_image:
     name: calico/kube-controllers
     source: pull
     tag: v{{calico_version}}
-  vars:
-    - ansible_python_interpreter: /usr/bin/python3
