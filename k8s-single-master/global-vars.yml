@@ -28,6 +28,6 @@ nfs_dir : /nfs
 src: /home/skmaifuj/Desktop/NFS/mini_cluster1/
 
 #Additional Tools
-enable_grafana_prometheous: false
-install_etcdctl: false
-enable_image_cache: true
+enable_grafana_prometheous: false  # install monitoring tool on port 30001
+install_etcdctl: false             # install etcdctl for master node
+enable_image_cache: true           # Load saved images from /vagrant/docker-images file

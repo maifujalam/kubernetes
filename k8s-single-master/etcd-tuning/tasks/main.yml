@@ -57,9 +57,9 @@
   delay: 3
   until: health.stdout == "ok"
 
-#- name: Removeing etcd pod
-#  shell: kubectl delete -n kube-system {{etcd_pod.stdout}}
-#
+- name: Removeing etcd pod
+  shell: kubectl delete -n kube-system {{etcd_pod.stdout}}
+
 - name: waiting for etcd to be online
   shell: kubectl -n kube-system get {{etcd_pod.stdout}} -o json
   register: kubectl_get_pods

@@ -1,4 +1,4 @@
 ---
 # vars file for 4.cni
 url: https://github.com/projectcalico/calicoctl/releases/download/v3.19.1/calicoctl
-dest: /bin
+dest: /usr/bin
