@@ -6,7 +6,7 @@ calico_version: 3.19.1
 install_calicoctl: true
 
 # Cluster version and its component versions.
-master_ip:  10.30.0.5       #----WARNING--- => Please update it with master(leader) ip before cluster initializing
+master_ip:  10.128.0.5       #----WARNING--- => Please update it with master(leader) ip before cluster initializing
 k8s_version: 1.21.1
 docker_version: 20.10.7
 
@@ -29,5 +29,6 @@ src: /home/skmaifuj/Desktop/NFS/mini_cluster1/
 
 #Additional Tools
 enable_grafana_prometheous: false  # install monitoring tool on port 30001
-install_etcdctl: false             # install etcdctl for master node
+install_etcdctl: true             # install etcdctl for master node
 enable_image_cache: true           # Load saved images from /vagrant/docker-images file
+enable_ingress_controller: true
