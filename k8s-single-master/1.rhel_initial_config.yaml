@@ -1,0 +1,5 @@
+- hosts: localhost
+  tasks:
+    - name: Configure rhel
+      include_role:
+        name: 1.rhel_initial_config
