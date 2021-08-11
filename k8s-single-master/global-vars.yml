@@ -1,4 +1,4 @@
-cluster_name: cluster1       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
+cluster_name: cluster2       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
 
 # Setup Cluster Networking Config
 network_cidr: 192.168.0.0/16 # Pod Network CIDR
@@ -30,5 +30,5 @@ src: /home/skmaifuj/Desktop/NFS/mini_cluster1/
 #Additional Tools
 enable_grafana_prometheous: false  # install monitoring tool on port 30001
 install_etcdctl: true             # install etcdctl for master node
-enable_image_cache: true           # Load saved images from /vagrant/docker-images file
-enable_ingress_controller: true
+enable_image_cache: false           # Load saved images from /vagrant/docker-images file
+enable_ingress_controller: false
