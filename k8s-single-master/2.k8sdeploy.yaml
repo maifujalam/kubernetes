@@ -1,0 +1,8 @@
+- name: Install k8s
+  hosts: master,worker
+  become: true
+  tasks:
+    - name: Include vars
+      include_vars: /var/iac/global-vars.yml
+    - include_role:
+        name: 2.k8sdeploy
