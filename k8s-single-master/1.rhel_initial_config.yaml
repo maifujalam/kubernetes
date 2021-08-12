@@ -1,5 +1,5 @@
 - hosts: localhost
   tasks:
-    - name: Configure rhel
+    - name: Configure centos vm
       include_role:
         name: 1.rhel_initial_config
