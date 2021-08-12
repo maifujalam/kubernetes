@@ -10,10 +10,10 @@
         owner: "{{ansible_env.SUDO_USER}}"
     - name: Remove Old Global Vars
       file:
-        path: "/var/iac/global-vars.yml"
+        path: "/var/iac/global-vars.yaml"
         state: absent
     - name: Copy global vars
       copy:
-        src: global-vars.yml
+        src: global-vars.yaml
         dest: /var/iac/
         mode: u=rwx,g=rwx,o=rwx

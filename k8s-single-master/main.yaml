@@ -10,7 +10,7 @@
   become: true
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yml
+      include_vars: /var/iac/global-vars.yaml
     - include_role:
         name: 2.k8sdeploy
 
@@ -19,7 +19,7 @@
   become: true
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yml
+      include_vars: /var/iac/global-vars.yaml
     - include_role:
         name: 3.init
 
@@ -28,7 +28,7 @@
   become: yes
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yml
+      include_vars: /var/iac/global-vars.yaml
     - include_role:
         name: 4.cni
 
@@ -37,7 +37,7 @@
   become: yes
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yml
+      include_vars: /var/iac/global-vars.yaml
     - include_role:
         name: 5.join-worker
 
@@ -46,7 +46,7 @@
   become: yes
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yml
+      include_vars: /var/iac/global-vars.yaml
     - include_role:
         name: 6.dashboard
 
