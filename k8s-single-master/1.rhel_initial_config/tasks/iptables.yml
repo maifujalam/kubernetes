@@ -15,8 +15,11 @@
   register: r1
 
 - debug:
+    msg: "{{r1}}"
+  name: printing r1
+- debug:
     msg: "IP Forwarding is Enabled"
-  when: "{{r1.stdout}}==1"
+  when: '{{r1.stdout}} == 1'
 
 - name: check ip forward
   fail:
