@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: master,worker
   tasks:
     - name: Configure centos vm
       include_role:

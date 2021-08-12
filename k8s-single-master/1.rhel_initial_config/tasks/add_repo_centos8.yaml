@@ -1,3 +1,6 @@
+- name: Debug touch
+  shell: touch /tmp/aa
+
 - name: Copying repos of centos-8
   copy:
     src: files/repos-centos8/yum.repos.d/
