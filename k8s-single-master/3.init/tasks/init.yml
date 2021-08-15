@@ -15,7 +15,7 @@
   become: yes
 
 - name: Initializing k8s cluster
-  shell: kubeadm init --apiserver-advertise-address {{ master_ip }} --pod-network-cidr {{ network_cidr }}  --upload-certs --kubernetes-version={{ k8s_version }} --v=5
+  shell: kubeadm init --apiserver-advertise-address {{ master_ip }} --apiserver-cert-extra-sans={{ extra_ip }} --pod-network-cidr {{ network_cidr }}  --upload-certs --kubernetes-version={{ k8s_version }} --v=5
   become: yes
   become_user: root
   register: output

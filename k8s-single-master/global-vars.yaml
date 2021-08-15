@@ -7,6 +7,7 @@ install_calicoctl: true
 
 # Cluster version and its component versions.
 #master_ip: 10.160.0.5       #----WARNING--- => Please update it with master(leader) ip before cluster initializing
+#extra_ip: 10.160.0.5
 k8s_version: 1.21.1
 docker_version: 20.10.7
 
