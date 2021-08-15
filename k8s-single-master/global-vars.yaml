@@ -2,7 +2,7 @@ cluster_name: cluster-gcp       # A folder will be created in root directory (/i
 
 # Setup Cluster Networking Config
 network_cidr: 192.168.0.0/16 # Pod Network CIDR
-calico_version: 3.19.1
+calico_version: 3.20.0
 install_calicoctl: true
 
 # Cluster version and its component versions.
