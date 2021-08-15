@@ -26,5 +26,7 @@
     gpgcheck: yes
     enabled: yes
 
-- name: update
-  shell: yum update -y
+- name: update all packages
+  yum:
+    name: '*'
+    state: latest
