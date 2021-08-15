@@ -1,3 +1,5 @@
 kubernetes.iml
 .idea
 /project-calico/.vagrant/
+**/config
+**/token.txt
