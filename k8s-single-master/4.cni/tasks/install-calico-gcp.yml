@@ -7,7 +7,7 @@
 
 - name: Copy role files to /iac/{{cluster_name}}/calico-gcp-vxlan.yaml in leader
   copy:
-    src: calico.yaml
+    src: calico-gcp-vxlan.yaml.yaml
     dest: /var/iac/{{cluster_name}}
 
 - name: Installing calico pod network
