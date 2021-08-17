@@ -1,0 +1,25 @@
+- name: Copy role files to /var/iac/{{cluster_name}}/calico-gcp-vxlan.yaml in controller
+  become: false
+  local_action:
+    module: copy
+    src: calico-gcp-vxlan.yaml
+    dest: /var/iac/{{cluster_name}}
+
+- name: Copy role files to /iac/{{cluster_name}}/calico-gcp-vxlan.yaml in leader
+  copy:
+    src: calico.yaml
+    dest: /var/iac/{{cluster_name}}
+
+- name: Installing calico pod network
+  command: kubectl apply -f /var/iac/{{cluster_name}}/calico-gcp-vxlan.yaml
+  retries: 10
+  delay: 2
+  register: r1
+  until: r1.rc == 0
+
+- name: Waiting for calilico pods to up and ready.
+  shell: kubectl get pods -A -o json
+  register: kubectl_get_pods
+  until: kubectl_get_pods.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
+  retries: 20
+  delay: 6

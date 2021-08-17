@@ -1,10 +1,19 @@
 - name: Pull Calico Images.
   include: image-pull.yml
 
-- name: Setup calico.yml.
+- name: Setup calico on gcp.
+  include: install-calico-gcp.yml
+  become: yes
+  become_user: root
+  when:
+    - "{{platform}} == gcp"
+
+- name: Setup calico on local.
   include: install-calico.yml
   become: yes
   become_user: root
+  when:
+    - "{{platform}} == local"
 
 - name: Install calicoctl
   include: install_calicoctl.yml
