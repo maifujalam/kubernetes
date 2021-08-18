@@ -118,7 +118,7 @@ rules:
   - apiGroups: [""]
     resources: ["services/proxy"]
     resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
-    verbs: ["get","proxy"]
+    verbs: ["get"]
 
 ---
 
@@ -161,7 +161,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-admin
+  name: kubernetes-dashboard
 subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
@@ -169,7 +169,7 @@ subjects:
 
 ---
 
-kind: DaemonSet
+kind: Deployment
 apiVersion: apps/v1
 metadata:
   labels:
@@ -177,6 +177,7 @@ metadata:
   name: kubernetes-dashboard
   namespace: kubernetes-dashboard
 spec:
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -236,7 +237,7 @@ spec:
           emptyDir: {}
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
-        "beta.kubernetes.io/os": linux
+        "kubernetes.io/os": linux
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -260,13 +261,15 @@ spec:
 
 ---
 
-kind: DaemonSet
+kind: Deployment
+apiVersion: apps/v1
 metadata:
   labels:
     k8s-app: dashboard-metrics-scraper
   name: dashboard-metrics-scraper
   namespace: kubernetes-dashboard
 spec:
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -280,8 +283,7 @@ spec:
     spec:
       containers:
         - name: dashboard-metrics-scraper
-          image: kubernetesui/metrics-scraper:v1.0.4
-          imagePullPolicy: IfNotPresent
+          image: kubernetesui/metrics-scraper:v1.0.6
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -302,7 +304,7 @@ spec:
             runAsGroup: 2001
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
-        "beta.kubernetes.io/os": linux
+        "kubernetes.io/os": linux
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -310,4 +312,3 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
-apiVersion: apps/v1

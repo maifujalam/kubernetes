@@ -1,0 +1,67 @@
+---
+# tasks file for helm_install
+- name: Checking helm
+  shell: which helm
+  register: r1
+  ignore_errors: yes
+
+- debug:
+    msg: "{{r1}}"
+
+- name: Check  file is pulled
+  stat:
+    path: /tmp/helm/helm-v{{helm_version}}-linux-amd64.tar.gz
+  register: r2
+  ignore_errors: true
+
+- name: Creating temp dir at /tmp/helm/
+  file:
+    state: directory
+    path: /tmp/helm/
+    mode: '1777'
+
+- name: downloading helm binary
+  get_url:
+    url: "https://get.helm.sh/helm-v{{helm_version}}-linux-amd64.tar.gz"
+    mode: '1777'
+    dest: /tmp/helm/helm-v{{helm_version}}-linux-amd64.tar.gz
+  when:
+    - r1.rc != 0
+    - not r2.stat.exists
+  ignore_errors: true
+
+
+- name: Untar to /tmp
+  ansible.builtin.unarchive :
+    src: /tmp/helm/helm-v{{helm_version}}-linux-amd64.tar.gz
+    dest: /tmp/helm
+    remote_src: yes
+  when:
+    - r1.rc != 0
+
+- name: Copy from tmp to /bin
+  become: true
+  copy:
+    src: /tmp/helm/linux-amd64/helm
+    dest: /usr/local/bin
+    mode: '777'
+    force: yes
+    remote_src: true
+  when:
+    - r1.rc != 0
+
+- name: helm version
+  shell: helm version
+  register: helm_version
+
+- debug:
+    msg: "{{ helm_version.stdout.split('\n') }}"
+
+- name: Add helm repo
+  shell: helm repo add bitnami https://charts.bitnami.com/bitnami
+
+- name: Add repo
+  shell: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+- name: Repo Update
+  shell: helm repo update
