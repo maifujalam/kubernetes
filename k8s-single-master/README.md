@@ -1,30 +1,35 @@
-1. kubeadm init --apiserver-advertise-address=10.30.0.5 --upload-certs  --kubernetes-version=1.21.1 --pod-network-cidr=192.168.0.0/16 -v=6
-2. k run nginx --image=nginx --port=80 --expose
-3. k get po,svc,ep 
-4. k create service nodeport 
-5. 
+**_MANDATORY steps to follow while Cluster Deployment.:-_**
+1.1. Add survey with following extra_var in Ansible Tower:-
+     1. master_ip     => This should take internal ip address of master-01(leader) node.
+     2. extra_ip      => This should take external ip address of master-01(leader) node.
+     3. cluster_name  => This should be a cluster name (/iac/cluster_name) folder will be created 
+    
+ OR
 
-sysctl -a | grep 'net.ipv4.conf.flannel/1.forwarding'
-sysctl -a | grep 'net.ipv4.ip_forward'
-iptables -P FORWARD ACCEPT
+1.2. Add this in global-vars.yaml when running from CLI.
+     1. master_ip     => This should take internal ip address of master-01(leader) node.
+     2. extra_ip      => This should take external ip address of master-01(leader) node.
+     3. cluster_name  => This should be a cluster name (/iac/cluster_name) folder will be created
 
-Edit /etc/sysctl.conf
-Add line: net.ipv4.ip_forward=1
-Reboot
-
-sysctl net.ipv4.ip_forward=1
-
-echo 1 > /proc/sys/net/ipv4/ip_forward
-echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
-echo "net.bridge.bridge-nf-call-ip6tables = 1" | sudo tee -a /etc/sysctl.conf
-echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf
-sudo sysctl -p
-echo "net.ipv4.conf.flannel/1.forwarding=1" | sudo tee -a /etc/sysctl.conf
+2. Finally, run 0.global-vars-config.yaml on localhost.This will update extra vars required to configure cluster.
 
 
+**To enable IP Forwarding follow below:-**
+1. Edit /etc/sysctl.conf and add below lines.
+
+    net.ipv4.ip_forward=1
+    net.bridge.bridge-nf-call-iptables=1
+    net.bridge.bridge-nf-call-ip6tables = 1
+    Reboot systemctl: sudo sysctl -p
+
+2. sysctl net.ipv4.ip_forward=1
+
+**Additional for Flannel Network**
+1. echo "net.ipv4.conf.flannel/1.forwarding=1" | sudo tee -a /etc/sysctl.conf
+2. sudo sysctl -p
 
 
-FULL RESET KUBERENETS
+**FULL RESET KUBERENETS CLUSTER**
 1. sudo -i
 2. sudo kubeadm reset
 3. systemctl stop kubelet
@@ -42,7 +47,7 @@ FULL RESET KUBERENETS
 15. systemctl restart kubelet
 16. sysctl -p
 
-
+**Delete Calico Tunnel**
 1. sudo ip link set tunl0 down
 2. sudo ip link delete tunl0
 3. ip link delete cali435e4f604ee
