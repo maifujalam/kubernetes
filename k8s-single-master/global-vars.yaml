@@ -1,4 +1,4 @@
-cluster_name: cluster-gcp       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
+cluster_name: cluster-default       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
 
 # Setup Cluster Networking Config
 network_cidr: 192.168.0.0/16 # Pod Network CIDR
@@ -35,7 +35,7 @@ enable_image_cache: false           # Load saved images from /vagrant/docker-ima
 enable_ingress_controller: false
 
 #----------CLI-------
-Please add below fields when running wit cli
+#Please add below fields when running wit cli
 #master_ip
 #extra_ip
 #cluster_name
