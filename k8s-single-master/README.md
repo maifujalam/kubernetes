@@ -1,8 +1,9 @@
 **_MANDATORY steps to follow while Cluster Deployment.:-_**
 1.1. Add survey with following extra_var in Ansible Tower:-
-     1. master_ip     => This should take internal ip address of master-01(leader) node.
-     2. extra_ip      => This should take external ip address of master-01(leader) node.
-     3. cluster_name  => This should be a cluster name (/iac/cluster_name) folder will be created 
+     1. master_ip(text)     => This should take internal ip address of master-01(leader) node.
+     2. extra_ip(text)      => This should take external ip address of master-01(leader) node.
+     3. cluster_name(text)  => This should be a cluster name (/iac/cluster_name) folder will be created 
+     4. platform(options)   => Should be GCP or Local .It is platform where we are deploying cluster.
     
  OR
 
@@ -10,8 +11,9 @@
      1. master_ip     => This should take internal ip address of master-01(leader) node.
      2. extra_ip      => This should take external ip address of master-01(leader) node.
      3. cluster_name  => This should be a cluster name (/iac/cluster_name) folder will be created
+     4. platform      => Should be GCP or Local .It is platform where we are deploying cluster.
 
-2. Finally, run 0.global-vars-config.yaml on localhost.This will update extra vars required to configure cluster.
+5. Finally, run 0.global-vars-config.yaml on localhost.This will update extra vars required to configure cluster.
 
 
 **To enable IP Forwarding follow below:-**
