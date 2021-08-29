@@ -1,0 +1,8 @@
+- name: Install prometheous stack
+  hosts: master
+  become: yes
+  tasks:
+    - name: Include vars
+      include_vars: /var/iac/global-vars.yaml
+    - include_role:
+        name: 8.kube-prometheus
