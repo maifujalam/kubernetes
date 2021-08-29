@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: helloworld-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: hello-kubernetes
   ports:
   - port: 8080
     targetPort: 8080
-    nodePort: 30001
+#    nodePort: 30001
 
 ---
 apiVersion: apps/v1
@@ -17,7 +17,7 @@ kind: Deployment
 metadata:
   name: hello-kubernetes
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: hello-kubernetes
