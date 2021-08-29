@@ -5,7 +5,7 @@ metadata:
   labels:
     app: deployment-echo-server
 spec:
-  replicas: 3
+  replicas: 5
   template:
     metadata:
       name: deployment-echo-server
@@ -38,4 +38,5 @@ spec:
     app: deployment-echo-server
   ports:
     - port: 8080
+      nodePort: 30005
   type: LoadBalancer
