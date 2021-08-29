@@ -66,7 +66,7 @@
     - name: Include vars
       include_vars: /var/iac/global-vars.yaml
     - include_role:
-        name: 8.kube-prometheous
+        name: 8.kube-prometheus
 #- name: etcd tuning
 #  hosts: master
 #  become: yes
