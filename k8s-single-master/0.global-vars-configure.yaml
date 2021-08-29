@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: localhost,master
   become: true
   name: Configure Global vars
   tasks:

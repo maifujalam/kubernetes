@@ -1,0 +1,21 @@
+{{- if and .Values.prometheusOperator.enabled .Values.prometheusOperator.admissionWebhooks.enabled .Values.prometheusOperator.admissionWebhooks.patch.enabled .Values.global.rbac.create (not .Values.prometheusOperator.admissionWebhooks.certManager.enabled) }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name:  {{ template "8.kube-prometheus-stack.fullname" . }}-admission
+  namespace: {{ template "8.kube-prometheus-stack.namespace" . }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    app: {{ template "8.kube-prometheus-stack.name" $ }}-admission
+{{- include "8.kube-prometheus-stack.labels" $ | indent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ template "8.kube-prometheus-stack.fullname" . }}-admission
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "8.kube-prometheus-stack.fullname" . }}-admission
+    namespace: {{ template "8.kube-prometheus-stack.namespace" . }}
+{{- end }}

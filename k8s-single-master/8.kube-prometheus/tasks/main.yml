@@ -1,0 +1,31 @@
+---
+# tasks file for prom
+
+- name: Make dir at /tmp/kube-prometheous
+  file:
+    path: /tmp/kube-prometheous
+    state: directory
+    mode: '1777'
+
+- name: Copy kube-prometheous
+  copy:
+    src: kube-prometheus-stack
+    dest: /tmp/kube-prometheous
+    force: yes
+
+- name: Set node port
+  template:
+    src: values.yaml.j2
+    dest: /tmp/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
+
+- name: Get chart status
+  shell: helm list --short | grep prom
+  register: r0
+
+- name: Helm install
+  shell: helm install prom kube-prometheus-stack --values=values.yaml
+  when: r0.rc != 0
+
+- name: Upgrade helm chart
+  shell: helm upgrade prom kube-prometheus-stack --values=values.yaml
+  when: r0.rc == 0

@@ -1,0 +1,4 @@
+---
+# vars file for prom
+grafana_node_port: 30001
+grafana_password: admin

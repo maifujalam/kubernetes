@@ -1,3 +1,0 @@
----
-# vars file for helm_install
-helm_version: 3.6.3

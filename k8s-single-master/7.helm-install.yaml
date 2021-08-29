@@ -1,0 +1,8 @@
+- name: Install etcdctl
+  hosts: master
+  become: false
+  tasks:
+#    - name: Include vars
+#      include_vars: /var/iac/global-vars.yml
+    - include_role:
+        name: 7.helm-install
