@@ -29,14 +29,17 @@
     force: yes
 
 - name: Get chart status
-  shell: helm list --short | grep prom
+  shell: helm list -n monitoring --short | grep prom
   register: r1
   ignore_errors: true
 
+- name: Create namespace
+  shell: kubectl create ns monitoring
+
 - name: Helm install
-  shell: helm install -n default prom /tmp/kube-prometheous/kube-prometheus-stack --values=/tmp/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
+  shell: helm install -n monitoring prom /tmp/kube-prometheous/kube-prometheus-stack --values=/tmp/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
   when: r1.rc != 0
 
 - name: Upgrade helm chart
-  shell: helm upgrade -n default prom /tmp/kube-prometheous/kube-prometheus-stack --values=/tmp/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
+  shell: helm upgrade -n monitoring prom /tmp/kube-prometheous/kube-prometheus-stack --values=/tmp/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
   when: r1.rc == 0

@@ -23,14 +23,14 @@ etcd_timeout: 3000    # etcd leader elect timeout (Default: 1000)
 snapshot_count: 5000  # etcd snapshot count (Default: 10000)
 
 # NFS Setup
-enable_nsf: false
+enable_nfs: false
 nfs_ip : 34.122.108.43
 nfs_dir : /nfs
 src: /home/skmaifuj/Desktop/NFS/mini_cluster1/
 
 #Additional Tools
 enable_grafana_prometheous: true  # install monitoring tool on port 30001
-grafana_node_port: 30002          # Port where grafana dashboard will be accessed
+grafana_node_port: 30001          # Port where grafana dashboard will be accessed
 install_etcdctl: true             # install etcdctl for master node
 enable_image_cache: false         # Load saved images from /vagrant/docker-images file
 enable_ingress_controller: false

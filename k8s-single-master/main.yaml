@@ -73,7 +73,7 @@
 #  become: yes
 #  tasks:
 #    - name: Include vars
-#      include_vars: /var/iac/global-vars.yml
+#      include_vars: /var/iac/global-vars.yaml
 #    - include_role:
 #        name: etcd-tuning
 
@@ -82,7 +82,7 @@
 #  become: yes
 #  tasks:
 #    - name: Include vars
-#      include_vars: /var/iac/global-vars.yml
+#      include_vars: /var/iac/global-vars.yaml
 #    - include_role:
 #        name: nfs-client-role
 #
@@ -91,7 +91,7 @@
 #  become: yes
 #  tasks:
 #    - name: Include vars
-#      include_vars: /var/iac/global-vars.yml
+#      include_vars: /var/iac/global-vars.yaml
 #    - include_role:
 #        name: NFS_Dynamic_Storage_Provsion_Role
 
@@ -100,15 +100,15 @@
 #  become: yes
 #  tasks:
 #    - name: Include vars
-#      include_vars: /var/iac/global-vars.yml
+#      include_vars: /var/iac/global-vars.yaml
 #    - include_role:
 #        name: etcdctl
 
-#- name: Install nginx-ingrss controller for bare metal
-#  hosts: master
-#  become: yes
-#  tasks:
-#    - name: Include vars
-#      include_vars: /var/iac/global-vars.yml
-#    - include_role:
-#        name: nginx-controller
+- name: Install nginx-ingrss controller for bare metal
+  hosts: master
+  become: yes
+  tasks:
+    - name: Include vars
+      include_vars: /var/iac/global-vars.yaml
+    - include_role:
+        name: 9.ingress-nginx
