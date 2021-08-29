@@ -1,5 +1,8 @@
 ---
 # tasks file for helm_install
+- name: Write logs /tmp
+  log_plays:
+    log_folder: /tmp
 - name: Checking helm
   shell: which helm
   register: r1
@@ -8,17 +11,18 @@
 - debug:
     msg: "{{r1}}"
 
-- name: Check  file is pulled
-  stat:
-    path: /tmp/helm/helm-v{{helm_version}}-linux-amd64.tar.gz
-  register: r2
-  ignore_errors: true
-
 - name: Creating temp dir at /tmp/helm/
   file:
     state: directory
     path: /tmp/helm/
     mode: '1777'
+
+- name: Check if file is pulled
+  stat:
+    path: /tmp/helm/helm-v{{helm_version}}-linux-amd64.tar.gz
+  register: r2
+  ignore_errors: true
+
 
 - name: downloading helm binary
   get_url:
@@ -36,10 +40,9 @@
     src: /tmp/helm/helm-v{{helm_version}}-linux-amd64.tar.gz
     dest: /tmp/helm
     remote_src: yes
-  when:
-    - r1.rc != 0
 
-- name: Copy from tmp to /bin
+
+- name: Copy from tmp to /usr/local/bin
   become: true
   copy:
     src: /tmp/helm/linux-amd64/helm
@@ -49,6 +52,18 @@
     remote_src: true
   when:
     - r1.rc != 0
+
+- name: Copy from tmp to /usr/bin
+  become: true
+  copy:
+    src: /tmp/helm/linux-amd64/helm
+    dest: /usr/bin
+    mode: '777'
+    force: yes
+    remote_src: true
+  when:
+    - r1.rc != 0
+
 
 - name: helm version
   shell: helm version
