@@ -1,0 +1,28 @@
+---
+# tasks file for 10.cert-manager
+
+- name: Add helm repo for cert manager
+  shell: helm repo add jetstack https://charts.jetstack.io
+
+- name: Update helm repo
+  shell: helm repo update
+
+- name: Get chart status
+  shell: helm list -n cert-manager --short | grep cert-manager
+  register: r1
+  ignore_errors: true
+
+- name: Installing on namespace cert-manager
+  shell: helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.5.3 --set installCRDs=true --set prometheus.enabled=false --set webhook.securePort=10260
+  when: r1.rc != 0
+
+- name: Upgrade cert-manager
+  shell: helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.5.3 --set installCRDs=true --set prometheus.enabled=false --set webhook.securePort=10260
+  when: r1.rc == 0
+
+- name: Waiting for pods to be online on namespace cert-manager
+  shell: kubectl get pods -n cert-manager -o json
+  register: kubectl_get_pods
+  until: kubectl_get_pods.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
+  retries: 20
+  delay: 6

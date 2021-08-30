@@ -18,3 +18,10 @@
 - name: Upgrading on namespace ingress-nginx
   shell: helm upgrade ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --set-string controller.service.externalTrafficPolicy=Local --set-string controller.kind=DaemonSet
   when: r1.rc == 0
+
+- name: Waiting for pods to be online on namespace ingress-nginx
+  shell: kubectl get pods -n ingress-nginx -o json
+  register: kubectl_get_pods
+  until: kubectl_get_pods.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
+  retries: 20
+  delay: 6
