@@ -13,11 +13,11 @@
   ignore_errors: true
 
 - name: Installing on namespace cert-manager
-  shell: helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.5.3 --set installCRDs=true --set prometheus.enabled=false --set webhook.securePort=10260
+  shell: helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.5.3 --set installCRDs=true --set prometheus.enabled=false --set prometheus.servicemonitor.enabled=true --set webhook.securePort=10260
   when: r1.rc != 0
 
 - name: Upgrade cert-manager
-  shell: helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.5.3 --set installCRDs=true --set prometheus.enabled=false --set webhook.securePort=10260
+  shell: helm upgrade cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.5.3 --set installCRDs=true --set prometheus.enabled=false --set prometheus.servicemonitor.enabled=true --set webhook.securePort=10260
   when: r1.rc == 0
 
 - name: Waiting for pods to be online on namespace cert-manager
