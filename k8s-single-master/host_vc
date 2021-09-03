@@ -1,22 +1,15 @@
-10.136.58.131
-10.136.58.132
-10.136.58.133
-
 [server]
-10.136.58.131
-10.136.58.132
-10.136.58.133
-
+10.136.58.31
+10.136.58.32
 
 [master]
-10.136.58.131
+10.136.58.31
 
 [worker]
-10.136.58.132
-10.136.58.133
-
+10.136.58.32
 
 [server:vars]
 ansible_user=root
 ansible_ssh_pass=gsLab!23
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ansible_python_interpreter=/bin/python3
