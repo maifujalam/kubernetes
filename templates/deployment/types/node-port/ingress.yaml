@@ -1,17 +1,17 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: simple-fanout-example
+  name: service-node-port
   annotations:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
   - http:
       paths:
-      - path: /foo
+      - path: /node-port
         pathType: Prefix
         backend:
           service:
-            name: echo-service
+            name: echo-server-node-port
             port:
               number: 8080

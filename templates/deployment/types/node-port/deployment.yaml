@@ -1,21 +1,20 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
-  name: deployment-echo-server
+  name: echo-server-node-port
   labels:
-    app: deployment-echo-server
+    app: echo-server-node-port
 spec:
-  replicas: 3
   template:
     metadata:
-      name: deployment-echo-server
+      name: echo-server-node-port
       labels:
-        app: deployment-echo-server
+        app: echo-server-node-port
     spec:
       containers:
         - image: inanimate/echo-server
           imagePullPolicy: IfNotPresent
-          name: echo-container
+          name: echo-server-node-port
           resources:
             requests:
               cpu: 10m
@@ -26,16 +25,16 @@ spec:
       restartPolicy: Always
   selector:
     matchLabels:
-      app: deployment-echo-server
+      app: echo-server-node-port
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: echo-service
+  name: echo-server-node-port
 spec:
   selector:
-    app: deployment-echo-server
+    app: echo-server-node-port
   ports:
     - port: 8080
   type: ClusterIP

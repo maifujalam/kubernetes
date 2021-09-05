@@ -1,4 +1,8 @@
 ---
 # vars file for 9.ingress-nginx
-deployment_type: node-port
+deployment_type: node-port          # Its value can be of:- host-network, node-port, edge
 external_ip: 35.200.228.26
+node_port_http: 32080  # If exposing on http node-port,then value of node port.Make sure port is unused.
+node_port_https: 32443  # If exposing on https node-port,then value of node port.Make sure port is unused.
+node_port_tcp: 32808    # If exposing on tcp node-port,then value of node port.Make sure port is unused.
+deployment_kind: Deployment  # can be only:- DaemonSet or Deployment

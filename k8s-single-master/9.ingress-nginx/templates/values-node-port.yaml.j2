@@ -69,13 +69,13 @@ controller:
   # Required for use with CNI based kubernetes installations (such as ones set up by kubeadm),
   # since CNI and hostport don't mix yet. Can be deprecated once https://github.com/kubernetes/kubernetes/issues/23920
   # is merged
-  hostNetwork: true
+  hostNetwork: false
 
   ## Use host ports 80 and 443
   ## Disabled by default
   ##
   hostPort:
-    enabled: true
+    enabled: false
     ports:
       http: 80
       https: 443
@@ -98,9 +98,8 @@ controller:
     parameters: {}
 
   # labels to add to the pod container metadata
-  podLabels:
-    a: aaa
-    b: bbb
+  podLabels: {}
+  #  key: value
 
   ## Security Context policies for controller pods
   ##
@@ -198,11 +197,11 @@ controller:
   ## Node tolerations for server scheduling to nodes with taints
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
   ##
-  tolerations:
-    - key: "node-role.kubernetes.io/master"
-      operator: "Exists"
-  #    value: "true"
-      effect: "NoSchedule"
+  tolerations: []
+  #  - key: "key"
+  #    operator: "Equal|Exists"
+  #    value: "value"
+  #    effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
 
   ## Affinity and anti-affinity
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
@@ -267,8 +266,8 @@ controller:
   ## Node labels for controller pod assignment
   ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
   ##
- # nodeSelector:
- #   node-role.kubernetes.io/control-plane: ""
+  nodeSelector:
+    kubernetes.io/os: linux
 
   ## Liveness and readiness probe values
   ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
@@ -421,7 +420,7 @@ controller:
     # clusterIP: ""
 
     ## List of IP addresses at which the controller services are available
-    ## Ref: https://kubernetes.io/docs/user-guide/services/#externalexternal-ips
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
     ##
     externalIPs: ["{{external_ip}}"]
 
@@ -455,17 +454,13 @@ controller:
 
     type: LoadBalancer
 
-    # type: NodePort
-    # nodePorts:
-    #   http: 32080
-    #   https: 32443
-    #   tcp:
-    #     8080: 32808
+    type: NodePort
     nodePorts:
-      http: ""
-      https: ""
-      tcp: {}
-      udp: {}
+      http: {{node_port_http}}
+      https: {{node_port_https}}
+      tcp:
+      tcp:
+        8080: {{node_port_tcp}}
 
     ## Enables an additional internal load balancer (besides the external one).
     ## Annotations are mandatory for the load balancer to come up. Varies with the cloud service.
