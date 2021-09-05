@@ -1,24 +1,41 @@
 ---
 # tasks file for 9.ingress-nginx
-- name: Add nginx helm repo
-  shell: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-
-- name: Update repo
-  shell: helm repo update
+#- name: Add nginx helm repo
+#  shell: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+#
+#- name: Update repo
+#  shell: helm repo update
 
 - name: Get chart status
   shell: helm list -n ingress-nginx --short | grep ingress
   register: r1
   ignore_errors: true
 
-- name: Installing on namespace ingress-nginx
-  shell: helm install ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace  --set-string controller.kind=DaemonSet
+#- name: Installing on namespace ingress-nginx
+#  shell: helm install ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace  --set-string controller.kind=DaemonSet
+#  when: r1.rc != 0
+#
+#- name: Upgrading on namespace ingress-nginx
+#  shell: helm upgrade ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace  --set-string controller.kind=DaemonSet
+#  when: r1.rc == 0
+- name: Make dir /tmp/ingress
+  file:
+    path: /tmp/ingress
+    state: directory
+
+- name: Copy helm values
+  template:
+    src: values-host.yaml.j2
+    dest:  /tmp/ingress/values-host.yaml
+
+- name: Helm install
+  shell: helm install ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values=/tmp/ingress/values-host.yaml
   when: r1.rc != 0
 
 - name: Upgrading on namespace ingress-nginx
-  shell: helm upgrade ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace  --set-string controller.kind=DaemonSet
+  shell: helm upgrade ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values=/tmp/ingress/values-host.yaml
   when: r1.rc == 0
-
+-
 - name: Waiting for pods to be online on namespace ingress-nginx
   shell: kubectl get pods -n ingress-nginx -o json
   register: kubectl_get_pods
