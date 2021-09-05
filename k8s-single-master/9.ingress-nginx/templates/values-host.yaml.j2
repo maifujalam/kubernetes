@@ -423,7 +423,7 @@ controller:
     ## List of IP addresses at which the controller services are available
     ## Ref: https://kubernetes.io/docs/user-guide/services/#externalexternal-ips
     ##
-    externalIPs: []
+    externalIPs: ["{{external_ip}}"]
 
     # loadBalancerIP: ""
     loadBalancerSourceRanges: []

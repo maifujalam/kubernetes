@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: echo-server-host-network
+  labels:
+    app: echo-server-host-network
+spec:
+  template:
+    metadata:
+      name: echo-server-host-network
+      labels:
+        app: echo-server-host-network
+    spec:
+      containers:
+        - image: inanimate/echo-server
+          imagePullPolicy: IfNotPresent
+          name: echo-server-host-network
+          resources:
+            requests:
+              cpu: 10m
+              memory: 8Mi
+            limits:
+              cpu: 20m
+              memory: 16Mi
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: echo-server-host-network
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-server-host-network
+spec:
+  selector:
+    app: echo-server-host-network
+  ports:
+    - port: 8080
+  type: ClusterIP

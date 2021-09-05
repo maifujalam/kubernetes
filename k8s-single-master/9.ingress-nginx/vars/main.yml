@@ -1,3 +1,4 @@
 ---
 # vars file for 9.ingress-nginx
 deployment_type: node-port
+external_ip: 35.200.228.26
