@@ -1,2 +1,3 @@
 ---
 # vars file for 9.ingress-nginx
+deployment_type: node-port
