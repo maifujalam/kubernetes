@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: hello-kubernetes-2
-          image: paulbouwer/hello-kubernetes:1.5
+          image: paulbouwer/hello-kubernetes:1.10
           ports:
             - containerPort: 8080
       nodeName: worker-1

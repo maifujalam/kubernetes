@@ -17,7 +17,7 @@ kind: Deployment
 metadata:
   name: hello-kubernetes
 spec:
-  replicas: 5
+  replicas: 3
   selector:
     matchLabels:
       app: hello-kubernetes
@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: hello-kubernetes
-          image: paulbouwer/hello-kubernetes:1.5
+          image: paulbouwer/hello-kubernetes:1.10
           ports:
             - containerPort: 8080
       nodeName: master

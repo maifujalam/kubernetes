@@ -9,10 +9,10 @@ spec:
   rules:
   - http:
       paths:
-      - path: /abc
+      - path: /host-network
         pathType: Prefix
         backend:
           service:
             name: echo-server-host-network
             port:
-              number: 80
+              number: 8080
