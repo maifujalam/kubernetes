@@ -12,7 +12,7 @@ spec:
         app: echo-server-host-network
     spec:
       containers:
-        - image: inanimate/echo-server
+        - image: paulbouwer/hello-kubernetes:1.10
           imagePullPolicy: IfNotPresent
           name: echo-server-host-network
           ports:
