@@ -12,16 +12,11 @@ spec:
         app: echo-server-host-network
     spec:
       containers:
-        - image: inanimate/echo-server
+        - image: paulbouwer/hello-kubernetes:1.5
           imagePullPolicy: IfNotPresent
           name: echo-server-host-network
-          resources:
-            requests:
-              cpu: 10m
-              memory: 8Mi
-            limits:
-              cpu: 20m
-              memory: 16Mi
+          ports:
+            - containerPort: 8080
       restartPolicy: Always
   selector:
     matchLabels:
@@ -36,5 +31,6 @@ spec:
   selector:
     app: echo-server-host-network
   ports:
-    - port: 8080
+    - port: 80
+      targetPort: 8080
   type: ClusterIP
