@@ -1,4 +1,4 @@
-- name: Install prometheous stack
+- name: Install ingress controller
   hosts: master
   become: yes
   tasks:
