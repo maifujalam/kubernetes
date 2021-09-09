@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: service-host-network
+  namespace: sandbox
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - hosts:
+        - example.com
+      secretName: app-secret
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /host-network
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: echo-server-host-network
+            port:
+              number: 8080

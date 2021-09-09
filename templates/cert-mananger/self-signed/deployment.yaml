@@ -13,7 +13,7 @@ spec:
         app: echo-server-host-network
     spec:
       containers:
-        - image: gcr.io/google-samples/hello-app:1.0
+        - image: paulbouwer/hello-kubernetes:1.10
           imagePullPolicy: IfNotPresent
           name: echo-server-host-network
           ports:
