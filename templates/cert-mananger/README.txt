@@ -7,3 +7,9 @@ Notes:-
 6. isCA makes certificate eligible to sign other certificate.
 7. Don't expose ingress services as node port.
 8. can have multiple dns name everywhere (certificate,ingress) but not ip address.
+9. Assign static gcp vm ip to ingress external ip.
+10. while making cloud dns record make sure to choose below options
+        a. Cloud DNS: It is managed by Cloud DNS from console.google.com UI.
+        b. Google Domains: It needs to be managed into different UI i.e  domains.google.com
+11. Make sure to verify cloud name server in both cloud domain and (Cloud DNS| Google Domains).
+12.
