@@ -40,8 +40,8 @@ spec:
   ports:
     - port: 443
       targetPort: 8443
-      nodePort: 30000
-  type: NodePort
+#      nodePort: 30000
+  type: ClusterIP
   selector:
     k8s-app: kubernetes-dashboard
 
@@ -203,10 +203,11 @@ spec:
               protocol: TCP
           args:
             - --auto-generate-certificates
+#            - --enable-insecure-login
             - --namespace=kubernetes-dashboard
             #            - --enable-skip-login
             #            - --disable-settings-authorizer
-            - --token-ttl=43200
+            - --token-ttl=86400
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
             # to it. Uncomment only if the default does not work.

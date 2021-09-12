@@ -15,7 +15,7 @@
     dest:  /tmp/ingress/values-node-port.yaml
 
 - name: Helm dry run to save value
-  shell: helm install upgrade ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values=/tmp/ingress/values-node-port.yaml --dry-run
+  shell: helm install ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values=/tmp/ingress/values-node-port.yaml --dry-run
   register: r1
 
 - name: Save helm dry run
@@ -30,7 +30,7 @@
 - name: Upgrading on namespace ingress-nginx
   shell: helm upgrade ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values=/tmp/ingress/values-node-port.yaml
   when: r0.rc == 0
--
+
 - name: Waiting for pods to be online on namespace ingress-nginx
   shell: kubectl get pods -n ingress-nginx -o json
   register: kubectl_get_pods
