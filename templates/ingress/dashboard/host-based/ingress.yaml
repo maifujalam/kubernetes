@@ -10,21 +10,11 @@ metadata:
 #    nginx.ingress.kubernetes.io/configuration-snippet: |
 #      rewrite ^(/)$ $1/ redirect;
 spec:
-#  tls:
-#    - hosts:
-#        - skalam.info
-#      secretName: kubernetes-dashboard-certs
+  tls:
+    - hosts:
+        - skalam.info
+      secretName: kubernetes-dashboard-certs
   rules:
-#  - host: skalam.info
-#    http:
-#      paths:
-#      - path: /db(/|$)(.*)
-#        pathType: Prefix
-#        backend:
-#          service:
-#            name: kubernetes-dashboard
-#            port:
-#              number: 443
   - host: dashboard.skalam.info
     http:
       paths:
