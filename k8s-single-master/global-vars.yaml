@@ -37,6 +37,6 @@ enable_ingress_controller: false
 
 #----------CLI-------
 #Please add below fields when running wit cli
-master_ip : 10.136.58.31
-extra_ip : 10.136.58.31
+master_ip : 10.136.58.4
+extra_ip : 10.136.58.4
 platform: Local

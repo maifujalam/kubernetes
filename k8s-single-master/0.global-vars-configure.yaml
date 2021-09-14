@@ -7,7 +7,7 @@
         path: /var/iac
         mode: "777"
         state: directory
-        owner: "{{ansible_env.SUDO_USER}}"
+#        owner: "{{ansible_env.SUDO_USER}}"
     - name: Remove Old Global Vars
       file:
         path: "/var/iac/global-vars.yaml"
