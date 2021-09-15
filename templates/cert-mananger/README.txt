@@ -15,4 +15,5 @@ Notes:-
 12. Rule: skalam.info	     A	    1 hour	 35.200.228.26
           www.skalam.info	CNAME	1 hour	 skalam.info.
 13. Verify domain is resolved or not at : https://check-host.net/check-dns
-14.
+14. TO REMOVE CERTIFICATE:- Remove certificate,secret,ingress.
+15. Multiple ingress of same dns will take the latest ingress.

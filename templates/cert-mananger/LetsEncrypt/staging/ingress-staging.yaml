@@ -13,15 +13,15 @@ spec:
   tls:
     - hosts:
         - skalam.info
-      secretName: abcdd
+      secretName: abc
   rules:
   - host: skalam.info
     http:
       paths:
-      - path: /abcd
+      - path: /abc
         pathType: ImplementationSpecific
         backend:
           service:
             name: echo-server-1
             port:
-              number: 8443
+              number: 1234

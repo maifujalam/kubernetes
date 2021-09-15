@@ -6,7 +6,7 @@ metadata:
 spec:
 #  isCA: true            # its make certificate valid for signing other certificate
   commonName: skalam.info
-  secretName: abcd
+  secretName: abc
   privateKey:
     algorithm: RSA             #ECDSA
   issuerRef:
