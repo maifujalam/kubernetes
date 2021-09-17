@@ -9,13 +9,13 @@ metadata:
 spec:
   tls:
     - hosts:
-        - example.com
+        - '*.example.abc'
       secretName: tls-secret
   rules:
-  - host: example.com
+  - host: example.abc
     http:
       paths:
-      - path: /host-network
+      - path: /abc
         pathType: ImplementationSpecific
         backend:
           service:
