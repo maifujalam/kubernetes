@@ -1,4 +1,3 @@
-# Note: Hare host based will use default ingress controller fake certificate,as certificate is not issued for *.example.com or app.example.com
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -10,13 +9,13 @@ metadata:
 spec:
   tls:
     - hosts:
-        - '*.example.com'
+        - example.com
       secretName: tls-secret
   rules:
-  - host: app.example.com
+  - host: example.com
     http:
       paths:
-      - path: /
+      - path: /host-network
         pathType: ImplementationSpecific
         backend:
           service:

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: echo-server-host-network
+  namespace: a1
+  labels:
+    app: echo-server-host-network
+spec:
+  template:
+    metadata:
+      name: echo-server-host-network
+      labels:
+        app: echo-server-host-network
+    spec:
+      containers:
+        - image: paulbouwer/hello-kubernetes:1.10
+          imagePullPolicy: IfNotPresent
+          name: echo-server-host-network
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: echo-server-host-network
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-server-host-network
+  namespace: a1
+spec:
+  selector:
+    app: echo-server-host-network
+  ports:
+    - port: 443
+      targetPort: 8080
+  type: ClusterIP
