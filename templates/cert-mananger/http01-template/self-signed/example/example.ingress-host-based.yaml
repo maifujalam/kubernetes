@@ -1,0 +1,25 @@
+# Note: Hare path based will use default ingress controller fake certificate,as certificate is not issued for *.example.com or app.example.com
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: service-host-network
+  namespace: a1
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - hosts:
+        - '*.example.com'
+      secretName: tls-secret
+  rules:
+  - host: app.example.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: echo-server-host-network
+            port:
+              number: 443

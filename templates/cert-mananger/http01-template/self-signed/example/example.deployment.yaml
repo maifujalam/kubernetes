@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: echo-server-host-network
-  namespace: sandbox
+  namespace: a1
   labels:
     app: echo-server-host-network
 spec:
@@ -28,11 +28,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: echo-server-host-network
-  namespace: sandbox
+  namespace: a1
 spec:
   selector:
     app: echo-server-host-network
   ports:
-    - port: 8080
+    - port: 443
       targetPort: 8080
   type: ClusterIP

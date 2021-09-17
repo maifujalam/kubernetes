@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: sandbox
+  name: a1
 ---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: selfsigned-issuer
-  namespace: sandbox
+  namespace: a1
 spec:
   selfSigned: {}
 ---

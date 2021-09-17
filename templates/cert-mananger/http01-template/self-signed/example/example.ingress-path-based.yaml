@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: service-host-network
-  namespace: sandbox
+  namespace: a1
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -10,7 +10,7 @@ spec:
   tls:
     - hosts:
         - example.com
-      secretName: app-secret
+      secretName: tls-secret
   rules:
   - host: example.com
     http:
@@ -21,4 +21,4 @@ spec:
           service:
             name: echo-server-host-network
             port:
-              number: 8080
+              number: 443

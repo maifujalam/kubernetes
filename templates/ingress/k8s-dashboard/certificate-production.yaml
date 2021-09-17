@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: app-certificate-1
+  namespace: abc
+spec:
+#  isCA: true            # its make certificate valid for signing other certificate
+  commonName: skalam.info
+  secretName: abcd
+#  duration: 2000h   # approx 3 months i.e 2190
+  privateKey:
+    algorithm: RSA             #ECDSA
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+  dnsNames:
+    - skalam.info
