@@ -15,4 +15,5 @@ spec:
     kind: ClusterIssuer
     group: cert-manager.io
   dnsNames:
+    - example.com
     - '*.example.com'
