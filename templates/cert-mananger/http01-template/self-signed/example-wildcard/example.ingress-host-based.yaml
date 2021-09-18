@@ -23,3 +23,13 @@ spec:
             name: echo-server-host-network
             port:
               number: 443
+  - host: app2.example.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: echo-server-host-network
+            port:
+              number: 443
