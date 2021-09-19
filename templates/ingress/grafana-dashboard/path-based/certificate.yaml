@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: app-certificate
+  namespace: kubernetes-dashboard
+spec:
+#  isCA: true            # its make certificate valid for signing other certificate
+  commonName: "skalam"
+  secretName: kubernetes-dashboard-certs   # Override default certificate
+  privateKey:
+    algorithm: RSA             #ECDSA
+  issuerRef:
+    name: selfsigned-cluster-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  dnsNames:
+    - skalam.info
