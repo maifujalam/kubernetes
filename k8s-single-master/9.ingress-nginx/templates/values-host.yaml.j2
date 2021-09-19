@@ -154,9 +154,9 @@ controller:
 
   ## Additional command line arguments to pass to nginx-ingress-controller
   ## E.g. to specify the default SSL certificate you can use
-  ## extraArgs:
-  ##   default-ssl-certificate: "<namespace>/<secret_name>"
-  extraArgs: {}
+  #extraArgs:
+    # default-ssl-certificate: "cert-manager/tls-secret-"
+  # extraArgs: {}
 
   ## Additional environment variables to set
   extraEnvs: []
@@ -185,10 +185,10 @@ controller:
 
   # The update strategy to apply to the Deployment or DaemonSet
   ##
-  updateStrategy: {}
+  updateStrategy:
   #  rollingUpdate:
   #    maxUnavailable: 1
-  #  type: RollingUpdate
+    type: Recreate
 
   # minReadySeconds to avoid killing pods before we are ready
   ##

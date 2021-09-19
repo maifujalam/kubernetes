@@ -18,4 +18,5 @@ Notes:-
 13. Verify domain is resolved or not at : https://check-host.net/check-dns
 14. TO REMOVE CERTIFICATE:- Remove certificate,secret,ingress.
 15. Multiple ingress of same dns will take the latest ingress.
-15. WARNING:- ALWAYS REMOVE SECRET WHILE REMOVING CERTIFICATE
+16. WARNING:- ALWAYS REMOVE SECRET WHILE REMOVING CERTIFICATE
+17. HTTP01 Challenge does not support wildcard(*) symbol.

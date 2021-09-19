@@ -11,7 +11,7 @@ helm upgrade ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ing
   #    value: "value"
   #    effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"} -v=7
 
-
+Set default certificate (Line no. 157) : 
 Deployment types can be:-
   1. node-port    (only accessed on 30000-32768)
   2. host network ( can be accessed on 80 and 443)
