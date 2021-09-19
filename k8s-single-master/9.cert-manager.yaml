@@ -1,8 +1,8 @@
-- name: Install ingress controller
+- name: Install cert-manager
   hosts: master
   become: yes
   tasks:
     - name: Include vars
       include_vars: /var/iac/global-vars.yaml
     - include_role:
-        name: 9.ingress-nginx
+        name: 9.cert-manager
