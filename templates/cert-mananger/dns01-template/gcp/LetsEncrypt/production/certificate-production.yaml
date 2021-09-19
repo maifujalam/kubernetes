@@ -1,17 +1,18 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: app-certificate-1
-  namespace: abc
+  name: gcp-le-prodction-cert
+  namespace: cert-manager
 spec:
 #  isCA: true            # its make certificate valid for signing other certificate
-  commonName: skalam.info
-  secretName: abcd
+  commonName: maifuj.com
+  secretName: gcp-le-prod-tls-secret
   privateKey:
     algorithm: RSA             #ECDSA
   issuerRef:
-    name: letsencrypt-prod
+    name: gcp-le-production
     kind: ClusterIssuer
     group: cert-manager.io
   dnsNames:
-    - skalam.info
+    - maifuj.com
+    - '*.maifuj.com'

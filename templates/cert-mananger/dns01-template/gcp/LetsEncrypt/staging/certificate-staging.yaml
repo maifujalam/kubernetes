@@ -1,12 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: app-certificate
-  namespace: g1
+  name: gcp-le-staging-cert
+  namespace: cert-manager
 spec:
 #  isCA: true            # its make certificate valid for signing other certificate
   commonName: maifuj.com
-  secretName: tls-secret
+  secretName: gcp-le-stageing-tls-secret
   privateKey:
     algorithm: RSA             #ECDSA
   issuerRef:

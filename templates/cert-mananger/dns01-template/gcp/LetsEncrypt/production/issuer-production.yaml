@@ -1,18 +1,19 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-prod
+  name: gcp-le-production
 spec:
   acme:
-    # The ACME server URL
     server: https://acme-v02.api.letsencrypt.org/directory
-    # Email address used for ACME registration
     email: sk.maifujalam@gmail.com
-    # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
-      name: letsencrypt-prod
-    # Enable the HTTP-01 challenge provider
+      name: gcp-le-production
     solvers:
-      - http01:
-          ingress:
-            class: nginx
+    - dns01:
+        cloudDNS:
+          # The ID of the GCP project
+          project: openshift-325202
+          # This is the secret used to access the service account
+          serviceAccountSecretRef:
+            name: clouddns-dns01-solver-svc-acct
+            key: key.json
