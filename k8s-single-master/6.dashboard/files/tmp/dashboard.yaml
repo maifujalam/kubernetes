@@ -38,8 +38,11 @@ metadata:
   namespace: kubernetes-dashboard
 spec:
   ports:
-    - port: 443
-      targetPort: 8443
+    - name: http-80
+      port: 80
+      targetPort: 9090
+      nodePort: 30000
+  type: NodePort
   selector:
     k8s-app: kubernetes-dashboard
 
@@ -132,6 +135,10 @@ rules:
     resources: ["pods", "nodes"]
     verbs: ["get", "list", "watch"]
 
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["get", "update", "delete","list"]
+
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
@@ -159,7 +166,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kubernetes-dashboard
+  name: cluster-admin
 subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
@@ -175,7 +182,6 @@ metadata:
   name: kubernetes-dashboard
   namespace: kubernetes-dashboard
 spec:
-  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -187,14 +193,25 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: kubernetesui/dashboard:v2.3.1
+          image: kubernetesui/dashboard:v2.0.0-rc7
           imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
           ports:
-            - containerPort: 8443
+            - containerPort: 9090
               protocol: TCP
           args:
-            - --auto-generate-certificates
+            - --enable-insecure-login
             - --namespace=kubernetes-dashboard
+            - --insecure-bind-address=0.0.0.0
+            - --token-ttl=43200
+            - --insecure-port=9090
+            - --enable-skip-login
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
             # to it. Uncomment only if the default does not work.
@@ -207,9 +224,9 @@ spec:
               name: tmp-volume
           livenessProbe:
             httpGet:
-              scheme: HTTPS
+              scheme: HTTP
               path: /
-              port: 8443
+              port: 9090
             initialDelaySeconds: 30
             timeoutSeconds: 30
           securityContext:
@@ -225,7 +242,7 @@ spec:
           emptyDir: {}
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
-        "kubernetes.io/os": linux
+        "beta.kubernetes.io/os": linux
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -250,14 +267,12 @@ spec:
 ---
 
 kind: Deployment
-apiVersion: apps/v1
 metadata:
   labels:
     k8s-app: dashboard-metrics-scraper
   name: dashboard-metrics-scraper
   namespace: kubernetes-dashboard
 spec:
-  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -271,7 +286,7 @@ spec:
     spec:
       containers:
         - name: dashboard-metrics-scraper
-          image: kubernetesui/metrics-scraper:v1.0.6
+          image: kubernetesui/metrics-scraper:v1.0.4
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
@@ -293,7 +308,7 @@ spec:
             runAsGroup: 2001
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
-        "kubernetes.io/os": linux
+        "beta.kubernetes.io/os": linux
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -301,3 +316,5 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
+apiVersion: apps/v1
+
