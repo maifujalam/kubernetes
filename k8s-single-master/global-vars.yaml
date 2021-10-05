@@ -39,4 +39,4 @@ enable_ingress_controller: false
 #Please add below fields when running wit cli
 master_ip : 10.136.58.4
 extra_ip : 10.136.58.4
-platform: Local
+platform: Local  #( Local or GCP)
