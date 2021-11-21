@@ -1,4 +1,4 @@
-  - name: Debug touch
+- name: Debug touch
   shell: touch /tmp/aa
 
 - name: Copying repos of centos-8
