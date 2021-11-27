@@ -29,5 +29,5 @@
   shell: iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
   ignore_errors: true
 
-- name: Reboot VM
-  reboot:
+#- name: Reboot VM
+#  reboot:

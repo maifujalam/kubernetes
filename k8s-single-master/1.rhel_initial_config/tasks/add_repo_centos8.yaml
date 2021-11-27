@@ -26,8 +26,8 @@
     gpgcheck: yes
     enabled: yes
 
-- name: update all packages
-  yum:
-    name: '*'
-    state: latest
-    exclude: kube*
+#- name: update all packages
+#  yum:
+#    name: '*'
+#    state: latest
+#    exclude: kube*

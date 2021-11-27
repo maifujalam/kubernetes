@@ -9,7 +9,7 @@ install_calicoctl: true
 #master_ip: 10.160.0.5       #----WARNING--- => Please update it with master(leader) ip before cluster initializing
 #extra_ip: 10.160.0.5
 k8s_version: 1.21.1
-docker_version: 20.10.7
+docker_version: 19.03.15  # Dont go for latest version
 
 #Cluster Monitoring Setup
 dahboard_version: 2.3.1
@@ -37,6 +37,6 @@ enable_ingress_controller: false
 
 #----------CLI-------
 #Please add below fields when running wit cli
-master_ip : 10.136.58.4
+master_ip : 172.17.78.6
 extra_ip : 10.136.58.4
 platform: Local  #( Local or GCP)
