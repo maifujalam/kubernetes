@@ -1,0 +1,16 @@
+apiVersion: crd.projectcalico.org/v1
+kind: GlobalNetworkPolicy
+metadata:
+  name: network-debug-allow-all
+spec:
+  selector: k8s-app == 'network-debug'
+  ingress:
+    - action: Allow
+      protocol: TCP
+      source:
+        selector: all()
+  egress:
+    - action: Allow
+      protocol: TCP
+      destination:
+        selector: all()

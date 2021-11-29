@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: network-debug
+  namespace: default
+  labels:
+    k8s-app: network-debug
+spec:
+  selector:
+    matchLabels:
+      name: network-debug
+  template:
+    metadata:
+      labels:
+        name: network-debug
+        k8s-app: network-debug
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: network-debug-pod
+          image: praqma/network-multitool:extra
+          resources:
+            limits:
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
