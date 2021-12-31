@@ -1,8 +1,18 @@
-- name: Remove swapfile from /etc/fstab
-  mount:
-    name: swap
-    fstype: swap
-    state: absent
-- name: Disable swap
-  command: swapoff -a
-  become: true
+#- name: Remove swapfile from /etc/fstab
+#  mount:
+#    name: swap
+#    fstype: swap
+#    state: absent
+#- name: Disable swap
+#  command: swapoff -a
+#  become: true
+
+- name: Diable swap:- temporarry(1/2)
+  shell: |
+    swapoff -a
+
+- name: Disable swap:- permanent (2/2)
+  lineinfile:
+    path: /etc/fstab
+    regexp: 'swap'
+    line: '#swap offed'
