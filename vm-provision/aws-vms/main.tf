@@ -96,8 +96,8 @@ resource "aws_instance" "private_vm" {
   }
   user_data = <<EOF
 #!/bin/bash
-apt update -y
-apt install nginx -y
+yum update -y
+yum install nginx -y
 systemctl enable nginx
 chmod 777 -R /var/www/html/
 echo "<h1>Hello World from $(hostname)</h1>" | tee >> /var/www/html/index.html

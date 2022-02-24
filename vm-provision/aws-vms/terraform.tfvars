@@ -2,7 +2,7 @@ region = "us-east-1"
 instance_name = "k8s-rhel"
 instance_os = "rhel"  # it will be ubuntu or rhel
 root_volume_size = 10
-instance_count = 3
+instance_count = 1
 allowed_ports = [
   {"port":"4","protocol":"4","description":"IP-IP"},
   {"port":"22","protocol":"TCP","description":"ssh"},
