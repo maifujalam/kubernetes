@@ -1,17 +1,14 @@
-- name: Debug touch
-  shell: touch /tmp/aa
-
-- name: Copying repos of centos-8
-  copy:
-    src: files/repos-centos8/yum.repos.d/
-    dest: /etc/yum.repos.d
-    force: yes
-
-- name: Copy repo keys
-  copy:
-    src: files/repos-centos8/rpm-gpg/
-    dest: /etc/pki/rpm-gpg/
-    force: yes
+# - name: Copying repos of centos-8
+#   copy:
+#     src: files/repos-centos8/yum.repos.d/
+#     dest: /etc/yum.repos.d
+#     force: yes
+#
+# - name: Copy repo keys
+#   copy:
+#     src: files/repos-centos8/rpm-gpg/
+#     dest: /etc/pki/rpm-gpg/
+#     force: yes
 
 - name: Add K8s repo
   yum_repository:
@@ -26,8 +23,25 @@
     gpgcheck: yes
     enabled: yes
 
-#- name: update all packages
-#  yum:
-#    name: '*'
-#    state: latest
-#    exclude: kube*
+- name: update all packages default repo
+  yum:
+    name: '*'
+    state: latest
+    exclude: kube*
+
+- name: Install the latest version of yum-utils
+  yum:
+    name: yum-utils
+    state: latest
+
+- name: Add Docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+  become: yes
+
+- name: update all packages added repos
+  yum:
+    name: '*'
+    state: latest
+    exclude: kube*

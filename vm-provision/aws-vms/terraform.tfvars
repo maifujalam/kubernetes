@@ -1,0 +1,13 @@
+region = "us-east-1"
+instance_name = "k8s-rhel"
+instance_os = "rhel"  # it will be ubuntu or rhel
+root_volume_size = 10
+instance_count = 2
+ingress_ports = [22,80,443,8080,6443]
+vpc_name = "vpc-1"
+subnets = ["private-subnet-2-a","private-subnet-2-b","private-subnet-2-c"]
+security_group = "sg-k8s"
+instance_key = "vm-key"
+public_key_path = "~/.ssh/aws/key.pub"
+private_key_path = "~/.ssh/aws/key"
+enable_public_ip = false    # Value can be true or false.For Public VM:- true, for Private VM:- false.

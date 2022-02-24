@@ -1,4 +1,4 @@
-cluster_name: cluster-vc       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
+cluster_name: cluster-aws       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
 
 # Setup Cluster Networking Config
 network_cidr: 192.168.0.0/16 # Pod Network CIDR
@@ -37,6 +37,6 @@ enable_ingress_controller: false
 
 #----------CLI-------
 #Please add below fields when running wit cli
-master_ip : 172.17.78.6
-extra_ip : 10.136.58.4
-platform: Local  #( Local or GCP)
+master_ip : 10.0.0.91
+extra_ip :  34.229.240.226
+platform: AWS  #( Local or GCP or AWS)

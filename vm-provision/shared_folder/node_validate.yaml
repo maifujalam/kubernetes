@@ -1,0 +1,12 @@
+- name: Pod val
+  hosts: localhost
+  tasks:
+    - name: Wait till the Object is created
+      become: true
+      kubernetes.core.k8s_info:
+        kind: Node
+        wait: yes
+        name: "*"
+        namespace: kube-system
+        wait_sleep: 10
+        wait_timeout: 360

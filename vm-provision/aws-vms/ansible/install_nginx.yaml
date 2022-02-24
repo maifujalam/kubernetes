@@ -1,0 +1,6 @@
+- name: Install nginx
+  hosts: server
+  gather_facts: yes
+  tasks:
+    - include_role:
+        name: install_nginx

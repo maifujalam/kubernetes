@@ -1,0 +1,25 @@
+- name: ooo
+  hosts: localhost
+  tasks:
+    - name: Wait for calico process to be in running state
+      shell: calicoctl node status --allow-version-mismatch
+      register: r1
+      until: r1.stdout_lines[0] == "Calico process is running."
+      retries: 20
+      delay: 1
+      become: true
+
+#    - debug:
+#        msg: "{{r1}}"
+
+    - name: check calico process status
+      debug:
+        msg: "{{r1.stdout_lines[0]}}"
+
+    - name: Get no of calico nodes
+      shell: calicoctl get nodes --allow-version-mismatch
+      become: true
+      register: r2
+
+    - debug:
+        msg: "{{r2.stdout_lines | length }}"

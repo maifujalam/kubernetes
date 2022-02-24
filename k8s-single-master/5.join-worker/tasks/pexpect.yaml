@@ -1,8 +1,8 @@
 ---
- - name: Installation of epel-release and pip
-   yum:
-     name: epel-release
-     state: present
+#  - name: Installation of epel-release and pip
+#    yum:
+#      name: epel-release
+#      state: present
      
  - name: Installation of epel-release and pip
    yum:
