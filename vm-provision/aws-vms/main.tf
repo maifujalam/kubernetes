@@ -1,5 +1,5 @@
 locals {
-  ports = var.ingress_ports
+  ports = var.allowed_ports
   az= slice(sort(data.aws_availability_zones.available.names),0,min(length(var.subnets),var.instance_count))
 }
 resource "aws_key_pair" "key" {
@@ -16,10 +16,11 @@ resource "aws_security_group" "sg" {
   dynamic "ingress" {
     for_each = local.ports
     content {
-      from_port = ingress.value
-      to_port = ingress.value
-      protocol = "tcp"
+      from_port = ingress.value["port"]
+      to_port = ingress.value["port"]
+      protocol = ingress.value["protocol"]
       cidr_blocks = ["10.0.0.0/16"]
+      description = ingress.value["description"]
     }
   }
   ingress {

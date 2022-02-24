@@ -54,9 +54,8 @@ variable "ssh_user" {
     "rhel"   = "ec2-user"
   }
 }
-variable "ingress_ports" {
-  type    = list(number)
-  default = [22, 80, 443]
+variable "allowed_ports" {
+  type    = list(any)
 }
 variable "instance_os" {
   type = string
