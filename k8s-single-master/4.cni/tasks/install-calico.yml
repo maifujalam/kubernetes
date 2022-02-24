@@ -1,17 +1,36 @@
-- name: Copy role files to /var/iac/{{cluster_name}}/calico.yaml in controller
+# - name: Copy role files to /var/iac/{{cluster_name}}/calico.yaml in controller
+#   become: false
+#   local_action:
+#     module: copy
+#     src: calico.yaml
+#     dest: /var/iac/{{cluster_name}}
+#
+# - name: Copy role files to /iac/{{cluster_name}}/calico.yaml in leader
+#   copy:
+#     src: calico.yaml
+#     dest: /var/iac/{{cluster_name}}
+#
+# - name: Installing calico pod network
+#   command: kubectl apply -f /var/iac/{{cluster_name}}/calico.yaml
+#   retries: 10
+#   delay: 2
+#   register: r1
+#   until: r1.rc == 0
+
+- name: Copy role files to /var/iac/{{cluster_name}}/tigera-operator.yaml in controller
   become: false
   local_action:
     module: copy
-    src: calico.yaml
+    src: tigera-operator.yaml
     dest: /var/iac/{{cluster_name}}
 
-- name: Copy role files to /iac/{{cluster_name}}/calico.yaml in leader
+- name: Copy role files to /iac/{{cluster_name}}/tigera-operator.yaml in leader
   copy:
-    src: calico.yaml
+    src: tigera-operator.yaml
     dest: /var/iac/{{cluster_name}}
 
 - name: Installing calico pod network
-  command: kubectl apply -f /var/iac/{{cluster_name}}/calico.yaml
+  command: kubectl apply -f /var/iac/{{cluster_name}}/tigera-operator.yaml
   retries: 10
   delay: 2
   register: r1
