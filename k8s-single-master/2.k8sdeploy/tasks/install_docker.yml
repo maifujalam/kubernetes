@@ -14,7 +14,9 @@
                  - lvm2
                  - tc
                  - bash-completion
- 
+                 - bind-utils
+                 - net-tools
+
           
           - name: Install Docker
             package:
