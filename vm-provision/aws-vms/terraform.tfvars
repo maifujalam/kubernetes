@@ -15,7 +15,7 @@ allowed_ports = [
   {"port":"6443","protocol":"TCP","description":"k8s-api"},
   {"port":"8080","protocol":"TCP","description":"http"},
   {"port":"5000","protocol":"TCP","description":"nexus"},
-  {"port":"30001","protocol":"TCP","description":"k8s-dashboard"}
+  {"port":"30000","protocol":"-1","description":"k8s-dashboard"}
 ]
 vpc_name = "vpc-default"
 subnets = ["private-subnet-1-a","private-subnet-1-b","private-subnet-1-c"]
