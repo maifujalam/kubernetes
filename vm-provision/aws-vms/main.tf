@@ -7,7 +7,8 @@ resource "aws_key_pair" "key" {
   key_name   = var.instance_key
   tags = {
     Name = var.instance_key
-    owner = "alam"
+    Owner = "alam"
+    Path = path.cwd
   }
 }
 resource "aws_security_group" "sg" {
@@ -19,7 +20,7 @@ resource "aws_security_group" "sg" {
       from_port = ingress.value["port"]
       to_port = ingress.value["port"]
       protocol = ingress.value["protocol"]
-      cidr_blocks = ["10.0.0.0/16"]
+      cidr_blocks = [data.aws_vpc.get_vpc.cidr_block]
       description = ingress.value["description"]
     }
   }
@@ -39,6 +40,7 @@ resource "aws_security_group" "sg" {
   tags   = {
     Name = var.security_group
     owner = "alam"
+    Path = path.cwd
   }
 }
 resource "aws_instance" "public_vm" {
@@ -48,7 +50,8 @@ resource "aws_instance" "public_vm" {
   tags                        = {
     Name = "${var.instance_name}-${count.index+1}"
     owner= "alam"
-    oc = var.ami[var.instance_os]
+    OS = var.ami[var.instance_os]
+    Path = path.cwd
   }
   key_name                    = var.instance_key
   subnet_id                   = data.aws_subnet.get_subnet[count.index % length(local.az)].id
@@ -83,7 +86,8 @@ resource "aws_instance" "private_vm" {
   tags                        = {
     Name = "private-${var.instance_name}-${count.index+1}"
     owner= "alam"
-    oc = var.ami[var.instance_os]
+    OS = var.ami[var.instance_os]
+    Path = path.cwd
   }
   key_name                    = var.instance_key
   subnet_id                   = data.aws_subnet.get_subnet[count.index % length(local.az)].id
@@ -95,17 +99,17 @@ resource "aws_instance" "private_vm" {
     delete_on_termination = true
   }
   user_data = <<EOF
-#!/bin/bash
-yum update -y
+#yum update -y
 yum install nginx -y
 systemctl enable nginx
-chmod 777 -R /var/www/html/
+chmod 777 -R /var/www/
 echo "<h1>Hello World from $(hostname)</h1>" | tee >> /var/www/html/index.html
 systemctl restart nginx
-  EOF
+EOF
   lifecycle {
     ignore_changes = [ami,security_groups]
   }
+  source_dest_check = false # For NAT Instance
 }
 resource "local_file" "ansible" {
   count =  var.enable_public_ip? 1 : 0

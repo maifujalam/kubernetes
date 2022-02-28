@@ -16,6 +16,9 @@
 - name: Node status
   shell: calicoctl node status
   register: nodestatus
+  delay: 2
+  until: nodestatus.rc == 0
+
 
 - debug:
     msg: "{{ nodestatus.stdout.split('\n') }}"

@@ -422,10 +422,10 @@ controller:
     ## List of IP addresses at which the controller services are available
     ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
     ##
-    externalIPs: ["{{external_ip}}"]
+    # externalIPs: ["{{external_ip}}"]
 
     # loadBalancerIP: ""
-    loadBalancerSourceRanges: []
+    #loadBalancerSourceRanges: []
 
     enableHttp: true
     enableHttps: true
@@ -452,7 +452,7 @@ controller:
       http: http
       https: https
 
-    type: LoadBalancer
+    # type: LoadBalancer
 
     type: NodePort
     nodePorts:

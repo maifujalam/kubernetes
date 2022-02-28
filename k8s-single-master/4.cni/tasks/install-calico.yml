@@ -17,7 +17,7 @@
 #   register: r1
 #   until: r1.rc == 0
 
-- name: Copy role files to /var/iac/{{cluster_name}}/tigera-operator.yaml in controller
+- name: Copy role file tigera-operator to /var/iac/{{cluster_name}}/tigera-operator.yaml in controller
   become: false
   local_action:
     module: copy
@@ -29,16 +29,35 @@
     src: tigera-operator.yaml
     dest: /var/iac/{{cluster_name}}
 
-- name: Installing calico pod network
+- name: Copy calico network config in controller
+  become: false
+  local_action:
+    module: template
+    src: template/install-calico.yaml.j2
+    dest: /var/iac/{{cluster_name}}/install-calico.yaml
+
+- name: Copy calico network config to leader
+  template:
+    src: template/install-calico.yaml.j2
+    dest: /var/iac/{{cluster_name}}/install-calico.yaml
+
+- name: Installing calico tigera operator
   command: kubectl apply -f /var/iac/{{cluster_name}}/tigera-operator.yaml
   retries: 10
   delay: 2
   register: r1
   until: r1.rc == 0
 
+- name: Install Calico Network
+  command: kubectl apply -f /var/iac/{{cluster_name}}/install-calico.yaml
+  retries: 10
+  delay: 2
+  register: r2
+  until: r2.rc == 0
+
 - name: Waiting for calilico pods to up and ready.
   shell: kubectl get pods -A -o json
   register: kubectl_get_pods
   until: kubectl_get_pods.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
-  retries: 20
+  retries: 60
   delay: 6

@@ -1,4 +1,4 @@
-- name: install docker
+- name: install docker-py
   pip:
     name: docker-py
     executable: pip3

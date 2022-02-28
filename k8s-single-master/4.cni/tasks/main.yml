@@ -1,5 +1,5 @@
-- name: Pull Calico Images.
-  include: image-pull.yml
+#- name: Pull Calico Images.
+#  include: image-pull.yml
 
 - name: Setup calico on gcp.
   include: install-calico-gcp.yml

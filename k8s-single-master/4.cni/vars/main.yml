@@ -2,3 +2,10 @@
 # vars file for 4.cni
 url: https://github.com/projectcalico/calicoctl/releases/download/v3.19.1/calicoctl
 dest: /usr/bin
+
+
+###### Calico Network Installation Options ######
+containerIPForwarding: Disabled  # Enabled or Disabled(Default)  ( Note:- If have multiple NIC then enable it,only available in Enterprise Calico)
+network_cidr: 192.168.0.0/16  # make sure this is in Pod Network CIDR Range
+natOutgoing: Enabled    # Enabled(Default) or Disabled (Note:- Whether to allow pod for NAT outgoing)
+encapsulation: IPIP    # One of: IPIP(Default), VXLAN, IPIPCrossSubnet, VXLANCrossSubnet, None

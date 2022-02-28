@@ -1,0 +1,11 @@
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+  calicoNetwork:
+    containerIPForwarding: Enabled
+    ipPools:
+      - cidr: 192.168.0.0/20  # make sure this is in Pod Network CIDR Range
+        natOutgoing: Enabled
+        encapsulation: None

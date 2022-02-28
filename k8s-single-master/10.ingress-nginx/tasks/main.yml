@@ -14,4 +14,4 @@
   include: node-port.yaml
   become: yes
   become_user: root
-  when: " {{deployment_type == 'node-port' }} "
+  when: '"{{deployment_type}}" == "node-port" or "edge"'

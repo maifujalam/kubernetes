@@ -1,0 +1,12 @@
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+  calicoNetwork:
+    containerIPForwarding: {{containerIPForwarding}}
+    ipPools:
+      - cidr: {{network_cidr}}
+        natOutgoing: {{natOutgoing}}
+        encapsulation: {{encapsulation}}
+        nodeSelector: all()

@@ -5,16 +5,17 @@ variable "ami" {
   description = "AMI"
   type        = map(string)
   default     = {
-    "rhel"    = "ami-0b0af3577fe5e3532" # rhel-8
+    "rhel"   = "ami-0b0af3577fe5e3532" # rhel-8
     "ubuntu" = "ami-04505e74c0741db8d"  # ubuntu 20.01
   }
 }
 variable "instance_type" {
   description = "VM Type"
-  default = {
-    "c1-m1"="t2.micro",
-    "c1-m2"="t2.small",
-    "c2-m4"="t2.medium"
+  default     = {
+    "c1-m1" = "t2.micro",
+    "c1-m2" = "t2.small",
+    "c2-m4" = "t3.medium"
+    "c2-m8" = "t3.large"
   }
 }
 variable "instance_name" {
@@ -30,6 +31,7 @@ variable "subnets" {
   description = "Subnet Names in list of string"
 }
 variable "public_key_path" {
+  sensitive = true
   description = ""
 }
 variable "root_volume_size" {
@@ -55,13 +57,13 @@ variable "ssh_user" {
   }
 }
 variable "allowed_ports" {
-  type    = list(any)
+  type = list(any)
 }
 variable "instance_os" {
-  type = string
+  type    = string
   default = "rhel"
 }
 variable "enable_public_ip" {
-  default = "true"
+  default     = "true"
   description = "Whether it is public vm or private vm"
 }
