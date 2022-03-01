@@ -10,6 +10,7 @@
     path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/ingress"
     state: directory
 
+
 - name: Copy helm values
   template:
     src: values-host.yaml.j2
