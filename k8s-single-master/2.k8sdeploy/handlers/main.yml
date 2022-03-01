@@ -5,10 +5,11 @@
     state: restarted
     daemon_reload: yes
     name: kubelet
-
+  become: true
 - name: Restart docker 
   systemd:
     state: restarted
     daemon_reload: yes
     name: docker
+  become: true
 

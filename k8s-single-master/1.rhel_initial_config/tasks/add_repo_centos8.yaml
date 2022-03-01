@@ -24,12 +24,14 @@
     enabled: yes
 
 - name: update all packages default repo
+  become: true
   yum:
     name: '*'
     state: latest
     exclude: kube*
 
 - name: Install the latest version of yum-utils
+  become: true
   yum:
     name: yum-utils
     state: latest
@@ -38,9 +40,10 @@
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
     dest: /etc/yum.repos.d/docer-ce.repo
-  become: yes
+  become: true
 
 - name: update all packages added repos
+  become: true
   yum:
     name: '*'
     state: latest

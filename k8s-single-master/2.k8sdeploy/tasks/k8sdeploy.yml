@@ -24,14 +24,16 @@
 
 
   when: '"{{ check_swap.stdout }}" != "0B"'
-- name: 
+- name: Make network bridge setting persistence
+  become: true
   copy:
       src: k8s.conf
       dest: "{{ k8s_conf_des }}"
       mode: '0777'
 - name: command
   command: sysctl --system
- 
+  become: true
+
 - name: install k8s
   block:
          - name: check package is already installed
@@ -58,6 +60,7 @@
                disable_excludes: kubernetes
                state: present
            when: '"{{ check_kubelet.stdout }}" == "" '
+           become: true
 
            #  - kubeadm-{{ version }} 
            #    - kubectl-{{ version }}
@@ -67,6 +70,7 @@
                name: kubelet
                enabled: yes
                state: restarted
+           become: true
            
 
          - name: check package is already installed
@@ -93,6 +97,8 @@
                disable_excludes: kubernetes
                state: present
            when: '"{{ check_kubectl.stdout }}" == "" '
+           become: true
+
          - name: check package is already installed
            shell: yum list installed | grep kubeadm
            register: check_kubeadm
@@ -117,4 +123,5 @@
                disable_excludes: kubernetes
                state: present
            when: '"{{ check_kubeadm.stdout }}" == "" '
+           become: true
 

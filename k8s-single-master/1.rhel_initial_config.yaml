@@ -1,5 +1,5 @@
 - hosts: master,worker
-  become: true
+  become: false
   tasks:
     - name: Configure centos vm
       include_role:

@@ -1,17 +1,17 @@
-- name: Copy role files to /var/iac/{{cluster_name}}/calico-gcp-vxlan.yaml in controller
+- name: Copy role files to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/calico-gcp-vxlan.yaml in controller
   become: false
   local_action:
     module: copy
     src: calico-gcp-vxlan.yaml
-    dest: /var/iac/{{cluster_name}}
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
 
-- name: Copy role files to /iac/{{cluster_name}}/calico-gcp-vxlan.yaml in leader
+- name: Copy role files to  {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/calico-gcp-vxlan.yaml in leader
   copy:
     src: calico-gcp-vxlan.yaml
-    dest: /var/iac/{{cluster_name}}
+    dest:  "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
 
 - name: Installing calico pod network
-  command: kubectl apply -f /var/iac/{{cluster_name}}/calico-gcp-vxlan.yaml
+  command: kubectl apply -f  {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/calico-gcp-vxlan.yaml
   retries: 10
   delay: 2
   register: r1

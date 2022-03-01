@@ -1,19 +1,22 @@
 - hosts: localhost,master
-  become: true
+  become: false
   name: Configure Global vars
   tasks:
-    - name: Create file at /var/iac for config storage
+    - name: Include vars
+      include_vars: ./global-vars.yaml
+
+    - name: Create file at  for config storage
       file:
-        path: /var/iac
+        path: $HOME/k8s-clusters/{{cluster_name}}
         mode: "777"
         state: directory
 #        owner: "{{ansible_env.SUDO_USER}}"
     - name: Remove Old Global Vars
       file:
-        path: "/var/iac/global-vars.yaml"
+        path: $HOME/k8s-clusters/{{cluster_name}}/global-vars.yaml
         state: absent
     - name: Copy global vars
       copy:
         src: global-vars.yaml
-        dest: /var/iac/
+        dest: $HOME/k8s-clusters/{{cluster_name}}/
         mode: u=rwx,g=rwx,o=rwx

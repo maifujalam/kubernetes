@@ -6,12 +6,12 @@
 
 - name: Role host-network
   include: host-network.yaml
-  become: yes
+  become: false
   become_user: root
   when: " {{deployment_type == 'host-network' }} "
 
 - name: Role node-port
   include: node-port.yaml
-  become: yes
+  become: false
   become_user: root
   when: '"{{deployment_type}}" == "node-port" or "edge"'

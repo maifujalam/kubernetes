@@ -3,6 +3,6 @@
   become: yes
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yaml
+      include_vars: ./global-vars.yaml
     - include_role:
         name: 9.cert-manager

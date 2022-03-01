@@ -1,11 +1,10 @@
 ---
 # tasks file for prom
 
-- name: Make dir at /tmp/kube-prometheous
+- name: Make dir at {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous
   file:
-    path: /tmp/kube-prometheous
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous"
     state: directory
-    mode: '1777'
 
 - name: Add repo
   shell: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -15,17 +14,17 @@
 
 - name: Check file download status
   stat:
-    path: /tmp/kube-prometheous/kube-prometheus-stack
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous/kube-prometheus-stack"
   register: r0
 
 - name: Download helm chart
-  shell: helm pull prometheus-community/kube-prometheus-stack --version=18.0.1 --untar --destination=/tmp/kube-prometheous
+  shell: helm pull prometheus-community/kube-prometheus-stack --version=18.0.1 --untar --destination={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous/
   when: not r0.stat.exists
 
 - name: Set node port
   template:
     src: values.yaml.j2
-    dest: /tmp/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml"
     force: yes
 
 - name: Get chart status
@@ -33,13 +32,18 @@
   register: r1
   ignore_errors: true
 
+- name: get namespace
+  shell: kubectl get ns | grep monitoring
+  register: rs
+
 - name: Create namespace
   shell: kubectl create ns monitoring
+  when: rs.stdout == ""
 
 - name: Helm install
-  shell: helm install -n monitoring prom /tmp/kube-prometheous/kube-prometheus-stack --values=/tmp/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
+  shell: helm install -n monitoring prom {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous/kube-prometheus-stack --values={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
   when: r1.rc != 0
 
 - name: Upgrade helm chart
-  shell: helm upgrade -n monitoring prom /tmp/kube-prometheous/kube-prometheus-stack --values=/tmp/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
+  shell: helm upgrade -n monitoring prom {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous/kube-prometheus-stack --values={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
   when: r1.rc == 0

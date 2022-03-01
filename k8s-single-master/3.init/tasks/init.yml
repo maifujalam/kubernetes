@@ -1,8 +1,3 @@
-- name: install docker-py
-  pip:
-    name: docker-py
-    executable: pip3
-
 - name: restart kubelet befor init
   become: yes
   become_user: root
@@ -28,47 +23,45 @@
 - debug:
     msg: "{{ output.stdout.split('\n') }}"
 
-- name: Creating Cluster config dircory at /var/iac/{{cluster_name}} in controller
+- name: Creating Cluster config dircory at {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}} in controller
   become: false
-  #ansible_become_password: gsLab!23
   local_action: file
   args:
-    path: /var/iac/{{cluster_name}}
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
     state: directory
 
-- name: Creating Cluster config dircory at /var/iac/{{cluster_name}} in leader
+- name: Creating Cluster config dircory at {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}} in leader
 #  become: true
-  #ansible_become_password: gsLab!23
   file:
-    path: /var/iac/{{cluster_name}}
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
     state: directory
 
 - name: Storing the init log at controller
   become: false
-  local_action: copy content={{ output.stdout }} dest=/var/iac/{{cluster_name}}/init_log_{{ansible_facts.hostname}}
+  local_action: copy content={{ output.stdout }} dest={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/init_log_{{ansible_facts.hostname}}
 
 - name: Storing the init log at leader
-  copy: content={{ output.stdout }} dest=/var/iac/{{cluster_name}}/init_log_{{ansible_facts.hostname}}
+  copy: content={{ output.stdout }} dest={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/init_log_{{ansible_facts.hostname}}
 
 - name: Store the worker join command in controller
   become: false
   vars:
     var1: "{{ output.stdout_lines[-2:] }}"
     var2: "{{ var1 | join(' ') }}"
-  local_action: copy content={{ var2 }} dest=/var/iac/{{cluster_name}}/worker_join_cmd.sh
+  local_action: copy content={{ var2 }} dest={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/worker_join_cmd.sh
 
 - name: Store the worker join command in leader
 #  become: true
   vars:
     var1: "{{ output.stdout_lines[-2:] }}"
     var2: "{{ var1 | join(' ') }}"
-  copy:  content={{ var2 }} dest=/var/iac/{{cluster_name}}/worker_join_cmd.sh
+  copy:  content={{ var2 }} dest={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/worker_join_cmd.sh
 
 - name: remove \ from a file in controller
   become: false
   local_action:
     module: replace
-    path: /var/iac/{{cluster_name}}/{{ item }} #path of the token file.
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/{{ item }}" #path of the token file.
     regexp: '\\'
     replace: ''
   with_items:
@@ -77,7 +70,7 @@
 - name: remove \ from a file in leader
 #  become: true
   replace:
-    path: /var/iac/{{cluster_name}}/{{ item }} #path of the token file.
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/{{ item }}" #path of the token file.
     regexp: '\\'
     replace: ''
   with_items:
@@ -85,7 +78,7 @@
 
 - name: Read worker token
   become: false
-  local_action: shell cat /var/iac/{{cluster_name}}/worker_join_cmd.sh
+  local_action: shell cat "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/worker_join_cmd.sh"
   register: worker_join_cmd
 
 - name: Print worker token

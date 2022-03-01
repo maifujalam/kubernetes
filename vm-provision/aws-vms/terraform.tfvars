@@ -9,13 +9,14 @@ allowed_ports = [
   {"port":"80","protocol":"TCP","description":"http"},
   {"port":"179","protocol":"TCP","description":"BGP"},
   {"port":"443","protocol":"TCP","description":"https"},
-  {"port":"5001","protocol":"TCP","description":"app-1"},
   {"port":"4789","protocol":"UDP","description":"vxlan"},
   {"port":"5473","protocol":"TCP","description":"typha"},
   {"port":"6443","protocol":"TCP","description":"k8s-api"},
-  {"port":"8080","protocol":"TCP","description":"http"},
+  {"port":"8080","protocol":"TCP","description":"http-jenkins"},
   {"port":"5000","protocol":"TCP","description":"nexus"},
-  {"port":"30000","protocol":"-1","description":"k8s-dashboard"}
+  {"port":"32080","protocol":"TCP","description":"k8s-nginx-http"},
+  {"port":"32443","protocol":"TCP","description":"k8s-nginx-https"},
+  {"port":"50000","protocol":"TCP","description":"jenkins-agents"}
 ]
 vpc_name = "vpc-default"
 subnets = ["private-subnet-1-a","private-subnet-1-b","private-subnet-1-c"]

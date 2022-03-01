@@ -3,14 +3,14 @@
 
 - name: Setup calico on gcp.
   include: install-calico-gcp.yml
-  become: yes
+  become: false
   become_user: root
   when:
     - '"{{ platform }}" == "GCP"'
 
 - name: Setup calico on local.
   include: install-calico.yml
-  become: yes
+  become: false
   become_user: root
   when:
     - '"{{ platform }}" == "Local" or "aws" '

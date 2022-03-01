@@ -1,4 +1,5 @@
 - name: Letting iptables see bridged traffic
+  become: true
   copy:
     src: k8s.conf
     dest: /etc/sysctl.d/k8s.conf
@@ -9,6 +10,7 @@
 
 - name: Reload sysctl config for iptables
   command: sysctl --system
+  become: true
 
 - name: Check ip forwarding
   shell: cat /proc/sys/net/ipv4/ip_forward

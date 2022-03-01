@@ -6,3 +6,4 @@
   until: image_pull.rc == 0
   retries: 10
   delay: 5
+  become: true

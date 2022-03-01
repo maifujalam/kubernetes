@@ -1,55 +1,36 @@
-# - name: Copy role files to /var/iac/{{cluster_name}}/calico.yaml in controller
-#   become: false
-#   local_action:
-#     module: copy
-#     src: calico.yaml
-#     dest: /var/iac/{{cluster_name}}
-#
-# - name: Copy role files to /iac/{{cluster_name}}/calico.yaml in leader
-#   copy:
-#     src: calico.yaml
-#     dest: /var/iac/{{cluster_name}}
-#
-# - name: Installing calico pod network
-#   command: kubectl apply -f /var/iac/{{cluster_name}}/calico.yaml
-#   retries: 10
-#   delay: 2
-#   register: r1
-#   until: r1.rc == 0
-
-- name: Copy role file tigera-operator to /var/iac/{{cluster_name}}/tigera-operator.yaml in controller
+- name: Copy role file tigera-operator to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator.yaml in controller
   become: false
   local_action:
     module: copy
     src: tigera-operator.yaml
-    dest: /var/iac/{{cluster_name}}
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
 
-- name: Copy role files to /iac/{{cluster_name}}/tigera-operator.yaml in leader
+- name: Copy role files to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator.yaml in leader
   copy:
     src: tigera-operator.yaml
-    dest: /var/iac/{{cluster_name}}
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
 
 - name: Copy calico network config in controller
   become: false
   local_action:
     module: template
     src: template/install-calico.yaml.j2
-    dest: /var/iac/{{cluster_name}}/install-calico.yaml
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/install-calico.yaml"
 
 - name: Copy calico network config to leader
   template:
     src: template/install-calico.yaml.j2
-    dest: /var/iac/{{cluster_name}}/install-calico.yaml
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/install-calico.yaml"
 
 - name: Installing calico tigera operator
-  command: kubectl apply -f /var/iac/{{cluster_name}}/tigera-operator.yaml
+  shell: kubectl apply -f {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator.yaml
   retries: 10
   delay: 2
   register: r1
   until: r1.rc == 0
 
 - name: Install Calico Network
-  command: kubectl apply -f /var/iac/{{cluster_name}}/install-calico.yaml
+  shell: kubectl apply -f {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/install-calico.yaml
   retries: 10
   delay: 2
   register: r2

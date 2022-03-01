@@ -12,7 +12,8 @@
   shell: docker info | grep cgroup | awk '{print $3}'
   register: cgroup_value
 
-- name: replace 
+- name: replace
+  become: true
   lineinfile:
           path: /etc/sysconfig/kubelet
           regexp: '^KUBELET_EXTRA_ARGS='

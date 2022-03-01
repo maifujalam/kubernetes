@@ -7,6 +7,7 @@
     msg: "{{r1}}"
 
 - name: downloading calicoctl binary
+  become: true
   get_url:
     url: "{{url}}"
     dest: "{{dest}}"
@@ -15,6 +16,7 @@
 
 - name: Node status
   shell: calicoctl node status
+  become: true
   register: nodestatus
   delay: 2
   until: nodestatus.rc == 0

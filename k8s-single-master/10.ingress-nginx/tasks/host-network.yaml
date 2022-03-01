@@ -5,23 +5,23 @@
   register: r1
   ignore_errors: true
 
-- name: Make dir /tmp/ingress
+- name: Make dir "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/ingress"
   file:
-    path: /tmp/ingress
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/ingress"
     state: directory
 
 - name: Copy helm values
   template:
     src: values-host.yaml.j2
-    dest:  /tmp/ingress/values-host.yaml
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/ingress/values-host.yaml"
     force: true
 
 - name: Helm install
-  shell: helm install ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values=/tmp/ingress/values-host.yaml
+  shell: helm install ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/ingress/values-host.yaml
   when: r1.rc != 0
 
 - name: Upgrading on namespace ingress-nginx
-  shell: helm upgrade ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values=/tmp/ingress/values-host.yaml
+  shell: helm upgrade ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/ingress/values-host.yaml
   when: r1.rc == 0
 -
 - name: Waiting for pods to be online on namespace ingress-nginx

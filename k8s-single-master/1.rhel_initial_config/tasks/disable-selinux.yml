@@ -6,3 +6,4 @@
     state: disabled
 - name: Chane SELinux Config file.
   shell: sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+  become: true

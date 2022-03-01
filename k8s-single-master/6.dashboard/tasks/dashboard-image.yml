@@ -3,9 +3,11 @@
     name: kubernetesui/metrics-scraper
     source: pull
     tag: v{{dashboard_metrics_scrapper_version}}
+  become: true
 
 - name: Pull dashboard images kubernetesui/dashboard:v{{dahboard_version}} (2/2)
   docker_image:
     name: kubernetesui/dashboard
     source: pull
     tag: v{{dahboard_version}}
+  become: true

@@ -1,70 +1,70 @@
 - name: Configure RHEL
   hosts: master,worker
-  become: true
+  become: false
   tasks:
     - import_role:
         name: 1.rhel_initial_config
 
 - name: Install k8s
   hosts: master,worker
-  become: true
+  become: false
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yaml
+      include_vars: ./global-vars.yaml
     - include_role:
         name: 2.k8sdeploy
 
 - name: Install k8s
   hosts: master
-  become: true
+  become: false
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yaml
+      include_vars: ./global-vars.yaml
     - include_role:
         name: 3.init
 
 - name: Install CNI
   hosts: master
-  become: yes
+  become: false
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yaml
+      include_vars: ./global-vars.yaml
     - include_role:
         name: 4.cni
 
 - name: Join Worker
   hosts: worker
-  become: yes
+  become: false
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yaml
+      include_vars: ./global-vars.yaml
     - include_role:
         name: 5.join-worker
 
 - name: Install Dashboard
   hosts: master
-  become: yes
+  become: false
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yaml
+      include_vars: ./global-vars.yaml
     - include_role:
         name: 6.dashboard
 
 - name: Install helm
   hosts: master
-  become: yes
+  become: false
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yaml
+      include_vars: ./global-vars.yaml
     - include_role:
         name: 7.helm-install
 
 - name: Install prometheous stack
   hosts: master
-  become: yes
+  become: false
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yaml
+      include_vars: ./global-vars.yaml
     - include_role:
         name: 8.kube-prometheus
 
@@ -104,20 +104,20 @@
 #    - include_role:
 #        name: etcdctl
 
-- name: Install cert manager
-  hosts: master
-  become: yes
-  tasks:
-    - name: Include vars
-      include_vars: /var/iac/global-vars.yaml
-    - include_role:
-        name: 9.cert-manager.yaml
+#- name: Install cert manager
+#  hosts: master
+#  become: yes
+#  tasks:
+#    - name: Include vars
+#      include_vars: /var/iac/global-vars.yaml
+#    - include_role:
+#        name: 9.cert-manager.yaml
 
 - name: Install nginx-ingrss controller
   hosts: master
-  become: yes
+  become: false
   tasks:
     - name: Include vars
-      include_vars: /var/iac/global-vars.yaml
+      include_vars: ./global-vars.yaml
     - include_role:
         name: 10.ingress-nginx

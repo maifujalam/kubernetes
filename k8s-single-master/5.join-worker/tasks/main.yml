@@ -8,17 +8,19 @@
     name: kubelet
     state: started
     enabled: true
+  become: true
 
 - name: Checking if docker service started
   service:
     name: docker
     state: started
     enabled: yes
+  become: true
 
 - name: Copy worker_join_cmd to {{ansible_facts.hostname}}
   copy:
-    src: /var/iac/{{cluster_name}}/worker_join_cmd.sh
-    dest: /var/iac/{{cluster_name}}/
+    src: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/worker_join_cmd.sh"
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/"
 
 - name: restart kubelet befor init
   become: yes
@@ -37,8 +39,9 @@
   become: yes
 
 - name: Executing Join Command
-  command: sh /var/iac/{{cluster_name}}/worker_join_cmd.sh
+  command: sh {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/worker_join_cmd.sh
   register: output
+  become: true
   notify:
     - check if kubelet is up and running
     - check if slave added
@@ -47,11 +50,11 @@
   become: true
   copy:
     content: "{{ output.stdout }}"
-    dest: /var/iac/{{cluster_name}}/init_log_file.log
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/init_log_file.log"
 
 - name: Storing the init log to {{ansible_facts.hostname}}
   become: false
   local_action:
     module: copy
     content: "{{ output.stdout }}"
-    dest: /var/iac/{{cluster_name}}/init_log_{{ansible_facts.hostname}}.log
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/init_log_{{ansible_facts.hostname}}.log"

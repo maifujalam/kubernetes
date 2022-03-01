@@ -1,13 +1,11 @@
 - hosts: localhost
-  gather_facts: true
-  become: yes
   tasks:
-    - name: Env print
-      debug:
-        msg: "dcs"
-    - name: Print facts
-      debug:
-        var: ansible_facts
+#     - name: Env print
+#       debug:
+#         msg: "dcs"
+#     - name: Print facts
+#       debug:
+#         var: ansible_facts
     - name:
       debug:
         msg: "{{ansible_facts.env.HOME}}"

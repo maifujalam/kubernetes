@@ -4,31 +4,31 @@
   register: r0
   ignore_errors: true
 
-- name: Make dir /var/iac/ingress
+- name: Make dir {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/ingress
   file:
-    path: /var/iac/{{cluster_name}}/ingress
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/ingress"
     state: directory
 
 - name: Copy helm values
   template:
     src: values-node-port.yaml.j2
-    dest: /var/iac/{{cluster_name}}/ingress/values-node-port.yaml
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/{{cluster_name}}/ingress/values-node-port.yaml"
 
 - name: Helm dry run to save value
-  shell: helm install ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values=/var/iac/{{cluster_name}}/ingress/values-node-port.yaml --dry-run
+  shell: helm install ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/{{cluster_name}}/ingress/values-node-port.yaml --dry-run
   register: r1
 
 - name: Save helm dry run
   copy:
     content: "{{r1.stdout.split('\n')}}"
-    dest: /var/iac/{{cluster_name}}/ingress/helm_dry-ryn.yaml
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/{{cluster_name}}/ingress/helm_dry-ryn.yaml"
 
 - name: Helm install
-  shell: helm install ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values=/var/iac/{{cluster_name}}/ingress/values-node-port.yaml
+  shell: helm install ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/{{cluster_name}}/ingress/values-node-port.yaml
   when: r0.rc != 0
 
 - name: Upgrading on namespace ingress-nginx
-  shell: helm upgrade ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values=/var/iac/{{cluster_name}}/ingress/values-node-port.yaml
+  shell: helm upgrade ingress ingress-nginx/ingress-nginx --version=4.0.1 --namespace ingress-nginx --create-namespace --values={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}/{{cluster_name}}/ingress/values-node-port.yaml
   when: r0.rc == 0
 
 - name: Waiting for pods to be online on namespace ingress-nginx

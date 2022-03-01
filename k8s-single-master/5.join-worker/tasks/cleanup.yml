@@ -9,7 +9,7 @@
 
 - name: "Cleanup config files"
   file:
-    path: $HOME/.kube/config
+    path: "{{ansible_facts.env.HOME}}/.kube/config"
     state: absent
 
 - name: "Cleanup config files of calico old config"
@@ -20,14 +20,17 @@
 - name: Clean ip tabales full
   shell: iptables -F
   ignore_errors: true
+  become: true
 
 - name: Clean ip table chains
   shell: iptables -X
   ignore_errors: true
+  become: true
 
 - name: Clean all iptables
   shell: iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
   ignore_errors: true
+  become: true
 
-- name: Reboot VM
-  reboot:
+#- name: Reboot VM
+#  reboot:

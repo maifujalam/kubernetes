@@ -1,20 +1,21 @@
 ---
   - name: Making directory .kube
     file:
-      path: $HOME/.kube
+      path: "{{ansible_facts.env.HOME}}/.kube"
       state: directory
 
 
   - name: Copy the required config file.
+    become: true
     copy:
       remote_src: yes  
       src: /etc/kubernetes/admin.conf 
-      dest: $HOME/.kube/config
+      dest: "{{ansible_facts.env.HOME}}/.kube/config"
 
-  - name: Copy kubeconfig file to /iac/{{cluster_name}}/config in controller
+  - name: Copy kubeconfig file to $HOME/k8s-clusters/{{cluster_name}}/config in controller
     copy:
-      src: $HOME/.kube/config
-      dest: /var/iac/{{cluster_name}}/config
+      src: "{{ansible_facts.env.HOME}}/.kube/config"
+      dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/config"
       remote_src: true
 
   - name: Do auto completion

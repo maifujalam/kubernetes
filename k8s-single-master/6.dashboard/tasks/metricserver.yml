@@ -1,7 +1,7 @@
-- name: Copy metric-server.yaml to /var/iac/{{cluster_name}}
+- name: Copy metric-server.yaml to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}
   template:
     src: metrics-server.yaml.j2
-    dest: /var/iac/{{cluster_name}}/metrics-server.yaml
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/metrics-server.yaml"
 
 - name: Install Kubernetes Metrics-server
-  command: kubectl apply -f /var/iac/{{cluster_name}}/metrics-server.yaml
+  command: kubectl apply -f "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/metrics-server.yaml"
