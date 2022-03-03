@@ -11,6 +11,7 @@
 #     force: yes
 
 - name: Add K8s repo
+  become: yes
   yum_repository:
     name: kubernetes
     description: kubernetes YUM repository

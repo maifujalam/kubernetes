@@ -35,6 +35,7 @@
 - name: get namespace
   shell: kubectl get ns | grep monitoring
   register: rs
+  ignore_errors: true
 
 - name: Create namespace
   shell: kubectl create ns monitoring
@@ -47,3 +48,19 @@
 - name: Upgrade helm chart
   shell: helm upgrade -n monitoring prom {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous/kube-prometheus-stack --values={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/kube-prometheous/kube-prometheus-stack/charts/grafana/values.yaml
   when: r1.rc == 0
+
+- name: Copy grafana ingress
+  template:
+    src: grafana-ingress.yaml.j2
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/grafana-ingress.yaml"
+
+- name: Install grafana ingress
+  command: kubectl apply -f {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/grafana-ingress.yaml
+
+- name: Copy prometeous dashboard ingress
+  template:
+    src: prometheous-ingress.yaml.j2
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/prometheous-ingress.yaml"
+
+- name: Install prometheous dashboard ingress
+  command: kubectl apply -f {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/prometheous-ingress.yaml

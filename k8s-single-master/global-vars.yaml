@@ -1,4 +1,4 @@
-cluster_name: k8s-aws-1       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
+cluster_name: aws-k8s-1       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
 k8s_version: 1.21.1
 docker_version: 19.03.15  # Dont go for latest version
 domain: maifuj.com
@@ -13,7 +13,7 @@ containerIPForwarding: Disabled  # Enabled or Disabled(Default)  ( Note:- If hav
 dahboard_version: 2.3.1
 dashboard_metrics_scrapper_version: 1.0.6
 dashboard_port: 30000
-dashboard_path: /dashboard # absolute path will be <cluster_name>.<domain>/<dashboard_path> i.e k8s-aws-1.maifuj.com/dashboard
+dashboard_path: /dashboard # absolute path will be <cluster_name>.<domain>/<dashboard_path> i.e aws-k8s-1.maifuj.com/dashboard
 metrics_server_version: 0.5.0
 
 # ETCD Tuning
@@ -30,14 +30,15 @@ src: /home/skmaifuj/Desktop/NFS/mini_cluster1/
 #Additional Tools
 enable_grafana_prometheous: true  # install monitoring tool on port 30001
 grafana_node_port: 30001          # Port where grafana dashboard will be accessed
-grafana_path : /grafana          # absolute path will be <cluster_name>.<domain>/<grafana_path> i.e k8s-aws-1.maifuj.com/grafana
+grafana_path : /grafana          # absolute path will be <cluster_name>.<domain>/<grafana_path> i.e aws-k8s-1.maifuj.com/grafana
+prometheous_path: /prometheous
 install_etcdctl: true             # install etcdctl for master node
 enable_image_cache: false         # Load saved images from /vagrant/docker-images file
 enable_ingress_controller: false
 
 #----------CLI-------
 #Please add below fields when running wit cli
-master_ip : 172.31.0.105
+master_ip : 172.31.0.110
 extra_ip : 3.82.7.245
 platform: AWS  #( Local or GCP or AWS)
 

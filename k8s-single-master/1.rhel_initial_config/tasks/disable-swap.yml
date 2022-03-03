@@ -8,10 +8,12 @@
 #  become: true
 
 - name: Diable swap:- temporarry(1/2)
+  become: true
   shell: |
     swapoff -a
 
 - name: Disable swap:- permanent (2/2)
+  become: true
   lineinfile:
     path: /etc/fstab
     regexp: 'swap'

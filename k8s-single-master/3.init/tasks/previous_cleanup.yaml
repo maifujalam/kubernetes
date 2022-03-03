@@ -11,11 +11,13 @@
   file:
     path: "{{ansible_facts.env.HOME}}/.kube/config"
     state: absent
+  become: true
 
 - name: "Cleanup config files of calico old config"
   file:
     path: /etc/cni/net.d/
     state: absent
+  become: true
 
 - name: Clean ip tabales full
   shell: iptables -F

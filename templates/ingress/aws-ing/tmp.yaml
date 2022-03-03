@@ -7,13 +7,13 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/configuration-snippet:  rewrite ^({{dashboard_path}})$ $1/ redirect;
+    nginx.ingress.kubernetes.io/configuration-snippet:  rewrite ^(/dashboard)$ $1/ redirect;
 spec:
   rules:
-  - host: {{cluster_name}}.{{domain}}
+  - host: aws-k8s-1.maifuj.com/dashboard
     http:
       paths:
-      - path: {{dashboard_path}}(/|$)(.*)    #/db is matched with rewrite ^(/db)
+      - path: /dashboard(/|$)(.*)    #/db is matched with rewrite ^(/db)
         pathType: Prefix
         backend:
           service:

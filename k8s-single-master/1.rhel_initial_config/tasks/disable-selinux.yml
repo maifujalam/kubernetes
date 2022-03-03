@@ -2,6 +2,7 @@
 #    name: pip
 #    state: latest
 - name: Disable SELinux
+  become: yes
   selinux:
     state: disabled
 - name: Chane SELinux Config file.

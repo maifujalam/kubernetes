@@ -39,3 +39,11 @@
     dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/config"
     flat: yes
   ignore_errors: yes
+
+- name: Copy dashboard ingress
+  template:
+    src: dashboard-ingress.yaml.j2
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/dashboard-ingress.yaml"
+
+- name: Install dashboard ingress
+  command: kubectl apply -f {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/dashboard-ingress.yaml

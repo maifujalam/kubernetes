@@ -5,9 +5,11 @@
 - name: configure k8s deploy
   include_tasks: k8sdeploy.yml
 - name: install docker
-  include_tasks: install_docker.yml
+  become: true
+  import_tasks: install_docker.yml
 - name: configure cgroup
-  include_tasks: config_cgroup.yml
+  become: true
+  import_tasks: config_cgroup.yml
 # - name: add the versions 
 #   include_tasks: add_to_global.yml
 

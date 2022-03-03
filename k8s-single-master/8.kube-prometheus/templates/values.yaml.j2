@@ -143,7 +143,7 @@ podPortName: grafana
 ##
 service:
   enabled: true
-  type: NodePort
+  type: ClusterIP
   port: 80
   targetPort: 3000
     # targetPort: 4181 To be used with a proxy extraContainer
@@ -549,9 +549,8 @@ grafana.ini:
   grafana_net:
     url: https://grafana.net
 ## grafana Authentication can be enabled with the following values on grafana.ini
- # server:
-      # The full public facing url you use in browser, used for redirects and emails
- #    root_url:
+  server:
+    root_url: https://{{cluster_name}}.{{domain}}:{{grafana_path}}
  # https://grafana.com/docs/grafana/latest/auth/github/#enable-github-in-grafana
  # auth.github:
  #    enabled: false

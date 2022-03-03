@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/configuration-snippet:  rewrite ^({{grafana_path}})$ $1/ redirect;
+spec:
+  rules:
+  - host: {{cluster_name}}.{{domain}}
+    http:
+      paths:
+      - path: {{grafana_path}}(/|$)(.*)    #/db is matched with rewrite ^(/db)
+        pathType: Prefix
+        backend:
+          service:
+            name: prom-grafana
+            port:
+              number: 80
