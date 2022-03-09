@@ -1,2 +1,20 @@
-1. build docker image
-2.
+1. build docker image.
+    a. docker build -t abc .
+2. change port of a running container?
+    a.stop the container b. commit the container c. start the container with port attached .Because only start and create have option to pass -p as port.
+3. Copy file to container.OR copy file from container to host.
+    a. docker cp src dest.Ex:- docker cp abc container_id:/,docker cp container_id:/ .
+4. Can we build docker image from different docker file.
+    a. yes,it can be build using -f flag end with '.' .Ex:- docker build -t abc -f /path/to/any_docker_file_name .
+5. Can docker container run when daemon crashes.
+    1. yes,if live restore is enabled only.It helps in docker update.Edit /etc/docker/daemon.json.Then add {
+                                                                                                           "live-restore": true
+                                                                                                           }
+6. Difference between command and entrypoint.
+    Entrypoint is for running executable of the container.CMD is for passing default parameters of the mentioned entrypoint.
+
+7. What is PORT is docker file.
+    It's for documentation,as it does not exposes any port in reality.
+
+8. Difference between volume and mount?
+
