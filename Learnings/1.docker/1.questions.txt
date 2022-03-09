@@ -54,6 +54,25 @@
 21. what is tempfs mount type?
    It creates temprary file system in container memory.Only exists in the lifespan of container. docker run --mount type=tmpfs,dest=/tmp
 
+22. What are the different types of docker networks?
+    bridge(default),host,overlay,none,iplan,macvlan
+
+23. how to use docker host network.
+    docker run  --network=host -name=abc nginx
+
+24. create a network.
+    docker network create --driver=bridge --subnet=<cidr> my_network
+
+25. How to inspect container network?
+  docker inspect container_id.
+
+26. What is docker dns server?
+    docker resolves ip of a container through container name.Docker does it through dns server running on address 127.0.0.11.
+
+27. what is docker pause container?
+
+
+
 
 
 
