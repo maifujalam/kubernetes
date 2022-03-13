@@ -70,4 +70,29 @@
     kubeproxy:- it purpose is to mainatin route table on each node for pod network connectivity.
     kubectl proxy:- its creats a proxy tunnel between k8s cluster and the host running k8s.Alternative to LB.
 
-14.
+14. What is headless service?How it works?
+    Service with clusterIP: None .hare cluster ip is not allocated to service.You can use any other service discovery mechanism.Kubeproxy-does not handle this
+    traffic.Ti is of two types:- with selectors,without selectors.
+    With Sectors:-
+    It works by skipping proxy(i.e service discovery) and directly connecting to one of pods endpoint.
+    Example:- nslookup normal-service => returns service ip (10.96.0.10),i.e A record
+               nslookup headless-service = > retuens one po pods ip ( 192.168.6.20)
+
+    Without Selector:-
+    It returns CNAME record with External type service.
+
+15. What is network policy?
+    It as as a fireall of pods.It is a set of allow/block rules which controlls the traafic flow in/out of pods.
+
+16. What is traffic policy?
+
+17. how tls works in ingress?
+   tls contains host and secret name.Host should be valid as certificate CN.Secret should be consists of tls.crt and tls.key with base64 encoded values.
+   It basically tells ingress controller to pass the traffic from client to load balancer in https on port 443.
+
+18. what are probs in k8s?
+
+
+
+
+
