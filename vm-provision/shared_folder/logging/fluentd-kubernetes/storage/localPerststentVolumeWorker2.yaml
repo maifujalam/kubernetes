@@ -8,6 +8,7 @@ spec:
   accessModes:
   - ReadWriteMany
   persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
   local:
     path: /mnt/disks/vol1
   nodeAffinity:
