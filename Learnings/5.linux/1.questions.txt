@@ -1,8 +1,0 @@
-1. Create folder with current date_time?
-   mkdir "$(date +%d-%m-%y_%H%M)"
-
-2. list folders with last modified?
-    ls -t
-
-3. Hard link vs soft link?
-
