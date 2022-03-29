@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: pvc-volume-nginx
 spec:
-  storageClassName: local-storage
+#   storageClassName: local-storage
   accessModes:
     - ReadWriteOnce
   resources:

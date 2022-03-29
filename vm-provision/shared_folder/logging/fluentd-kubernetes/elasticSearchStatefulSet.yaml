@@ -77,8 +77,8 @@ spec:
       labels:
         app: elasticsearch
     spec:
-      accessModes: [ "ReadWriteMany" ]
-      storageClassName: local-storage
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: fast-disks
       resources:
         requests:
-          storage: 2Gi
+          storage: 300Mi
