@@ -1,0 +1,2 @@
+Initialize cluster: sudo kubeadm init --config kubeadm-config.yaml -v=6  OR sudo kubeadm init --config=kubeadmConfigLocalCluster.yaml
+Get existing cluster kubeadm config: kubectl get cm kubeadm-config  -n kube-system -o yaml

@@ -36,8 +36,9 @@ spec:
   - metadata:
       name: www
     spec:
-      accessModes: [ "ReadWriteMany" ]
-      storageClassName: "local-storage"
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "fast-disks"
+#       volumeMode: Block
       resources:
         requests:
           storage: 1Gi
