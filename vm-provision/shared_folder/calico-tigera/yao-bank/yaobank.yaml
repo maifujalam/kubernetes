@@ -61,8 +61,8 @@ spec:
             - "http://database:2379"
             - "-listen-client-urls"
             - "http://0.0.0.0:2379"
-      nodeSelector:
-        kubernetes.io/hostname: worker2
+#       nodeSelector:
+#         kubernetes.io/hostname: worker2
 
 ---
 apiVersion: v1

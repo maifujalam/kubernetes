@@ -1,0 +1,17 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: default-allow-localhost
+spec:
+  selector: has(kubernetes.io/hostname)
+  ingress:
+  - action: Allow
+    protocol: TCP
+    source:
+      nets:
+      - 127.0.0.1/32
+  - action: Allow
+    protocol: UDP
+    source:
+      nets:
+      - 127.0.0.1/32

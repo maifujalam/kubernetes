@@ -1,0 +1,18 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: default-deny-egress
+spec:
+  order: 600
+  namespaceSelector: has(projectcalico.org/name) && projectcalico.org/name not in {"kube-system", "calico-system"}
+  serviceAccountSelector: internet-egress not in {"allowed"}
+  types:
+  - Egress
+  egress:
+    - action: Deny
+      destination:
+        notNets:
+          - 10.0.0.0/8
+          - 172.16.0.0/12
+          - 192.168.0.0/16
+          - 198.18.0.0/15   # Private cidr.Range is used for benchmark test of intra network communication.

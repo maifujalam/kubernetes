@@ -7,4 +7,4 @@ spec:
   - name: date-log
     image: busybox:1.28
     args: [/bin/sh, -c,
-            'i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done']
+            'i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 30; done']

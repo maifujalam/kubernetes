@@ -1,0 +1,15 @@
+kind: NetworkPolicy
+apiVersion: projectcalico.org/v3
+metadata:
+  name: database-policy
+  namespace: yaobank
+spec:
+  selector: app == 'database'
+  ingress:
+  - action: Allow
+    protocol: TCP
+    source:
+      selector: app == 'summary'
+    destination:
+      ports:
+      - 2379
