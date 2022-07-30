@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 echo "updating ssh config file.."
 sudo sed -i 's/PasswordAuthentication no/# PasswordAuthentication yes/' /etc/ssh/sshd_config
 sudo systemctl restart sshd
