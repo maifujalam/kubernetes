@@ -1,0 +1,17 @@
+[server]
+10.136.58.4
+10.136.58.5
+10.136.57.250
+
+[master]
+10.136.58.4
+
+[worker]
+10.136.58.5
+10.136.57.250
+
+[server:vars]
+ansible_user=root
+ansible_ssh_pass=gsLab!23
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ansible_python_interpreter=/bin/python3

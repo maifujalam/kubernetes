@@ -1,0 +1,9 @@
+---
+
+- name: Pulling images required for setting up a k8s cluster for version {{ k8s_version }}
+  shell: kubeadm config images pull --kubernetes-version {{ k8s_version }}
+  register: image_pull
+  until: image_pull.rc == 0
+  retries: 10
+  delay: 5
+  become: true

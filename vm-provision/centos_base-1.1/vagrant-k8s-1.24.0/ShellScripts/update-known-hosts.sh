@@ -1,0 +1,1 @@
+ssh-keygen -f "/home/skmaifuj/.ssh/known_hosts" -R "35.232.134.133"

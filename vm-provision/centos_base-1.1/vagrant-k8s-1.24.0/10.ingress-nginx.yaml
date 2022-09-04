@@ -1,0 +1,8 @@
+- name: Install ingress controller
+  hosts: master
+  become: false
+  tasks:
+    - name: Include vars
+      include_vars: ./global-vars.yaml
+    - include_role:
+        name: 10.ingress-nginx

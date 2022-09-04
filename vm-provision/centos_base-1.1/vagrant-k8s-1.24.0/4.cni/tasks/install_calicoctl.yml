@@ -1,0 +1,26 @@
+- name: Check calicoctl
+  shell: calicoctl node status
+  register: r1
+  ignore_errors: yes
+
+- debug:
+    msg: "{{r1}}"
+
+- name: downloading calicoctl binary
+  become: true
+  get_url:
+    url: "{{url}}"
+    dest: "{{dest}}"
+    mode: 777
+  when: r1.rc != 0
+
+- name: Node status
+  shell: calicoctl node status
+  become: true
+  register: nodestatus
+  delay: 2
+  until: nodestatus.rc == 0
+
+
+- debug:
+    msg: "{{ nodestatus.stdout.split('\n') }}"

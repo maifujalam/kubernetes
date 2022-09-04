@@ -1,0 +1,10 @@
+
+- name: check if kubelet is up and running
+  service:
+    name: kubelet
+    state: started
+
+- name: check if slave added
+  when : output.stdout | regex_search('This node has joined the cluster:')
+  debug:
+    msg: Worker Node {{ inventory_hostname }} added successfully to the clusterer

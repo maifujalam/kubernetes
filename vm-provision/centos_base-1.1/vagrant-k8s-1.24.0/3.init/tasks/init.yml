@@ -1,0 +1,86 @@
+# - name: restart kubelet befor init
+#   become: yes
+#   become_user: root
+#   service:
+#     name: kubelet
+#     daemon_reload: yes
+#     state: restarted
+#     enabled: yes
+
+# - name: docker restarted befor init
+#   service:
+#     name: docker
+#     state: restarted
+#     enabled: yes
+#   become: yes
+
+- name: Initializing k8s cluster
+  shell: kubeadm init --apiserver-advertise-address {{ master_ip }} --apiserver-cert-extra-sans={{ extra_ip }} --pod-network-cidr {{ network_cidr }}  --upload-certs --kubernetes-version={{ k8s_version }} --v=5
+  become: yes
+  become_user: root
+  register: output
+
+- debug:
+    msg: "{{ output.stdout.split('\n') }}"
+
+- name: Creating Cluster config dircory at {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}} in controller
+  become: false
+  local_action: file
+  args:
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
+    state: directory
+
+- name: Creating Cluster config dircory at {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}} in leader
+#  become: true
+  file:
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
+    state: directory
+
+- name: Storing the init log at controller
+  become: false
+  local_action: copy content={{ output.stdout }} dest={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/init_log_{{ansible_facts.hostname}}
+
+- name: Storing the init log at leader
+  copy: content={{ output.stdout }} dest={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/init_log_{{ansible_facts.hostname}}
+
+- name: Store the worker join command in controller
+  become: false
+  vars:
+    var1: "{{ output.stdout_lines[-2:] }}"
+    var2: "{{ var1 | join(' ') }}"
+  local_action: copy content={{ var2 }} dest={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/worker_join_cmd.sh
+
+- name: Store the worker join command in leader
+#  become: true
+  vars:
+    var1: "{{ output.stdout_lines[-2:] }}"
+    var2: "{{ var1 | join(' ') }}"
+  copy:  content={{ var2 }} dest={{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/worker_join_cmd.sh
+
+- name: remove \ from a file in controller
+  become: false
+  local_action:
+    module: replace
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/{{ item }}" #path of the token file.
+    regexp: '\\'
+    replace: ''
+  with_items:
+    - worker_join_cmd.sh
+
+- name: remove \ from a file in leader
+#  become: true
+  replace:
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/{{ item }}" #path of the token file.
+    regexp: '\\'
+    replace: ''
+  with_items:
+    - worker_join_cmd.sh
+
+- name: Read worker token
+  become: false
+  local_action: shell cat "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/worker_join_cmd.sh"
+  register: worker_join_cmd
+
+- name: Print worker token
+  debug:
+    msg: "{{ worker_join_cmd.stdout_lines }}"

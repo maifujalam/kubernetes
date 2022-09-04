@@ -1,0 +1,8 @@
+- name: Install helm
+  hosts: master
+  become: false
+  tasks:
+   - name: Include vars
+     include_vars: ./global-vars.yaml
+   - include_role:
+       name: 7.helm-install
