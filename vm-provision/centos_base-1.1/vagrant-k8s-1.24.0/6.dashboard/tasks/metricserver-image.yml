@@ -1,0 +1,12 @@
+- name: Check docker daemon is running.
+  service:
+    name: docker
+    state: started
+  become: true
+
+- name: Pull metric server images k8s.gcr.io/metrics-server-amd64:v{{metrics_server_version}}
+  docker_image:
+    name: k8s.gcr.io/metrics-server/metrics-server
+    source: pull
+    tag: v{{metrics_server_version}}
+  become: true

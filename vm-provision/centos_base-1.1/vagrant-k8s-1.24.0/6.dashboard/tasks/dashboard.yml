@@ -1,0 +1,41 @@
+- name: Copy dashboard.yaml to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}
+  template:
+    src: dashboard.yml.j2
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/dashboard.yml"
+
+- name: Install Kubernetes Dashboard
+  command: kubectl apply -f {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/dashboard.yml
+
+- name: Extracting Token for Dashboard
+  shell: 'kubectl -n kube-system describe $(kubectl get secret -n kube-system -o name | grep namespace) | grep token:'
+  register: myoutput
+
+- name: Pause for 15 secondss to stabilize cluster
+  pause:
+    seconds: 15
+
+- debug:
+    msg: "{{ myoutput.stdout.split('\n') }}"
+
+- name: Save Dashboard Access Token to ansible_facts.env.HOME/k8s-clusters/{{cluster_name}}/token.txt in controller node.
+  become: false
+  local_action: copy content="{{ myoutput.stdout_lines[0].replace("token:"," ").strip() }}" dest="{{ansible_facts.env.HOME}}/k8s-clusters/{{ cluster_name }}/token.txt"
+
+- name: Save Dashboard Access Token to {{ansible_facts.env.HOME}}/k8s-clusters/{{ cluster_name }} } in leader node.
+  copy:
+    content: "{{ myoutput.stdout_lines[0].replace('token:',' ').strip() }}"
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/token.txt"
+
+- name: Append token to ~/k8s-clusters/{{cluster_name}}/config file in leader node.
+  lineinfile:
+    path: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/config"
+    insertafter: 'client-key-data:'
+    line: "    token: {{ myoutput.stdout_lines[0].replace('token:',' ').strip() }}"
+
+- name: Copy config file from leader to controller.
+  become: false
+  fetch:
+    src: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/config"
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/config"
+    flat: yes
+  ignore_errors: yes

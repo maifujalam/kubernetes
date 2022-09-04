@@ -1,0 +1,17 @@
+- name: Add nginx helm repo
+  shell: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+- name: Update repo
+  shell: helm repo update
+
+- name: Role host-network
+  include: host-network.yaml
+  become: false
+  become_user: root
+  when: " {{deployment_type == 'host-network' }} "
+
+- name: Role node-port
+  include: node-port.yaml
+  become: false
+  become_user: root
+  when: '"{{deployment_type}}" == "node-port" or "edge"'

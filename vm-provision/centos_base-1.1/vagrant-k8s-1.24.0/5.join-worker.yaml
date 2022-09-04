@@ -1,0 +1,8 @@
+- name: Join Worker
+  hosts: worker
+  become: false
+  tasks:
+    - name: Include vars
+      include_vars: ./global-vars.yaml
+    - include_role:
+        name: 5.join-worker

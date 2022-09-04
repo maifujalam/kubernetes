@@ -1,0 +1,8 @@
+- name: Install CNI
+  hosts: master
+  become: true
+  tasks:
+    - name: Include vars
+      include_vars: ./global-vars.yaml
+    - include_role:
+        name: 4.cni

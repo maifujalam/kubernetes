@@ -1,0 +1,5 @@
+---
+- import_tasks: metricserver-image.yml
+- import_tasks: metricserver.yml
+- import_tasks: dashboard-image.yml
+- import_tasks: dashboard.yml
