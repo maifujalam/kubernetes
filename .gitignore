@@ -23,3 +23,4 @@ venv
 **/dockerimages
 /vm-provision/shared_folder/calico-tigera/installation/manifest-calico-entrprise/
 **/.vagrant
+**/*.box

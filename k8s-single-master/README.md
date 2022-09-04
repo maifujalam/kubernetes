@@ -53,3 +53,14 @@
 1. sudo ip link set tunl0 down
 2. sudo ip link delete tunl0
 3. ip link delete cali435e4f604ee
+
+
+**CONTAINERD**
+Download: containerd.io-1.6.7-3.1.el8.x86_64.rpm
+mkdir containerd && cd containerd
+cp containerd.io-1.6.7-3.1.el8.x86_64.rpm containerd -v
+sudo yum install --downloadonly --downloaddir=. containerd.io-1.6.7-3.1.el8.x86_64.rpm
+sudo yum localinstall containerd/*.rpm
+sudo systemctl restart containerd.service
+sudo systemctl enable containerd.service
+sh ShellScripts/get_crictl.sh
