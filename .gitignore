@@ -18,8 +18,6 @@ venv
 **.crt
 **.key
 **calicoctl
-**1
-
 **/dockerimages
 **/.vagrant
 **/*.box
