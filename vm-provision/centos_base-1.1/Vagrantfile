@@ -1,11 +1,11 @@
-IMAGE_NAME = "skmaifujalam/centos-stream-8"    # Base image of VM CentOS 8 Stream updated
-BOX_VERSION = "1.2"
+IMAGE_NAME = "generic/centos8"    # Base image of VM CentOS 8 Stream updated
+BOX_VERSION = "4.1.2"
 HOST_NAME = "controller"
 
 CPU = 2
 MEMORY = 4096
 HDD = 15
-IP = "192.168.56.2"
+IP = "192.168.56.3"
 
 Vagrant.configure("2") do |config|
   config.vagrant.plugins = ['vagrant-disksize','vagrant-hostmanager']
@@ -24,12 +24,13 @@ Vagrant.configure("2") do |config|
       vm.cpus = CPU
     end
     config.vm.provision "shell", inline: <<-SHELL
-        yum install epel-release -y
-        yum update -y
-        yum upgrade -y
-        yum install python3.9 -y
-        su - vagrant -c 'python3.9 -m pip install --user ansible'
-        su - vagrant -c 'ansible --version'
+        sh /vagrant/ShellScripts/update_ssh_config.sh
+        #yum install epel-release -y
+        #yum update -y
+        #yum upgrade -y
+        #yum install python3.9 -y
+        #su - vagrant -c 'python3.9 -m pip install --user ansible'
+        #su - vagrant -c 'ansible --version'
         hostnamectl
     SHELL
   end

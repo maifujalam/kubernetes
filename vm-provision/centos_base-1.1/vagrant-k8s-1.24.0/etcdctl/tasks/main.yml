@@ -1,0 +1,45 @@
+- name: Checking etcdctl
+  shell: which etcdctl
+  register: r1
+  ignore_errors: yes
+
+- debug:
+    msg: "{{r1}}"
+
+- name: Check  file is pulled
+  stat:
+    path: /var/iac/etcd-v3.5.0-linux-amd64.tar.gz
+  register: r2
+  ignore_errors: true
+
+- name: downloading etcdctl binary
+  get_url:
+    url: "{{url}}"
+    mode: 777
+    dest: /var/iac/etcd-v3.5.0-linux-amd64.tar.gz
+  when:
+    - r1.rc != 0
+    - not r2.stat.exists
+  ignore_errors: true
+
+
+- name: Untar to /tmp
+  ansible.builtin.unarchive :
+    src: /var/iac/etcd-v3.5.0-linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Copy from tmp to /bin
+  copy:
+    src: /tmp/etcd-v3.5.0-linux-amd64/etcdctl
+    dest: /usr//bin
+    mode: '777'
+    force: yes
+    remote_src: true
+
+- name: etcdctl version
+  shell: which etcdctl
+  register: etcdctl_version
+
+- debug:
+    msg: "{{ etcdctl_version.stdout.split('\n') }}"

@@ -1,0 +1,16 @@
+
+- name: Installation of epel-release and pip
+  yum:
+    name: python3-pip
+    state: present
+  become: true
+
+- name: install pexpect
+  pip:
+    name: pexpect
+    executable: pip3
+
+- name: install docker-py
+  pip:
+    name: docker-py
+    executable: pip3

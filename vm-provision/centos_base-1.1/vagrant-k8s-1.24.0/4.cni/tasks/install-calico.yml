@@ -1,0 +1,44 @@
+- name: Copy role file tigera-operator to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator.yaml in controller
+  become: false
+  local_action:
+    module: copy
+    src: tigera-operator.yaml
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
+
+- name: Copy role files to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator.yaml in leader
+  copy:
+    src: tigera-operator.yaml
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
+
+- name: Copy calico network config in controller
+  become: false
+  local_action:
+    module: template
+    src: template/install-calico.yaml.j2
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/install-calico.yaml"
+
+- name: Copy calico network config to leader
+  template:
+    src: template/install-calico.yaml.j2
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/install-calico.yaml"
+
+- name: Installing calico tigera operator
+  shell: kubectl apply -f {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator.yaml
+  retries: 10
+  delay: 2
+  register: r1
+  until: r1.rc == 0
+
+- name: Install Calico Network
+  shell: kubectl apply -f {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/install-calico.yaml
+  retries: 10
+  delay: 2
+  register: r2
+  until: r2.rc == 0
+
+- name: Waiting for calilico pods to up and ready.
+  shell: kubectl get pods -A -o json
+  register: kubectl_get_pods
+  until: kubectl_get_pods.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
+  retries: 60
+  delay: 6

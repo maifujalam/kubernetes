@@ -1,0 +1,11 @@
+[master]
+172.31.0.105
+
+[worker]
+172.31.0.136
+
+[all:vars]
+ansible_ssh_user=ec2-user
+ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+#ansible_python_interpreter=/bin/python3

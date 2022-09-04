@@ -1,0 +1,6 @@
+- hosts: master,worker
+  become: false
+  tasks:
+    - name: Configure centos vm
+      include_role:
+        name: 1.rhel_initial_config

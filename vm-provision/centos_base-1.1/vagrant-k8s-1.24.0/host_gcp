@@ -1,0 +1,12 @@
+[master]
+35.200.228.26
+
+[worker]
+10.128.0.10
+10.128.0.20
+
+[all:vars]
+ansible_ssh_user=alam
+ansible_ssh_private_key_file=~/.ssh/gcp/gcp
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ansible_python_interpreter=/bin/python3

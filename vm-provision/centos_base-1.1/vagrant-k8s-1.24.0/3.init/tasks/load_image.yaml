@@ -1,0 +1,11 @@
+- name: loading image
+  shell: "echo loading {{enable_image_cache}}"
+
+- name: Loading dockers of master for kubernetes version {{k8s_version}}
+  script:
+    cmd: files/ImportDockerImagesMaster.sh v{{k8s_version}}
+  register: r1
+
+- name: Loaded images
+  debug:
+    msg: "{{r1.stdout_lines}}"
