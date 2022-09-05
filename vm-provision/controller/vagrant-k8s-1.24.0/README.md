@@ -53,3 +53,5 @@
 1. sudo ip link set tunl0 down
 2. sudo ip link delete tunl0
 3. ip link delete cali435e4f604ee
+
+https://swapnasagarpradhan.medium.com/install-a-kubernetes-cluster-on-rhel8-with-conatinerd-b48b9257877a

@@ -64,3 +64,6 @@ sudo yum localinstall containerd/*.rpm
 sudo systemctl restart containerd.service
 sudo systemctl enable containerd.service
 sh ShellScripts/get_crictl.sh
+
+----
+`ps 1` to check cgroup is systemd(default for rhel) or cgroupfs(fedora,or unix based os)
