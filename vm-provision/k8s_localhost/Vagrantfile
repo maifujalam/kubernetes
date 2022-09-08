@@ -1,4 +1,4 @@
-IMAGE_NAME = "skmaifujalam/centos-stream-8"    # Base image of VM which is vagrant box of Centos8 18.04 TLS
+IMAGE_NAME = "skmaifujalam/k8s-1.25"    # Base image of VM which is vagrant box of Centos8 18.04 TLS
 BOX_VERSION = "1.2"           # Bse image version
 NW = 2                          # Specify the the numbers of worker VMs to create (Example:- 2,3,4)
 NM = 1                          # Specify number of master vms to create(Example:-3,4,5 but minimum 3)

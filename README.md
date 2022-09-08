@@ -19,3 +19,5 @@ pull-image-on-create: false
 
 
 /usr/lib/systemd/system/containerd.service
+
+sudo timedatectl set-timezone Asia/Kolkata
