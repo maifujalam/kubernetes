@@ -1,1 +1,0 @@
- kubeadm config print join-defaults
