@@ -1,10 +1,10 @@
 IMAGE_NAME = "skmaifujalam/k8s-1.25"    # Base image of VM which is vagrant box of Centos8 18.04 TLS
-BOX_VERSION = "1.2"           # Bse image version
+BOX_VERSION = "1.3"           # Bse image version
 NW = 2                          # Specify the the numbers of worker VMs to create (Example:- 2,3,4)
 NM = 1                          # Specify number of master vms to create(Example:-3,4,5 but minimum 3)
 MASTER = "master"               # Name of Master VM
 WORKER = "worker"                # Names of worker VMs(worker vms will be named as worker1,worker2,worker3 ... )
-CPU_MASTER = 2                  # Specify the CPU of master VM(Example :-1,2)
+CPU_MASTER = 4                  # Specify the CPU of master VM(Example :-1,2)
 CPU_WORKER = 1                   # Specify CPU of each worker VMs(Example :-1,2)
 MEMORY_MASTER = 4096            # Specify the RAM of master VMs in MB(Example :- 2048,4096)
 MEMORY_WORKER = 2048             # Specify the RAM of each worker VMs in MB(Example :- 2048,4096)
@@ -18,11 +18,11 @@ Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
     config.vm.box_check_update = false
     config.hostmanager.enabled = true
-    config.hostmanager.manage_host = true  # false to disable update '/etc/hosts' of host with guest VMs dns.
+    #config.hostmanager.manage_host = true  # false to disable update '/etc/hosts' of host with guest VMs dns.
     config.hostmanager.manage_guest = true
     config.hostmanager.ignore_private_ip = false
     config.hostmanager.include_offline = true
-    config.disksize.size = HDD
+    #config.disksize.size = HDD
     config.vm.synced_folder ".", "/vagrant", disabled: false
     (1..NM).each do |i|
         config.vm.define MASTER +  "" do |master|
@@ -38,8 +38,17 @@ Vagrant.configure("2") do |config|
             master.vm.network "private_network", ip: IP_MASTER
             master.vm.hostname = MASTER
             master.vm.provision "shell", inline: <<-SHELL
-                yum update -y
-                yum upgrade -y
+                #yum update -y
+                #yum upgrade -y
+                #kubeadm init --config /tools/kubeadm-init/init-default.yaml
+                #su - vagrant -c 'mkdir -p $HOME/.kube'
+                #su - vagrant -c 'sudo cp -vf /etc/kubernetes/admin.conf $HOME/.kube/config'
+                #su - vagrant -c 'sudo chown $(id -u):$(id -g) $HOME/.kube/config'
+                #echo "sleep for 5 seconds"
+                #sleep 5
+                #su - vagrant -c 'kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/tigera-operator.yaml' || true
+                #su - vagrant -c ''
+                sh /vagrant/ShellScripts/k8s_master_bootstrap.sh
             SHELL
         end
     end
@@ -57,8 +66,9 @@ Vagrant.configure("2") do |config|
             worker.vm.network "private_network", ip: IP_WORKER[j-1]
             worker.vm.hostname = WORKER + "#{j}"
             worker.vm.provision "shell", inline: <<-SHELL
-                yum update -y
-                yum upgrade -y
+                #yum update -y
+                #yum upgrade -y
+                kubeadm join --config  /tools/kubeadm-join/join-default-worker"#{j}".yaml
             SHELL
         end
     end
