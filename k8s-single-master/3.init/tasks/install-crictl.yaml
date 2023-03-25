@@ -1,0 +1,22 @@
+#- name: Download crictl
+#  #shell: wget https://github.com/kubernetes-sigs/cri-tools/releases/download/{{k8s_version}}/crictl-{{k8s_version}}/linux-amd64.tar.gz
+#  shell: wget https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.26.0/crictl-v1.26.0-linux-amd64.tar.gz
+
+- name: downloading crioctl binary
+  become: true
+  get_url:
+    url: "https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.26.0/crictl-v1.26.0-linux-amd64.tar.gz"
+    dest: /tmp/crictl-v1.26.0-linux-amd64.tar.gz
+    mode: 777
+
+- name: Extract crictl
+  shell: sudo tar zxvf /tmp/crictl-v1.26.0-linux-amd64.tar.gz -C /usr/local/bin
+
+- name: Delete tar file
+  shell: rm -f /tmp/crictl-$VERSION-linux-amd64.tar.gz
+
+- name: Copy file to to /etc/crictl.yaml
+  become: true
+  copy:
+    src: crictl.yaml
+    dest: /etc/crictl.yaml

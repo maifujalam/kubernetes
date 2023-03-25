@@ -1,7 +1,10 @@
 cluster_name: k8s-gcp-1       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
-k8s_version: 1.26.3
+platform: GCP  #( Local or GCP or AWS)
+k8s_version: 1.26.1
 docker_version: 23.0.1  # Dont go for latest version
 domain: maifuj.com
+master_ip : 10.128.0.21
+extra_ip : 35.224.195.74
 #######Calico Configuration ####
 install_calicoctl: true
 network_cidr: 192.168.0.0/16 # Pod Network CIDR
@@ -37,7 +40,5 @@ enable_ingress_controller: false
 
 #----------CLI-------
 #Please add below fields when running wit cli
-master_ip : 10.128.0.21
-extra_ip : 35.224.195.74
-platform: GCP  #( Local or GCP or AWS)
+install_crictl: true
 

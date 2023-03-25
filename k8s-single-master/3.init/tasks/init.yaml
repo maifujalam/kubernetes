@@ -20,12 +20,6 @@
 #  become_user: root
 #  register: output
 
-- name: Copy k8s cluster init file
-  become: true
-  local_action:
-    module: template
-    src: template/init-default.yaml.j2
-    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/init-defaults.yaml"
 
 - name: Initialize the cluster
   become: true

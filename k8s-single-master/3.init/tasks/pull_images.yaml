@@ -1,7 +1,14 @@
 ---
 
+- name: Copy k8s cluster init file
+  become: true
+  local_action:
+    module: template
+    src: template/init-default.yaml.j2
+    dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/init-defaults.yaml"
+
 - name: Pulling images required for setting up a k8s cluster for version {{ k8s_version }}
-  shell: kubeadm config images pull --kubernetes-version {{ k8s_version }}
+  shell: kubeadm config images pull --kubernetes-version {{ k8s_version }} --config "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/init-defaults.yaml"
   register: image_pull
   until: image_pull.rc == 0
   retries: 10
