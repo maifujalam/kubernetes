@@ -1,7 +1,7 @@
 ---
 # tasks file for k8sdeploy
-#- name: include file
-#  include_tasks: pre-configuration.yml
+- name: include file
+  include_tasks: pre-configuration.yml
 - name: configure k8s deploy
   include_tasks: k8sdeploy.yml
 - name: install docker

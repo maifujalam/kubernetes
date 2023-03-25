@@ -12,7 +12,6 @@
                  - yum-utils
                  - device-mapper-persistent-data
                  - lvm2
-                 - tc
                  - bash-completion
                  - bind-utils
                  - net-tools
@@ -48,5 +47,13 @@
 
 
   when: "'docker.service' not  in  ansible_facts.services"
+
+- name: Install tc
+  become: true
+  yum:
+    name: tc
+    state: present
+  when:
+    - ansible_distribution == 'Debian'
 
 

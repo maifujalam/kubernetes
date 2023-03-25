@@ -1,8 +1,19 @@
+- name: Install ansble collection
+  local_action: shell ansible-galaxy collection install ansible.posix
+
 - name: to stop and disable firewall
   service:
-          state: stopped
-          enabled: no
-          name: firewalld 
+    state: stopped
+    enabled: no
+    name: firewalld
+
+#- name: permit traffic in default zone for https service
+#  ansible.posix.firewalld:
+#    service: https
+#    permanent: yes
+#    state: enabled
+
+
 - name: get service facts
   service_facts:
 
@@ -19,13 +30,13 @@
         path: "{{ selinux_configfile }}"
   register: result
 
-- name: to change in selinux file
-  lineinfile:
-          path: "{{ selinux_configfile }}"
-          regexp: '^SELINUX='
-          line: SELINUX=disabled
-  when: result.stat.exists
+#- name: to change in selinux file
+#  lineinfile:
+#          path: "{{ selinux_configfile }}"
+#          regexp: '^SELINUX='
+#          line: SELINUX=disabled
+#  when: result.stat.exists
 
-#- name: to reboot
-#  reboot:
-
+- name: Disable SELinux
+  ansible.posix.selinux:
+    state: disabled

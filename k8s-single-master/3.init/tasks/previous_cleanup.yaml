@@ -16,6 +16,7 @@
   file:
     path: /etc/cni/net.d/
     state: absent
+  become: true
 
 - name: Clean ip tabales full
   shell: iptables -F

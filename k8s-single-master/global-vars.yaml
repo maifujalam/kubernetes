@@ -1,6 +1,6 @@
-cluster_name: k8s-aws-1       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
-k8s_version: 1.21.1
-docker_version: 19.03.15  # Dont go for latest version
+cluster_name: k8s-gcp-1       # A folder will be created in root directory (/iac/cluster_name) for storing cluster file
+k8s_version: 1.26.3
+docker_version: 23.0.1  # Dont go for latest version
 domain: maifuj.com
 #######Calico Configuration ####
 install_calicoctl: true
@@ -37,7 +37,7 @@ enable_ingress_controller: false
 
 #----------CLI-------
 #Please add below fields when running wit cli
-master_ip : 172.31.0.105
-extra_ip : 3.82.7.245
-platform: AWS  #( Local or GCP or AWS)
+master_ip : 10.128.0.21
+extra_ip : 35.224.195.74
+platform: GCP  #( Local or GCP or AWS)
 

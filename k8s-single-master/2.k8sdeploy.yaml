@@ -1,6 +1,6 @@
 - name: Install k8s
   hosts: master,worker
-  become: false
+  become: true
   tasks:
     - name: Include vars
       include_vars: ./global-vars.yaml

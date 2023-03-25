@@ -5,6 +5,6 @@
 - import_tasks: pexpect.yaml
 - import_tasks: previous_cleanup.yaml
 - import_tasks: pull_images.yaml
-- import_tasks: init.yml
+- import_tasks: init.yaml
 - import_tasks: additional_configs.yml
 
