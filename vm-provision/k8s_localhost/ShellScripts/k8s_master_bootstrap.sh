@@ -5,7 +5,7 @@ if [ -f "$FILE" ]; then
     kubeadm reset --force
 fi
 printf "\nInitializing Cluster...\n\n"
-  kubeadm init --config /tools/kubeadm-init/init-default.yaml
+  kubeadm init --config /vagrant/kubeadm-init/init-default.yaml
 
 printf "\nCopying Config Files...\n\n"
   su - vagrant -c 'mkdir -p $HOME/.kube'
@@ -17,22 +17,22 @@ printf "\nsleeping for 5 seconds...\n"
 sleep 5
 
 printf "\nInstalling Tigera Operator for Canico CNI...\n\n"
-  su - vagrant -c 'kubectl create -f /tools/manifests/tigera-operator-v3.24.1.yaml'
+  su - vagrant -c 'kubectl create -f /vagrant/manifests/tigera-operator-v3.24.1.yaml'
 
 printf "\nInstalling Calico CNI with VXLAN...\n\n"
-  su - vagrant -c 'kubectl create -f /tools/manifests/calico-install-vxlan.yaml'
+  su - vagrant -c 'kubectl create -f /vagrant/manifests/calico-install-vxlan.yaml'
 
 printf "\nInstalling metric server...\n\n"
-   su - vagrant -c 'kubectl apply -f /tools/manifests/metric-server-v0.6.1.yaml'
+   su - vagrant -c 'kubectl apply -f /vagrant/manifests/metric-server-v0.6.1.yaml'
 
 printf "\nInstalling k8s Dashboard...\n\n"
-  su - vagrant -c 'kubectl create -f /tools/manifests/k8s-dashboard-v2.6.1.yaml'
+  su - vagrant -c 'kubectl create -f /vagrant/manifests/k8s-dashboard-v2.6.1.yaml'
 
 printf "\nCooling down for 1 minute...\n"
   sleep 60
 
 printf "\n Creating dashboard User...\n\n"
-  su - vagrant -c 'kubectl apply -f /tools/manifests/dahboard-admin-user.yaml'
+  su - vagrant -c 'kubectl apply -f /vagrant/manifests/dahboard-admin-user.yaml'
 
 printf "\n Extracting dashboard token\n"
   su - vagrant -c 'kubectl -n kubernetes-dashboard create token admin-user >> /vagrant/dashboard_token.txt'
