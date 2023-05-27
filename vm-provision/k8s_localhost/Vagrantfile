@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
             worker.vm.provision "shell", inline: <<-SHELL
                 #yum update -y
                 #yum upgrade -y
-                kubeadm join --config  /tools/kubeadm-join/join-default-worker"#{j}".yaml
+                kubeadm join --config  /vagrant/kubeadm-join/join-default-worker"#{j}".yaml
             SHELL
         end
     end
