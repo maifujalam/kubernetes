@@ -35,4 +35,7 @@ printf "\n Creating dashboard User...\n\n"
   su - vagrant -c 'kubectl apply -f /vagrant/manifests/dahboard-admin-user.yaml'
 
 printf "\n Extracting dashboard token\n"
-  su - vagrant -c 'kubectl -n kubernetes-dashboard create token admin-user >> /vagrant/dashboard_token.txt'
+  su - vagrant -c 'kubectl -n kubernetes-dashboard create token admin-user --duration=8760h > /vagrant/dashboard_token.txt'
+
+printf "Append token in kubeconfig file"
+  su - vagrant -c 'sed -i "/client-key-data/a\    token: $(cat /vagrant/dashboard_token.txt)" /vagrant/config'
