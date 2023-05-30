@@ -17,6 +17,9 @@ variable "instance_type" {
     "c2-m4" = "t3.medium"
     "c2-m8" = "t3.large"
   }
+  validation {
+
+  }
 }
 variable "instance_name" {
   description = "VM Name"

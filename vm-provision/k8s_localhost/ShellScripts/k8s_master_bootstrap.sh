@@ -4,6 +4,8 @@ if [ -f "$FILE" ]; then
     printf "\n Deleting existing k8s Cluster...\n\n"
     kubeadm reset --force
 fi
+printf "\n Verify system variables are set to 1"
+su - vagrant -c "sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward"
 printf "\nInitializing Cluster...\n\n"
   kubeadm init --config /vagrant/kubeadm-init/init-default.yaml
 
