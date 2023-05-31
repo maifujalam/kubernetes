@@ -5450,7 +5450,7 @@ status:
   storedVersions: []
 
 ---
-# Source: tigera-operator/templates/tigera-operator/00-namespace-tigera-operator.yaml
+# Source: tigera-operator/templates/tigera-operator/00-namespace-tigera-operator-v3.26.0.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -5459,7 +5459,7 @@ metadata:
   labels:
     name: tigera-operator
 ---
-# Source: tigera-operator/templates/tigera-operator/02-podsecuritypolicy-tigera-operator.yaml
+# Source: tigera-operator/templates/tigera-operator/02-podsecuritypolicy-tigera-operator-v3.26.0.yaml
 # This should not be rendered for an OpenShift install.
 # OpenShift uses SecurityContextConstraints instead.
 apiVersion: policy/v1beta1
@@ -5506,14 +5506,14 @@ spec:
         max: 65535
   readOnlyRootFilesystem: false
 ---
-# Source: tigera-operator/templates/tigera-operator/02-serviceaccount-tigera-operator.yaml
+# Source: tigera-operator/templates/tigera-operator/02-serviceaccount-tigera-operator-v3.26.0.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: tigera-operator
   namespace: tigera-operator
 ---
-# Source: tigera-operator/templates/tigera-operator/02-role-tigera-operator.yaml
+# Source: tigera-operator/templates/tigera-operator/02-role-tigera-operator-v3.26.0.yaml
 # Permissions required when running the operator for a Calico cluster.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -5701,7 +5701,7 @@ rules:
     verbs:
       - list
 ---
-# Source: tigera-operator/templates/tigera-operator/02-rolebinding-tigera-operator.yaml
+# Source: tigera-operator/templates/tigera-operator/02-rolebinding-tigera-operator-v3.26.0.yaml
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -5715,7 +5715,7 @@ roleRef:
   name: tigera-operator
   apiGroup: rbac.authorization.k8s.io
 ---
-# Source: tigera-operator/templates/tigera-operator/02-tigera-operator.yaml
+# Source: tigera-operator/templates/tigera-operator/02-tigera-operator-v3.26.0.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:

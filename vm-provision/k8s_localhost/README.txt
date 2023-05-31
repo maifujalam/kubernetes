@@ -28,4 +28,10 @@
   a.  sudo containerd config default > /etc/containerd/config.toml
   b. restart and enable containered.io
   c. Edit cgroup to use systemd: [https://kubernetes.io/docs/setup/production-environment/container-runtimes/]
-8.
+8. Disable firewalld,swap.
+9. Install metric server with helm.
+  a. h repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+  b. h repo update
+  c. h pull metrics-server/metrics-server --version 3.10.0 --untar
+  d. h install metricserver metrics-server -n kube-system
+  e. h list ,h status metricserver

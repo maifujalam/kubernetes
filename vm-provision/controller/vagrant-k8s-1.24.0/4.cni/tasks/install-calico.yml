@@ -1,11 +1,11 @@
-- name: Copy role file tigera-operator to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator.yaml in controller
+- name: Copy role file tigera-operator to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator-v3.26.0.yaml in controller
   become: false
   local_action:
     module: copy
     src: tigera-operator.yaml
     dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
 
-- name: Copy role files to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator.yaml in leader
+- name: Copy role files to {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator-v3.26.0.yaml in leader
   copy:
     src: tigera-operator.yaml
     dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}"
@@ -23,7 +23,7 @@
     dest: "{{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/install-calico.yaml"
 
 - name: Installing calico tigera operator
-  shell: kubectl apply -f {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator.yaml
+  shell: kubectl apply -f {{ansible_facts.env.HOME}}/k8s-clusters/{{cluster_name}}/tigera-operator-v3.26.0.yaml
   retries: 10
   delay: 2
   register: r1
