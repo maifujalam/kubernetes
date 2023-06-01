@@ -1,6 +1,6 @@
 1. vagrant.exe package --base master --output k8s-1.27.2.box
 2. vagrant.exe box add --name k8s-1.27.2  C:/Users/ALAM/IdeaProjects/kubernetes/vm-provision/k8s_localhost/k8s-1.27.2.box
-3. sudo dnf install container-tools podman-docker podman
+3. sudo yum install container-tools
 4. Set system variables:- [ https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/ ]
   cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
   overlay
@@ -25,9 +25,10 @@
   b. dnf install containered.io
 
 7.Generate Containerd.io config file:
-  a.  sudo containerd config default > /etc/containerd/config.toml
+  a. sudo containerd config default > /etc/containerd/config.toml or cp config.toml  /etc/containerd/
   b. restart and enable containered.io
   c. Edit cgroup to use systemd: [https://kubernetes.io/docs/setup/production-environment/container-runtimes/]
+  d. systemctl restart containerd.service
 8. Disable firewalld,swap.
 9. Install metric server with helm.
   a. h repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
