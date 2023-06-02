@@ -1,10 +1,10 @@
 #IMAGE_NAME = "generic/rhel9"    # Base image of VM which is vagrant box of Centos8 18.04 TLS
 #BOX_VERSION = "4.2.16"             # Base image version
-IMAGE_NAME = "k8s-1.27.2_v1"    # Base image of VM which is vagrant box of Centos8 18.04 TLS
+IMAGE_NAME = "k8s-1.27.2_v3"    # Base image of VM which is vagrant box of Centos8 18.04 TLS
 BOX_VERSION = "0"             # Base image version
 NW = 2                          # Specify the the numbers of worker VMs to create (Example:- 2,3,4)
 NM = 1                          # Specify number of master vms to create(Example:-3,4,5 but minimum 3)
-MASTER = "master1"               # Name of Master VM
+MASTER = "master"               # Name of Master VM
 WORKER = "worker"                # Names of worker VMs(worker vms will be named as worker1,worker2,worker3 ... )
 CPU_MASTER = 4                  # Specify the CPU of master VM(Example :-1,2)
 CPU_WORKER = 1                   # Specify CPU of each worker VMs(Example :-1,2)
@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
     config.vagrant.plugins = ['vagrant-disksize','vagrant-hostmanager']
     config.ssh.insert_key = false
     config.vm.box_check_update = false
-    config.hostmanager.enabled = false
+    config.hostmanager.enabled = true
     config.hostmanager.manage_host = false  # false to disable update '/etc/hosts' of host with guest VMs dns.
     config.hostmanager.manage_guest = true
     config.hostmanager.ignore_private_ip = false
@@ -37,10 +37,10 @@ Vagrant.configure("2") do |config|
             end
             master.vm.box = IMAGE_NAME
             master.vm.box_version = BOX_VERSION
-            master.vm.network "private_network", ip: IP_MASTER
+            master.vm.network "private_network", ip: IP_MASTER , hostname: true
             master.vm.hostname = MASTER
             master.vm.provision "shell", inline: <<-SHELL
-                # sh /vagrant/ShellScripts/k8s_master_bootstrap.sh
+                sh /vagrant/ShellScripts/k8s_master_bootstrap.sh
             SHELL
         end
     end
@@ -55,10 +55,10 @@ Vagrant.configure("2") do |config|
             end
             worker.vm.box = IMAGE_NAME
             worker.vm.box_version = BOX_VERSION
-            worker.vm.network "private_network", ip: IP_WORKER[j-1]
+            worker.vm.network "private_network", ip: IP_WORKER[j-1],  hostname: true
             worker.vm.hostname = WORKER + "#{j}"
             worker.vm.provision "shell", inline: <<-SHELL
-                # kubeadm join --config  /vagrant/kubeadm-join/join-default-worker"#{j}".yaml
+                kubeadm join --v=5 --config /vagrant/kubeadm-join/join-default-worker"#{j}".yaml
             SHELL
         end
     end
