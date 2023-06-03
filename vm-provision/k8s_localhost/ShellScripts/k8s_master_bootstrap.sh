@@ -31,7 +31,7 @@ printf "\nInstalling k8s Dashboard...\n\n"
   su - vagrant -c 'kubectl create -f /vagrant/manifests/k8s-dashboard-v2.7.0.yaml'
 
 printf "\nCooling down for 30 seconds...\n"
-  sleep 60
+  sleep 30
 
 printf "\n Creating dashboard User...\n\n"
   su - vagrant -c 'kubectl apply -f /vagrant/manifests/dahboard-admin-user.yaml'
