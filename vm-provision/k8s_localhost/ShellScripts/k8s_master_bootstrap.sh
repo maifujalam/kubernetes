@@ -25,7 +25,7 @@ printf "\nInstalling Calico CNI with VXLAN...\n\n"
   su - vagrant -c 'kubectl create -f /vagrant/manifests/calico-install-vxlan.yaml'
 
 printf "\nInstalling metric server...\n\n"
-   su - vagrant -c 'helm install metricserver /vagrant/manifests/metrics-server -n kube-system'
+   su - vagrant -c 'helm install metrics-server /vagrant/manifests/metrics-server -n kube-system'
 
 printf "\nInstalling k8s Dashboard...\n\n"
   su - vagrant -c 'kubectl create -f /vagrant/manifests/k8s-dashboard-v2.7.0.yaml'
