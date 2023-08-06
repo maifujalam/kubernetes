@@ -1,0 +1,8 @@
+1. minikube profile list
+2. docker context use default
+3. Docker Desktop and Virtual Box does not work together,as glitch from Docker Desktop.
+4. Switch minikube profile: minikube profile minikube-cn
+5. Switch to default minikube profile: minikube profile default
+6. Minikube with Docker Desktop on MAC does not connect to Docker Desktop.
+7. List service in mac: minikube service list
+8. Expose node port service: minikube service service_name
