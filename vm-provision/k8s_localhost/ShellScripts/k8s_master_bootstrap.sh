@@ -14,7 +14,7 @@ cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
 EOF
 modprobe overlay
 modprobe br_netfilter
-echo "Verify Linux kernel modules are added"
+printf "\nVerify Linux kernel modules are added"
 lsmod | grep br_netfilter
 lsmod | grep overlay
 
@@ -30,6 +30,22 @@ EOF
 sudo sysctl --system
 su - vagrant -c "sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward"
 
+############ Set SELINUX to Permissiove ######
+# Set SELinux in permissive mode (effectively disabling it)
+sudo setenforce 0
+sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+########## Disable Swap ##########
+printf "Diableling SWAP and FIREWALL"
+swapoff -a
+# Disable swap permanently
+sudo systemctl disable --now firewalld
+
+############# Enable kubelet and containerd #########
+sudo systemctl enable --now containerd.service
+sudo chmod -R 777 /var/run/containerd/
+sudo systemctl enable --now kubelet
+
 ####################### Init K8s Cluster ########################
 printf "\nInitializing Cluster...\n\n"
   kubeadm init --config /vagrant/kubeadm-init/init-default.yaml
@@ -43,7 +59,7 @@ printf "\nCopying Config Files...\n\n"
 printf "\nsleeping for 5 seconds...\n"
 sleep 5
 
-printf "\nInstalling Tigera Operator for Canico CNI...\n\n"
+printf "\nInstalling Tigera Operator for Calico CNI...\n\n"
   su - vagrant -c 'kubectl create -f /vagrant/manifests/tigera-operator-v3.26.0.yaml'
 
 printf "\nInstalling Calico CNI with VXLAN...\n\n"
