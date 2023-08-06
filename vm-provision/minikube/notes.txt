@@ -6,3 +6,4 @@
 6. Minikube with Docker Desktop on MAC does not connect to Docker Desktop.
 7. List service in mac: minikube service list
 8. Expose node port service: minikube service service_name
+9. Start or stop profile: minikube stop --profile=minikube-cn

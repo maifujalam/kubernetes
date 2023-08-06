@@ -1,11 +1,36 @@
 #!/usr/bin/bash
+########## Cleanup Old K8s Config #########
 FILE=/home/vagrant/.kube/config
 if [ -f "$FILE" ]; then
     printf "\n Deleting existing k8s Cluster...\n\n"
     kubeadm reset --force
 fi
+
+################ Linux Kernel Module ########################
+echo "Add linux kernel modules..."
+cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+  overlay
+  br_netfilter
+EOF
+modprobe overlay
+modprobe br_netfilter
+echo "Verify Linux kernel modules are added"
+lsmod | grep br_netfilter
+lsmod | grep overlay
+
+################ Verify System Variables #######################
 printf "\n Verify system variables are set to 1. \n\n"
+# sysctl params required by setup, params persist across reboots
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+  net.bridge.bridge-nf-call-iptables  = 1
+  net.bridge.bridge-nf-call-ip6tables = 1
+  net.ipv4.ip_forward                 = 1
+EOF
+# Apply sysctl params without reboot
+sudo sysctl --system
 su - vagrant -c "sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward"
+
+####################### Init K8s Cluster ########################
 printf "\nInitializing Cluster...\n\n"
   kubeadm init --config /vagrant/kubeadm-init/init-default.yaml
 
