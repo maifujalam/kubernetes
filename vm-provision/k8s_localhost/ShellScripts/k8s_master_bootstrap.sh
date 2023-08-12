@@ -1,51 +1,16 @@
 #!/usr/bin/bash
+
+sh /vagrant/ShellScripts/1_download-packages.sh
+sh /vagrant/ShellScripts/2_configure_network.sh
+sh /vagrant/ShellScripts/3-configure_firealld_selinux.sh
+sh /vagrant/ShellScripts/4_config_crictl.sh
+sh /vagrant/ShellScripts/5_install_helm.sh
 ########## Cleanup Old K8s Config #########
 FILE=/home/vagrant/.kube/config
 if [ -f "$FILE" ]; then
     printf "\n Deleting existing k8s Cluster...\n\n"
     kubeadm reset --force
 fi
-
-################ Linux Kernel Module ########################
-echo "Add linux kernel modules..."
-cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
-  overlay
-  br_netfilter
-EOF
-modprobe overlay
-modprobe br_netfilter
-printf "\nVerify Linux kernel modules are added"
-lsmod | grep br_netfilter
-lsmod | grep overlay
-
-################ Verify System Variables #######################
-printf "\n Verify system variables are set to 1. \n\n"
-# sysctl params required by setup, params persist across reboots
-cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
-  net.bridge.bridge-nf-call-iptables  = 1
-  net.bridge.bridge-nf-call-ip6tables = 1
-  net.ipv4.ip_forward                 = 1
-EOF
-# Apply sysctl params without reboot
-sudo sysctl --system
-su - vagrant -c "sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward"
-
-############ Set SELINUX to Permissiove ######
-# Set SELinux in permissive mode (effectively disabling it)
-sudo setenforce 0
-sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-
-########## Disable Swap ##########
-printf "Diableling SWAP and FIREWALL"
-swapoff -a
-# Disable swap permanently
-sudo systemctl disable --now firewalld
-
-############# Enable kubelet and containerd #########
-sudo systemctl enable --now containerd.service
-sudo chmod -R 777 /var/run/containerd/
-sudo systemctl enable --now kubelet
-
 ####################### Init K8s Cluster ########################
 printf "\nInitializing Cluster...\n\n"
   kubeadm init --config /vagrant/kubeadm-init/init-default.yaml
