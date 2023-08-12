@@ -22,3 +22,4 @@ EOF
 # Apply sysctl params without reboot
 sudo sysctl --system
 su - vagrant -c "sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward"
+printf "Network Configuration Completed..."
