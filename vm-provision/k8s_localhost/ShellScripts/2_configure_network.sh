@@ -21,5 +21,7 @@ cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 EOF
 # Apply sysctl params without reboot
 sudo sysctl --system
-su - vagrant -c "sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward"
-printf "Network Configuration Completed..."
+#su - vagrant -c "sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward"
+printf "\nNetwork Configuration Completed...\n"
+printf "Stopping for 5 sec\n"
+sleep 5

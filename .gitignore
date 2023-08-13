@@ -21,3 +21,4 @@ venv
 **/dockerimages
 **/.vagrant
 **/*.box
+**.pkr.hcl

@@ -14,7 +14,7 @@ build {
     inline = ["echo HelloWorld"]
   }
   provisioner "shell" {
-    script       = "scripts/main.sh"
+    script       = "../ShellScripts/"
     pause_before = "1s"
     timeout      = "1s"
   }

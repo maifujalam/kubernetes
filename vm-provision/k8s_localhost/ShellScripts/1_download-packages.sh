@@ -8,13 +8,18 @@ enabled=1
 gpgcheck=1
 gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOF
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 sudo yum clean all
 #sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
-sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-sudo yum install -y containerd kubelet kubeadm kubectl --downloadonly --downloaddir=/vagrant/packages/. --nobest
+if [ ! "$(ls -A /vagrant/packages/)" ];then
+  printf "Downloading Packages\n"
+  sudo yum install -y containerd kubelet kubeadm kubectl --downloadonly --downloaddir=/vagrant/packages/. --skip-broken
+fi
+printf "Installing Packages\n"
 sudo rpm -Uhv /vagrant/packages/*.rpm
 
 ###### Verify Containerd  ########
+printf "\nVerifying Binary...\n"
 containerd -v
 sudo systemctl enable --now containerd.service
 
@@ -27,3 +32,4 @@ kubeadm version
 
 ########## kubectl #######
 kubectl version
+printf "\nVerifying Binary Completed. \n"
