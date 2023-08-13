@@ -47,3 +47,6 @@ printf "\n Extracting dashboard token\n"
 
 printf "Append token in kubeconfig file.\n"
   su - vagrant -c 'sed -i "/client-key-data/a\    token: $(cat /vagrant/dashboard_token.txt)" /vagrant/config'
+
+printf "Now Configuring kubectl"
+  sh /vagrant/ShellScripts/6.configure_kubectl.sh

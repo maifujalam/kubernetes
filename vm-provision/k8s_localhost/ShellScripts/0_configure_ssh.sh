@@ -51,6 +51,7 @@ if ping -c 2 $MASTER &> /dev/null ;then
   # Copying ssh public keys to servers
   sshpass -e ssh-copy-id -i ~/.ssh/id_rsa.pub -o StrictHostKeyChecking=no vagrant@$MASTER &> /dev/null
   echo "Master is configured for password less SSH from host"
+  # ssh vagrant@master
   else
     echo "$MASTER is NOT Reachable"
 fi
@@ -66,6 +67,7 @@ if ping -c 2 $WORKER1 &> /dev/null ;then
   # Copying ssh public keys to servers
   sshpass -e ssh-copy-id -i ~/.ssh/id_rsa.pub -o StrictHostKeyChecking=no vagrant@$WORKER1 &> /dev/null
   echo "Worker1 is configured for password less SSH from host"
+  # ssh vagrant@worker1
   else
     echo "$WORKER1 is NOT Reachable"
 fi
@@ -81,6 +83,7 @@ if ping -c 2 $WORKER2 &> /dev/null ;then
   # Store PASSWORD for WORKER2
   sshpass -e ssh-copy-id -i ~/.ssh/id_rsa.pub -o StrictHostKeyChecking=no vagrant@$WORKER2 &> /dev/null
   echo "Worker2 is configured for password less SSH from host"
+  # ssh vagrant@worker2
   else
     echo "$WORKER2 is NOT Reachable"
 fi
