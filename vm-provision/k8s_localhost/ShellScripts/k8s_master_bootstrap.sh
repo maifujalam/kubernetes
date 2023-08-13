@@ -5,6 +5,7 @@ sh /vagrant/ShellScripts/2_configure_network.sh
 sh /vagrant/ShellScripts/3-configure_firealld_selinux.sh
 sh /vagrant/ShellScripts/4_config_crictl.sh
 sh /vagrant/ShellScripts/5_install_helm.sh
+sh /vagrant/ShellScripts/kubernetes_images.sh
 ########## Cleanup Old K8s Config #########
 FILE=/home/vagrant/.kube/config
 if [ -f "$FILE" ]; then
@@ -48,5 +49,6 @@ printf "\n Extracting dashboard token\n"
 printf "Append token in kubeconfig file.\n"
   su - vagrant -c 'sed -i "/client-key-data/a\    token: $(cat /vagrant/dashboard_token.txt)" /vagrant/config'
 
-printf "Now Configuring kubectl"
+printf "Sleeping for 5 sec.."
+  sleep 5
   sh /vagrant/ShellScripts/6.configure_kubectl.sh

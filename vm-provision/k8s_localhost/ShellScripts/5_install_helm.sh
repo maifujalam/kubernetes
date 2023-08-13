@@ -8,4 +8,4 @@ fi
 sudo tar zxf /vagrant/ShellScripts/helm-$VERSION-linux-amd64.tar.gz
 sudo cp linux-amd64/helm /usr/local/bin/
 rm -frv linux-amd64
-which helm
+which helm 2> /dev/null

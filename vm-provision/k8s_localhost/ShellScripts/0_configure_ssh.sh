@@ -87,3 +87,11 @@ if ping -c 2 $WORKER2 &> /dev/null ;then
   else
     echo "$WORKER2 is NOT Reachable"
 fi
+
+printf "\n Merging Kube-config Files\n"
+cp -vf ~/.kube/config ~/.kube/config.backup
+KUBECONFIG=../config:~/.kube/config kubectl config view --flatten | tee  ~/.kube/config
+#cp -vf ../config ~/.kube/new_config
+echo "KUBECONFIG=new_config:~/.kube/config kubectl config view --flatten > config" > ~/.kube/update_kubeconfig.sh
+#chmod 777  ~/.kube/update_kubeconfig.sh
+##sudo sh ~/.kube/update_kubeconfig.sh
