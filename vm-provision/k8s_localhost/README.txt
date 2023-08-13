@@ -24,6 +24,13 @@
   a. sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   b. dnf install containered.io
 
+6.1 Download containered from yum.
+    a. sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    b. yum install -y yum-utils && sudo yum update
+    c. sudo yum install -y containerd --downloadonly --downloaddir=/vagrant/packages/.  OR
+       sudo yumdownloader -y containerd --downloadonly --downloaddir=/vagrant/packages/. --resolve
+    d. sudo rpm -Uhv /vagrant/packages/*.rpm
+
 7.Generate Containerd.io config file:
   a. sudo containerd config default > /etc/containerd/config.toml or cp config.toml  /etc/containerd/
   b. restart and enable containered.io

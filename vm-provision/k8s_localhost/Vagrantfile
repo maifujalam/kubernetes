@@ -6,8 +6,8 @@ MASTER = "master"               # Name of Master VM
 WORKER = "worker"                # Names of worker VMs(worker vms will be named as worker1,worker2,worker3 ... )
 CPU_MASTER = 4                  # Specify the CPU of master VM(Example :-1,2)
 CPU_WORKER = 2                   # Specify CPU of each worker VMs(Example :-1,2)
-MEMORY_MASTER = 6144            # Specify the RAM of master VMs in MB(Example :- 2048,4096)
-MEMORY_WORKER = 4096             # Specify the RAM of each worker VMs in MB(Example :- 2048,4096)
+MEMORY_MASTER = 4096           # Specify the RAM of master VMs in MB(Example :- 2048,4096)
+MEMORY_WORKER = 3073             # Specify the RAM of each worker VMs in MB(Example :- 2048,4096)
 HDD = '20GB'                    # HDD of Each VM (Examples :- "15GB","20GB","30GB")
 
 IP_MASTER = '192.168.56.100'
@@ -38,6 +38,7 @@ Vagrant.configure("2") do |config|
             master.vm.network "private_network", ip: IP_MASTER , hostname: true
             master.vm.hostname = MASTER
             master.vm.provision "shell", inline: <<-SHELL
+                sh /vagrant/ShellScripts/update_ssh_config.sh
                 sh /vagrant/ShellScripts/k8s_master_bootstrap.sh
             SHELL
         end
@@ -56,7 +57,8 @@ Vagrant.configure("2") do |config|
             worker.vm.network "private_network", ip: IP_WORKER[j-1]
             worker.vm.hostname = WORKER + "#{j}"
             worker.vm.provision "shell", inline: <<-SHELL
-                sudo cp /vagrant/configs/k8s.conf /etc/sysctl.d/ -vf
+                sh /vagrant/ShellScripts/update_ssh_config.sh
+                sh /vagrant/ShellScripts/k8s_worker_bootstrap.sh
                 kubeadm join --v=5 --config /vagrant/kubeadm-join/join-default-worker"#{j}".yaml
             SHELL
         end

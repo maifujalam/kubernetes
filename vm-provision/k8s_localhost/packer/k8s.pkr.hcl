@@ -11,9 +11,6 @@ build {
   name = "k8s_build"
   sources = ["source.vagrant.k8s"]
   provisioner "shell" {
-    inline = ["echo HelloWorld"]
-  }
-  provisioner "shell" {
     script       = "scripts/main.sh"
     pause_before = "1s"
     timeout      = "1s"
