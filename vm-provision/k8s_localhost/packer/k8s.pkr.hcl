@@ -11,6 +11,33 @@ build {
   name = "k8s_build"
   sources = ["source.vagrant.k8s"]
   provisioner "shell" {
+    inline = ["sudo mkdir -pv /vagrant",
+      "sudo chmod -R 777 /vagrant",
+      "sudo chown vagrant:vagrant /vagrant"
+    ]
+  }
+  provisioner "file" {
+    source = "../ShellScripts"
+    destination = "/vagrant/"
+  }
+
+  provisioner "file" {
+    source = "../packages"
+    destination = "/vagrant/"
+  }
+  provisioner "file" {
+    source = "../configs"
+    destination = "/vagrant/"
+  }
+  provisioner "file" {
+    source = "../kubeadm-init"
+    destination = "/vagrant"
+  }
+  provisioner "file" {
+    source = "../kubeadm-join"
+    destination = "/vagrant"
+  }
+  provisioner "shell" {
     script       = "scripts/main.sh"
     pause_before = "1s"
     timeout      = "1s"
